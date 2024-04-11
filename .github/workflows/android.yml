@@ -37,12 +37,12 @@ jobs:
         status: ${{job.status}}
         fields: workflow,commit,repo,author,job,ref,took
       env:
-        SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     - name: Slack - Upload APK
       uses: MeilCli/slack-upload-file@v1.0.0
       with:
-        slack_token: ${{secrets.SLACK_TOKEN}}  
-        initial_comment: 'APK File Upload'
-        file_type: 'apk'
-        file_name: 'app-debug.apk'
-        file_path: './app/build/outputs/apk/debug/app-debug.apk'
+        slack_token: ${{ secrets.SLACK_TOKEN }}
+        initial_comment: 'ReMind APP 배포 시작합니다❤️‍🩹'
+        file_type: 'apk'
+        file_name: 'app-debug.apk'
+        file_path: './app/build/outputs/apk/debug/app-debug.apk'

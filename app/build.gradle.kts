@@ -24,6 +24,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", getBaseUrl("BASE_URL"))
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${getBaseUrl("KAKAO_NATIVE_APP_KEY")}\"")
+        manifestPlaceholders["kakaoKey"] = "kakao${getBaseUrl("KAKAO_NATIVE_APP_KEY")}"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -39,11 +41,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         compose = true
@@ -86,4 +88,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:okhttp:4.8.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
+
+    //kakao login
+    implementation("com.kakao.sdk:v2-user:2.20.1")
 }

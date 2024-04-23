@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "165854968361",
+    "project_id": "remind-b60cb",
+    "storage_bucket": "remind-b60cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165854968361:android:7b1bd6b07f7037b2ad7a38",
+        "android_client_info": {
+          "package_name": "com.example.remind"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJKFmWkqmDr4kb1jDYhe-lY741k_ql5gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

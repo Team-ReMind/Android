@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 fun getBaseUrl(propertyBaseUrl : String): String {
@@ -91,4 +92,8 @@ dependencies {
 
     //kakao login
     implementation("com.kakao.sdk:v2-user:2.20.1")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation("com.google.firebase:firebase-analytics")
 }

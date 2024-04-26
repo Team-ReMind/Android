@@ -1,6 +1,7 @@
 package com.example.remind
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.remind.ui.theme.ReMindTheme
+import com.google.firebase.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.messaging
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -26,6 +30,14 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Greeting("Hello World")
                 }
+            }
+        }
+        Firebase.messaging.token.addOnCompleteListener { task ->
+            if(!task.isSuccessful) {
+                Log.e("tagg", "failed")
+            } else {
+                val token = task.result
+                Log.d("taag", "$token")
             }
         }
     }

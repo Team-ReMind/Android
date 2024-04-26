@@ -103,4 +103,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging:23.2.1")
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.4.2")
 }

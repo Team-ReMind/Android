@@ -106,4 +106,11 @@ dependencies {
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.4.2")
+
+    //ted permission
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
+    implementation("io.github.ParkSangGwon:tedpermission-coroutine:3.3.0")
+
+    //data store
+    implementation( "androidx.datastore:datastore-preferences:1.1.0")
 }

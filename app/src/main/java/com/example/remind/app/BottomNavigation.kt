@@ -1,7 +1,5 @@
-package com.example.remind.core.navigation
+package com.example.remind.app
 
-import android.annotation.SuppressLint
-import android.provider.CalendarContract
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,12 +22,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.remind.core.designsystem.theme.RemindTheme
+import com.example.remind.core.common.navigation.NavItem
+import com.example.remind.core.common.navigation.Screens
+import com.example.remind.core.common.navigation.listOfNavItem
 import com.example.remind.presentation.screens.FirstScreen
 import com.example.remind.presentation.screens.FourthScreen
 import com.example.remind.presentation.screens.SecondScreen
@@ -49,7 +49,7 @@ fun BottomNavigation() {
                 contentColor = Color.White,
                 modifier = Modifier.height(66.dp)
             ) {
-                listOfNavItem.forEachIndexed { index, navItem: NavItem ->  
+                listOfNavItem.forEachIndexed { index, navItem: NavItem ->
                     NavigationBarItem(
                         selected = selectedIndex == index,
                         onClick = {

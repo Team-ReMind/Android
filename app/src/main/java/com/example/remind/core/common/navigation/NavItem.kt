@@ -1,4 +1,4 @@
-package com.example.remind.core.navigation
+package com.example.remind.core.common.navigation
 
 import com.example.remind.R
 

@@ -1,11 +1,10 @@
-package com.example.remind
+package com.example.remind.app
 
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.remind.core.designsystem.theme.RemindTheme
-import com.example.remind.core.navigation.BottomNavigation
 import com.google.firebase.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import com.google.firebase.messaging.messaging

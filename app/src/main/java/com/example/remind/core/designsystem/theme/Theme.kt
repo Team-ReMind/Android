@@ -16,22 +16,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-fun colors() = Colors()
+fun colors() = RemindColors()
+fun fonts() = RemindTypography()
 
 @Composable
 fun RemindTheme (
-    colors: Colors = colors(),
+    colors: RemindColors = colors(),
     content: @Composable () -> Unit
 ) {
     val view = LocalView.current
     SideEffect {
         if(!view.isInEditMode) {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.Black.toArgb()
+            window.statusBarColor = colors.grayscale_3.toArgb()
         }
     }
     CompositionLocalProvider (
-        LocalColors provides colors
+        LocalColors provides colors,
+        LocalTypography provides fonts()
+
+
     ) {
         content()
     }

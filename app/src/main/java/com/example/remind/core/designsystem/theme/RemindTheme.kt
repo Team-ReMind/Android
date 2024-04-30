@@ -4,10 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 
 object RemindTheme {
-    val colors: Colors
+    val colors: RemindColors
     @Composable
     @ReadOnlyComposable
     get() = LocalColors.current
 
-
+    val typography: RemindTypography
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalTypography.current
 }

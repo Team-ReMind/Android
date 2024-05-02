@@ -18,7 +18,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,16 +29,16 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.core.common.navigation.NavItem
 import com.example.remind.core.common.navigation.Screens
 import com.example.remind.core.common.navigation.listOfNavItem
-import com.example.remind.presentation.screens.FirstScreen
-import com.example.remind.presentation.screens.FourthScreen
-import com.example.remind.presentation.screens.SecondScreen
-import com.example.remind.presentation.screens.ThirdScreen
+import com.example.remind.feature.screens.FirstScreen
+import com.example.remind.feature.screens.FourthScreen
+import com.example.remind.feature.screens.SecondScreen
+import com.example.remind.feature.screens.ThirdScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavigation() {
     val navController: NavHostController = rememberNavController()
-    val context = LocalContext.current
+    //val context = LocalContext.current
 
     Scaffold(
         bottomBar = {
@@ -71,9 +70,9 @@ fun BottomNavigation() {
                                     .height(24.dp)
                                     .padding(bottom = 4.dp),
                                 tint = if(selectedIndex == index) {
-                                    RemindTheme.colors.Black
+                                    RemindTheme.colors.icon
                                 } else {
-                                    RemindTheme.colors.g1
+                                    RemindTheme.colors.sub_1
                                 }
                             )
                         },
@@ -82,9 +81,9 @@ fun BottomNavigation() {
                                 text = navItem.label,
                                 fontSize = 10.sp,
                                 color = if(selectedIndex == index) {
-                                    RemindTheme.colors.Black
+                                    RemindTheme.colors.sub_1
                                 } else {
-                                    RemindTheme.colors.g1
+                                    RemindTheme.colors.grayscale_1
                                 }
                             )
                         },

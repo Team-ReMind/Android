@@ -1,4 +1,4 @@
-package com.example.remind.core.di
+package com.example.remind.app
 import com.example.remind.BuildConfig
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk

@@ -1,4 +1,4 @@
-package com.example.remind.core.di
+package com.example.remind.data.di
 import com.example.remind.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object NetworkModule {
     private const val BASE_URL = BuildConfig.BASE_URL
 
     @Singleton

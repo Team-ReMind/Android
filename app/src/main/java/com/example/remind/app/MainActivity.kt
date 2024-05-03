@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
             RemindTheme {
-               BottomNavigation()
+               RemindNavHost()
             }
         }
         //곧 지워질 코드

@@ -1,4 +1,4 @@
-package com.example.remind.app
+package com.example.remind.feature.screens.patience
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,7 +10,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,21 +24,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.core.common.navigation.NavItem
-import com.example.remind.core.common.navigation.Screens
 import com.example.remind.core.common.navigation.listOfNavItem
-import com.example.remind.feature.screens.FirstScreen
-import com.example.remind.feature.screens.FourthScreen
-import com.example.remind.feature.screens.SecondScreen
-import com.example.remind.feature.screens.ThirdScreen
+import com.example.remind.core.designsystem.theme.RemindTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavigation() {
+fun PatienceScreen() {
     val navController: NavHostController = rememberNavController()
     //val context = LocalContext.current
-
     Scaffold(
         bottomBar = {
             var selectedIndex by rememberSaveable { mutableStateOf(0) }
@@ -52,16 +45,16 @@ fun BottomNavigation() {
                     NavigationBarItem(
                         selected = selectedIndex == index,
                         onClick = {
-                           selectedIndex = index
-                           navController.navigate(navItem.route) {
-                               popUpTo(0) {
-                                   inclusive = true
-                               }
-                               launchSingleTop = true
-                               restoreState = true
-                           } 
-                        }, 
-                        icon = { 
+                            selectedIndex = index
+                            navController.navigate(navItem.route) {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        icon = {
                             Icon (
                                 painter = painterResource(id = navItem.icon_unfill),
                                 contentDescription = null,
@@ -94,24 +87,10 @@ fun BottomNavigation() {
                 }
             }
         }
-    ) {paddingValues ->
-        NavHost(
+    ) { paddingValues ->
+        PatienceGraph(
             navController = navController,
-            startDestination = Screens.FirstScreen.name,
             modifier = Modifier.padding(paddingValues)
-        ) {
-            composable(route = Screens.FirstScreen.name) {
-                FirstScreen()
-            }
-            composable(route = Screens.SecondScreen.name) {
-                SecondScreen()
-            }
-            composable(route = Screens.ThirdScreen.name) {
-                ThirdScreen()
-            }
-            composable(route = Screens.FourthScreen.name) {
-                FourthScreen()
-            }
-        }
+        )
     }
 }

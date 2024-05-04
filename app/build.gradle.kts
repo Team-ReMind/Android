@@ -117,5 +117,10 @@ dependencies {
     //splash screen api
     implementation( "androidx.core:core-splashscreen:1.0.1")
 
+    //vico module
+    implementation("com.patrykandpatrick.vico:compose:1.12.0")
+    implementation("com.patrykandpatrick.vico:compose-m3:1.12.0")
+    implementation("com.patrykandpatrick.vico:core:1.12.0")
+    implementation("com.patrykandpatrick.vico:views:1.12.0")
 
 }

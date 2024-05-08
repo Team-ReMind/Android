@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplashScreenAPI"
         tools:targetApi="31" >
-
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
@@ -29,6 +28,14 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="kakaolink"
+                    android:scheme="${kakaoKey}" />
             </intent-filter>
         </activity>
         <activity

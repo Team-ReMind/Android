@@ -16,7 +16,17 @@ fun SelectTypeScreen(
         Button(onClick = {
             navController.navigate(Screens.Patience.route)
         }) {
-            Text("gogogo")
+            Text("환자")
+        }
+        Button(onClick = {
+            navController.navigate(Screens.Center.route)
+        }) {
+            Text("센터")
+        }
+        Button(onClick = {
+            navController.navigate(Screens.Doctor.route)
+        }) {
+            Text("의사")
         }
     }
 }

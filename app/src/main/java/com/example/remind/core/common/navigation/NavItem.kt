@@ -11,24 +11,24 @@ data class NavItem(
 
 val listOfNavItem: List<NavItem> = listOf(
     NavItem(
-        label = "홈",
-        icon_unfill = R.drawable.ic_example,
-        route = Screens.Patience.Fitst.route
+        label = "오늘의 기록",
+        icon_unfill = R.drawable.ic_home,
+        route = Screens.Patience.Home.route
     ),
     NavItem(
-        label = "두번째",
-        icon_unfill = R.drawable.ic_example,
-        route = Screens.Patience.Second.route
+        label = "무드 차트",
+        icon_unfill = R.drawable.ic_moodchart,
+        route = Screens.Patience.MoodChart.route
     ),
     NavItem(
-        label = "세번째",
-        icon_unfill = R.drawable.ic_example,
-        route = Screens.Patience.Third.route
+        label = "약 복용",
+        icon_unfill = R.drawable.ic_capsul,
+        route = Screens.Patience.Medicine.route
     ),
     NavItem(
-        label = "네번째",
-        icon_unfill = R.drawable.ic_example,
-        route = Screens.Patience.Fourth.route
+        label = "마이페이지",
+        icon_unfill = R.drawable.ic_mypage,
+        route = Screens.Patience.MyPage.route
     ),
 
 )

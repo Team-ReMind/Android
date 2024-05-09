@@ -6,6 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.remind.app.Screens
+import com.example.remind.feature.viewmodel.login.LoginViewModel
+
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 fun NavGraphBuilder.RegisterGraph(
@@ -16,7 +19,8 @@ fun NavGraphBuilder.RegisterGraph(
         startDestination = Screens.Register.Login.route
     ) {
         composable(route = Screens.Register.Login.route) {
-            LoginScreen(navHostController)
+            val viewModel: LoginViewModel = hiltViewModel()
+            LoginScreen(viewModel,navHostController)
         }
         composable(route = Screens.Register.SelectType.route) {
             SelectTypeScreen(navHostController)

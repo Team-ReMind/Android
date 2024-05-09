@@ -1,7 +1,7 @@
 package com.example.remind.feature.viewmodel
 
 import com.example.remind.data.model.response.ListData
-
+//삭제될 파일
 class CustomViewModel {
     fun getAllData(): List<ListData> {
         return listOf(

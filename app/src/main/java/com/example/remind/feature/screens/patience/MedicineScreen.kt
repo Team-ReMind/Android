@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ThirdScreen(){
+fun MedicineScreen(){
     Box(modifier = Modifier
         .fillMaxSize(),
         contentAlignment = Alignment.Center){

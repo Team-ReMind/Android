@@ -133,4 +133,8 @@ dependencies {
     //lifecycle
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
 
+    //chucker
+    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+
 }

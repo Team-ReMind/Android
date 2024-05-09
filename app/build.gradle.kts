@@ -123,4 +123,7 @@ dependencies {
     implementation("com.patrykandpatrick.vico:core:1.12.0")
     implementation("com.patrykandpatrick.vico:views:1.12.0")
 
+    //serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }

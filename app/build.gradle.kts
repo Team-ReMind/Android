@@ -126,4 +126,7 @@ dependencies {
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
+    //timber
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+
 }

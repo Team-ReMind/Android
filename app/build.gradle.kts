@@ -137,4 +137,7 @@ dependencies {
     debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
+    //landscapist - glide
+    implementation("com.github.skydoves:landscapist-glide:2.3.3")
+
 }

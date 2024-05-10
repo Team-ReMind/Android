@@ -8,6 +8,5 @@ import com.example.remind.data.network.adapter.ApiResult
 import retrofit2.http.Body
 
 interface AuthRepository {
-    suspend fun updateToken(body: TokenRequest): ApiResult<TokenResponse>
     suspend fun getTokenFromKakao(body: KakaoLoginRequest): ApiResult<SocialLoginResponse>
 }

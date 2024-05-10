@@ -4,7 +4,6 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.remind.BuildConfig
 import com.example.remind.data.network.adapter.ApiResultCallAdapterFactory
 import com.example.remind.data.network.interceptor.AuthInterceptor
-import com.example.remind.data.network.interceptor.TokenManager
 import com.example.remind.data.network.service.AuthService
 import com.example.remind.data.repository.auth.AuthRepository
 import com.example.remind.data.repository.auth.AuthRepositoryImpl

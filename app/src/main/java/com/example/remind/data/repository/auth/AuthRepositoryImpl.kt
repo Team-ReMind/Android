@@ -11,9 +11,6 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val service: AuthService
 ): AuthRepository {
-    override suspend fun updateToken(tokenRequest: TokenRequest): ApiResult<TokenResponse> {
-        return service.updateToken(tokenRequest)
-    }
 
     override suspend fun getTokenFromKakao(kakaoLoginRequest: KakaoLoginRequest): ApiResult<SocialLoginResponse> {
         return service.KakaoLogin(kakaoLoginRequest)

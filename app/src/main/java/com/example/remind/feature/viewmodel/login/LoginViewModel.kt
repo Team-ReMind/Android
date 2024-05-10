@@ -16,6 +16,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,9 +42,9 @@ class LoginViewModel @Inject constructor(
                 Log.e("kakao", "카카오 로그인 실패")
             } else if(token != null) {
                 UserApiClient.instance.me { user, error ->
-                    Log.e("kakao", "${token.accessToken} && ${user}")
+                    Timber.tag("kakao").e(token.accessToken + " && " + user)
                     viewModelScope.launch {
-                        socialLogin(token.toString())
+                        socialLogin(token.accessToken)
                     }
                 }
             }

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.common.component.BasicListItem
+import com.example.remind.core.common.component.MainAppBar
 import com.example.remind.core.common.component.RemindSearchTextField
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.feature.viewmodel.CustomViewModel
@@ -42,7 +43,7 @@ fun DoctorMain() {
                 .fillMaxWidth()
                 .background(color = RemindTheme.colors.white)
         ) {
-            Appbar(modifier = Modifier)
+            MainAppBar(modifier = Modifier)
             LazyColumn() {
                 item {
                     Profile(modifier = Modifier)
@@ -55,6 +56,7 @@ fun DoctorMain() {
                     )
                 }
                 itemsIndexed(getAllData) {index, item ->
+                    val backgroundColor = if(index % 2 == 0) RemindTheme.colors.main_1 else RemindTheme.colors.white
                     var formattedIndex = ""
                     if(index<10) {
                         formattedIndex = String.format( "%02d", index + 1)
@@ -65,7 +67,8 @@ fun DoctorMain() {
                     BasicListItem(
                         modifier = Modifier.padding(start = 26.dp, end = 28.dp),
                         name = item.name,
-                        index = formattedIndex
+                        index = formattedIndex,
+                        backgroundColor = backgroundColor
                     )
                 }
             }
@@ -73,32 +76,6 @@ fun DoctorMain() {
     }
 }
 
-@Composable
-fun Appbar(
-    modifier: Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = null,
-            modifier = modifier
-                .size(width = 36.dp, height = 21.dp)
-        )
-        Spacer(Modifier.weight(1f))
-        Icon(
-            painter = painterResource(id = R.drawable.ic_setting),
-            contentDescription = null,
-            modifier = modifier
-                .size(width = 24.dp, height = 28.dp),
-            tint = RemindTheme.colors.icon
-        )
-    }
-}
 
 @Composable
 fun Profile(modifier: Modifier) {
@@ -212,3 +189,4 @@ fun StickyHeaderComponent(modifier: Modifier) {
         }
     }
 }
+

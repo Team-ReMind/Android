@@ -21,11 +21,12 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 fun BasicListItem(
     modifier: Modifier = Modifier,
     name: String,
-    index: String
+    index: String,
+    backgroundColor: Color
 ) {
     Row(
         modifier = Modifier
-            .background(Color.White)
+            .background(backgroundColor)
             .fillMaxWidth()
             .padding(start = 11.dp, end = 9.dp, top = 10.dp, bottom = 9.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -58,5 +59,5 @@ fun BasicListItem(
 @Preview
 @Composable
 fun ListItemPreview() {
-    BasicListItem(modifier = Modifier,"송승희", "01")
+    //BasicListItem(modifier = Modifier,"송승희", "01")
 }

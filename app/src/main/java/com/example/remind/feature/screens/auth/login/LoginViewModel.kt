@@ -8,6 +8,7 @@ import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.KakaoLoginRequest
 import com.example.remind.data.network.adapter.onSuccess
+import com.example.remind.data.network.interceptor.TokenManager
 import com.example.remind.domain.usecase.KakaoTokenUseCase
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -15,12 +16,14 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authUseCase: KakaoTokenUseCase
+    private val authUseCase: KakaoTokenUseCase,
+    private val tokenManager: TokenManager
 ): BaseViewModel<LoginContract.Event, LoginContract.State, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
@@ -31,7 +34,7 @@ class LoginViewModel @Inject constructor(
                 is LoginContract.Event.KakaoLoginButtonClicked -> {
                     KakaoLogin(event.context)
                 }
-                else->{}
+
             }
         }
     }
@@ -70,7 +73,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             authUseCase.invoke(KakaoLoginRequest(token))
                 .onSuccess {
-
+                    runBlocking { tokenManager.saveAccessToken(
+                        it.data.accessToken,
+                        it.data.refreshToken
+                    ) }
                     postEffect(
                         LoginContract.Effect.NavigateTo(
                         destinaton = Screens.Register.SelectType.route,

@@ -139,5 +139,9 @@ dependencies {
 
     //landscapist - glide
     implementation("com.github.skydoves:landscapist-glide:2.3.3")
+    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.1")
 
+    //tabrow
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 }

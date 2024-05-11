@@ -1,4 +1,4 @@
-package com.example.remind.feature.contract
+package com.example.remind.feature.screens.auth.login
 
 import android.content.Context
 import androidx.navigation.NavOptions

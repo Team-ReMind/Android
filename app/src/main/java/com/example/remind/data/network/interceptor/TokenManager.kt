@@ -5,8 +5,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.remind.core.util.Constants.ACCESS_TOKEN
 import com.example.remind.core.util.Constants.REFRESH_TOKEN
+import com.example.remind.core.util.Constants.USER_TYPE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class TokenManager @Inject constructor(
@@ -24,11 +26,25 @@ class TokenManager @Inject constructor(
         }
     }
 
+    fun getUserType(): Flow<String?> {
+        return datastore.data.map { prefs->
+            prefs[USER_TYPE]
+        }
+    }
+
     suspend fun saveAccessToken(accessToken: String, refreshToken: String) {
         datastore.edit { prefs ->
             prefs[ACCESS_TOKEN] = accessToken
             prefs[REFRESH_TOKEN] = refreshToken
         }
+        Timber.d("액세스: $accessToken 리프레시: $refreshToken")
+    }
+
+    suspend fun saveUserType(userType: String) {
+        datastore.edit { prefs->
+            prefs[USER_TYPE] = userType
+        }
+        Timber.d("사용자 유형: $userType" )
     }
 
     suspend fun deleteAccessToken() {

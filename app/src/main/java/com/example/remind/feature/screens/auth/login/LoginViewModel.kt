@@ -1,4 +1,4 @@
-package com.example.remind.feature.viewmodel.login
+package com.example.remind.feature.screens.auth.login
 
 import android.content.Context
 import android.util.Log
@@ -9,7 +9,6 @@ import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.KakaoLoginRequest
 import com.example.remind.data.network.adapter.onSuccess
 import com.example.remind.domain.usecase.KakaoTokenUseCase
-import com.example.remind.feature.contract.LoginContract
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -22,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authUseCase: KakaoTokenUseCase
-): BaseViewModel<LoginContract.Event,LoginContract.State, LoginContract.Effect>(
+): BaseViewModel<LoginContract.Event, LoginContract.State, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
 
@@ -32,6 +31,7 @@ class LoginViewModel @Inject constructor(
                 is LoginContract.Event.KakaoLoginButtonClicked -> {
                     KakaoLogin(event.context)
                 }
+                else->{}
             }
         }
     }
@@ -70,7 +70,9 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             authUseCase.invoke(KakaoLoginRequest(token))
                 .onSuccess {
-                    postEffect(LoginContract.Effect.NavigateTo(
+
+                    postEffect(
+                        LoginContract.Effect.NavigateTo(
                         destinaton = Screens.Register.SelectType.route,
                         navOptions = navOptions {
                             popUpTo(Screens.Register.Login.route) {

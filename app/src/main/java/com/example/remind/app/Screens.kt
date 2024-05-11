@@ -1,6 +1,9 @@
 package com.example.remind.app
 
 sealed class Screens(val route: String) {
+    object Splash: Screens("splash") {
+        object SplashScreen: Screens("splash_screen")
+    }
     object Register: Screens("register") {
         object Login: Screens("login")
         object SelectType: Screens("selecttype")

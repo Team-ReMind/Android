@@ -1,4 +1,4 @@
-package com.example.remind.feature.screens.register
+package com.example.remind.feature.screens.auth
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

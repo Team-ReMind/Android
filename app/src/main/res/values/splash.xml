@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.SplashScreen.SplashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#FFD0BCFF</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_setting</item>
-        <item name="postSplashScreenTheme">@style/Theme.AppCompat.DayNight</item>
-    </style>
-</resources>

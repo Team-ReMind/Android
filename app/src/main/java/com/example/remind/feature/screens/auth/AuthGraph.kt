@@ -1,14 +1,14 @@
-package com.example.remind.feature.screens.register
+package com.example.remind.feature.screens.auth
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.remind.app.Screens
-import com.example.remind.feature.viewmodel.login.LoginViewModel
+import com.example.remind.feature.screens.auth.login.LoginViewModel
 
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.remind.feature.screens.auth.login.LoginScreen
 
 
 fun NavGraphBuilder.RegisterGraph(

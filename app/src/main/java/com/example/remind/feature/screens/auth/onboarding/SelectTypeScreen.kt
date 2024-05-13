@@ -1,4 +1,4 @@
-package com.example.remind.feature.screens.auth
+package com.example.remind.feature.screens.auth.onboarding
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -8,9 +8,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.remind.app.Screens
-import com.example.remind.feature.screens.auth.onboarding.OnBoardingContract
-import com.example.remind.feature.screens.auth.onboarding.OnBoardingViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

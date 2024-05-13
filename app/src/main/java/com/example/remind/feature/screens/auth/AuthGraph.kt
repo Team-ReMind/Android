@@ -9,6 +9,7 @@ import com.example.remind.feature.screens.auth.login.LoginViewModel
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.remind.feature.screens.auth.login.LoginScreen
+import com.example.remind.feature.screens.auth.onboarding.SelectTypeScreen
 
 
 fun NavGraphBuilder.RegisterGraph(

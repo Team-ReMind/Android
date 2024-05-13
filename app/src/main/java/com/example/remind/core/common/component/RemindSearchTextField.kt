@@ -35,7 +35,8 @@ fun RemindSearchTextField(
             .background(
                 color = RemindTheme.colors.grayscale_1,
                 shape =RoundedCornerShape(20.dp)
-            ),
+            )
+            .fillMaxWidth(),
         textStyle = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.text),
         decorationBox = { innerTextField ->
             Row(

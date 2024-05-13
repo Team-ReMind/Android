@@ -45,8 +45,9 @@ fun BasicListItem(
         )
         Spacer(Modifier.weight(1f))
         Text(
+            modifier = modifier.padding(end = 5.dp),
             text = "관리",
-            color = Color.Black,
+            color = RemindTheme.colors.main_6,
             style = RemindTheme.typography.b3Medium
         )
         Image(
@@ -59,5 +60,5 @@ fun BasicListItem(
 @Preview
 @Composable
 fun ListItemPreview() {
-    //BasicListItem(modifier = Modifier,"송승희", "01")
+    BasicListItem(modifier = Modifier,"송승희", "01", backgroundColor = Color.White)
 }

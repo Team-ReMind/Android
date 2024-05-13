@@ -21,18 +21,17 @@ fun BasicButton(
     backgroundColor: Color,
     textColor: Color,
     verticalPadding: Dp,
-    horizontalPadding: Dp,
     onClick: () -> Unit
 ) {
     Button(
-        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = horizontalPadding),
+        onClick = onClick,
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
             contentColor = textColor
-        )
+        ),
+        contentPadding = PaddingValues(vertical = verticalPadding),
     ) {
         Text(
             text = text,
@@ -48,8 +47,7 @@ fun BasicButtonPreview() {
         text = "삭제",
         backgroundColor = RemindTheme.colors.main_6,
         onClick = {},
-        verticalPadding = 5.dp,
-        horizontalPadding = 18.dp,
+        verticalPadding = 0.dp,
         textColor = RemindTheme.colors.text
     )
 }

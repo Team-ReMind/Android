@@ -145,7 +145,6 @@ fun RequestListItem(
                 backgroundColor = RemindTheme.colors.main_6,
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 18.dp,
-                horizontalPadding = 5.dp,
                 onClick = onClick
             )
         }
@@ -159,10 +158,50 @@ fun RequestListItem(
     }
 }
 
+@Composable
+fun RequestListItem(
+    modifier: Modifier = Modifier,
+    name: String,
+    gender: String,
+    birthYear: String,
+    onClick: () -> Unit
+) {
+    Column (
+
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "$name 환자(${gender}, ${birthYear}년생)가 추가를 요청했습니다.",
+                style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.text)
+            )
+            Spacer(modifier = modifier.weight(1f))
+            BasicButton(
+                text = stringResource(id = R.string.수락),
+                backgroundColor = RemindTheme.colors.main_6,
+                textColor = RemindTheme.colors.white,
+                verticalPadding = 5.dp,
+                onClick = onClick
+            )
+        }
+        Box(
+            modifier = modifier
+                .padding(top = 10.dp)
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = RemindTheme.colors.grayscale_1)
+        )
+    }
+}
 
 
-@Preview
+
+@Preview(showBackground = true)
 @Composable
 fun ScreenPreview() {
-    CodeContainer(modifier = Modifier, code = "1A2BVZ")
+    //CodeContainer(modifier = Modifier, code = "1A2BVZ")
+    DoctorRegisterScreen()
 }

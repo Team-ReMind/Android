@@ -14,6 +14,11 @@
     <string name="의사용">의사용</string>
     <string name="센터용">센터용</string>
     <string name="다음">다음</string>
+    <string name="사용자_정보">사용자 정보</string>
+    <string name="보호자_정보_입력">보호자 정보 입력</string>
+    <string name="긴급_시_연락할_수_있는">긴급 시 연락할 수 있는\n보호자의 전화번호를 입력해 주세요!</string>
+    <string name="긴급_상황_발생_시_보호자에게_연락">긴급 상황 발생 시 보호자에게 연락</string>
+    <string name="긴급_상황_발생시_담당자가_보호자에게">긴급 상황 발생 시 담당자가 보호자에게 연락 할 수 있습니다.</string>
 
     <string name="사용_입장_선택">사용 입장 선택</string>
     <string name="어떤_입장에서_사용하실지_선택해주세요">어떤 입장에서 사용하실지 선택해주세요!</string>

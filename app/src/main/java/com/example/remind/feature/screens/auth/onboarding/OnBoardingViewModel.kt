@@ -20,18 +20,15 @@ class OnBoardingViewModel @Inject constructor(
         when(event) {
             is OnBoardingContract.Event.DoctorButtonClicked -> {
                 updateState(currentState.copy("ROLE_DOCTOR"))
-//                saveUserType("Doctor")
-//                navigateToDoctor()
             }
             is OnBoardingContract.Event.CenterButtonClicked -> {
                 updateState(currentState.copy("ROLE_CENTER"))
-//                saveUserType("Center")
-//                navigateToCenter()
             }
             is OnBoardingContract.Event.PatienceButtonClicked -> {
-                updateState(currentState.copy("ROLE_USER"))
-//                saveUserType("Patience")
-//                navigateToPatience()
+                updateState(currentState.copy("ROLE_PATIENT"))
+            }
+            is OnBoardingContract.Event.NextButtonPatienceMain -> {
+                navigateToPatience()
             }
             else -> {
                 saveUserType(currentState.selectedType!!)
@@ -58,7 +55,7 @@ class OnBoardingViewModel @Inject constructor(
                     }
                 ))
         }
-        if(selectType == "ROLE_USER") {
+        if(selectType == "ROLE_PATIENT") {
             postEffect(
                 OnBoardingContract.Effect.NavigateTo(
                     destination = Screens.Register.OnBoardingPatience.route,
@@ -81,28 +78,15 @@ class OnBoardingViewModel @Inject constructor(
                 ))
         }
     }
-
-//    fun navigateToCenter() {
-//        postEffect(
-//            OnBoardingContract.Effect.NavigateTo(
-//                destination = Screens.Center.CenterMain.route,
-//                navOptions = navOptions {
-//                    popUpTo(Screens.Register.SelectType.route) {
-//                        inclusive = true
-//                    }
-//                }
-//            ))
-//    }
-//
-//    fun navigateToPatience() {
-//        postEffect(
-//            OnBoardingContract.Effect.NavigateTo(
-//                destination = Screens.Patience.route,
-//                navOptions = navOptions {
-//                    popUpTo(Screens.Register.SelectType.route) {
-//                        inclusive = true
-//                    }
-//                }
-//            ))
-//    }
+    fun navigateToPatience() {
+        postEffect(
+            OnBoardingContract.Effect.NavigateTo(
+                destination = Screens.Register.OnBoardingFinal.route,
+                navOptions = navOptions {
+                    popUpTo(Screens.Register.SelectType.route) {
+                        inclusive = true
+                    }
+                }
+            ))
+    }
 }

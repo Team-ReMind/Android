@@ -31,7 +31,7 @@ fun NavGraphBuilder.RegisterGraph(
             SelectTypeScreen(navHostController)
         }
         composable(route = Screens.Register.OnBoardingPatience.route) {
-            OnBoardingPatienceScreen()
+            OnBoardingPatienceScreen(navHostController)
         }
         composable(route = Screens.Register.OnBoardingCheckDoctor.route) {
             OnBoardingCheckDoctorScreen()

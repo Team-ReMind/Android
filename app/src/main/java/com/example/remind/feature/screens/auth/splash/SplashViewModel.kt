@@ -35,7 +35,7 @@ class SplashViewModel @Inject constructor(
         when(userType) {
             "ROLE_DOCTOR" -> navigateToDoctor()
             "ROLE_CENTER" -> navigateToCenter()
-            "ROLE_USER" -> navigateToPatience()
+            "ROLE_PATIENT" -> navigateToPatience()
             else -> navigateToLogin()
         }
     }

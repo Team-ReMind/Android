@@ -117,7 +117,7 @@ fun OnBoardingPatienceScreen(
                 backgroundColor = RemindTheme.colors.main_6,
                 text = stringResource(id = R.string.다음),
                 onClick = {
-                   viewModel.setEvent(OnBoardingContract.Event.NextButtonPatienceMain(context))
+                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinal(context))
                 },
                 textColor = RemindTheme.colors.white,
                 enable = true

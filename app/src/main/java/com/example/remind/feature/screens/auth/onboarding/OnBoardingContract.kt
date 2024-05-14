@@ -17,7 +17,8 @@ class OnBoardingContract {
         data class CenterButtonClicked(val context: Context): Event()
         data class PatienceButtonClicked(val context: Context): Event()
         data class NextButtonClicked(val context: Context): Event()
-        data class NextButtonPatienceMain(val context: Context): Event()
+        data class NextButtonFinal(val context: Context): Event()
+        data class NextButtonToPatience(val context: Context): Event()
     }
 
     sealed class Effect: UiEffect {

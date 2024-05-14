@@ -9,4 +9,5 @@ object Constants {
     val ACCESS_TOKEN = stringPreferencesKey("access_token")
     val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
     val USER_TYPE = stringPreferencesKey("user_type")
+    val USER_NAME = stringPreferencesKey("user_name")
 }

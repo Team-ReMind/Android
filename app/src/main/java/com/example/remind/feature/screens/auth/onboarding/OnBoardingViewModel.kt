@@ -5,6 +5,7 @@ import androidx.navigation.navOptions
 import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.network.interceptor.TokenManager
+import com.example.remind.feature.screens.auth.splash.SplashContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -27,7 +28,10 @@ class OnBoardingViewModel @Inject constructor(
             is OnBoardingContract.Event.PatienceButtonClicked -> {
                 updateState(currentState.copy("ROLE_PATIENT"))
             }
-            is OnBoardingContract.Event.NextButtonPatienceMain -> {
+            is OnBoardingContract.Event.NextButtonFinal -> {
+                navigateToFinal()
+            }
+            is OnBoardingContract.Event.NextButtonToPatience -> {
                 navigateToPatience()
             }
             else -> {
@@ -78,12 +82,21 @@ class OnBoardingViewModel @Inject constructor(
                 ))
         }
     }
-    fun navigateToPatience() {
+    fun navigateToFinal() {
         postEffect(
             OnBoardingContract.Effect.NavigateTo(
                 destination = Screens.Register.OnBoardingFinal.route,
                 navOptions = navOptions {
-                    popUpTo(Screens.Register.SelectType.route) {
+
+                }
+            ))
+    }
+    fun navigateToPatience() {
+        postEffect(
+            OnBoardingContract.Effect.NavigateTo(
+                destination = Screens.Patience.route,
+                navOptions = navOptions {
+                    popUpTo(Screens.Register.OnBoardingFinal.route) {
                         inclusive = true
                     }
                 }

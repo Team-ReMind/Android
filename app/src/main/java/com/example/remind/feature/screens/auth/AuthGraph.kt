@@ -43,7 +43,7 @@ fun NavGraphBuilder.RegisterGraph(
             OnBoardingCenterScreen()
         }
         composable(route = Screens.Register.OnBoardingFinal.route) {
-            OnBoardingFinalScreen()
+            OnBoardingFinalScreen(navHostController)
         }
     }
 }

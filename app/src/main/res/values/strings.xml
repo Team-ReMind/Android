@@ -19,6 +19,11 @@
     <string name="긴급_시_연락할_수_있는">긴급 시 연락할 수 있는\n보호자의 전화번호를 입력해 주세요!</string>
     <string name="긴급_상황_발생_시_보호자에게_연락">긴급 상황 발생 시 보호자에게 연락</string>
     <string name="긴급_상황_발생시_담당자가_보호자에게">긴급 상황 발생 시 담당자가 보호자에게 연락 할 수 있습니다.</string>
+    <string name="반가워요_환자님">반가워요, %1$s님!</string>
+    <string name="오늘_하루의_통합적_기분을_선택해주세요">오늘 하루의 통합적 기분을 선택해주세요!</string>
+    <string name="반가워요_센터님">반갑습니다.\n%1$s 담당자 님!</string>
+    <string name="반가워요_의사님">반갑습니다. %1$s님!</string>
+    <string name="시작하기">시작하기</string>
 
     <string name="사용_입장_선택">사용 입장 선택</string>
     <string name="어떤_입장에서_사용하실지_선택해주세요">어떤 입장에서 사용하실지 선택해주세요!</string>

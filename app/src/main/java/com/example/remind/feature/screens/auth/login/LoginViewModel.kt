@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(
                 is LoginContract.Event.KakaoLoginButtonClicked -> {
                     KakaoLogin(event.context)
                 }
-
+                else->{}
             }
         }
     }
@@ -79,7 +79,9 @@ private fun socialLogin(token: String) {
                 runBlocking { tokenManager.saveAccessToken(
                     result.data.data.accessToken,
                     result.data.data.refreshToken
-                    ) }
+                    )
+                    tokenManager.saveUserName(result.data.data.name)
+                }
                 postEffect(
                     LoginContract.Effect.NavigateTo(
                         destinaton = Screens.Register.SelectType.route,
@@ -100,6 +102,7 @@ private fun socialLogin(token: String) {
             is ApiResult.Failure.HttpError -> {
                 postEffect(LoginContract.Effect.Toastmessage("Http 오류가 발생했습니다"))
             }
+            else -> {}
         }
     }
 }

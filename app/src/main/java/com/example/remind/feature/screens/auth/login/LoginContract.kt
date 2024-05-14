@@ -20,5 +20,6 @@ class LoginContract {
             val destinaton: String,
             val navOptions: NavOptions? = null
         ): Effect()
+        data class Toastmessage(val message: String): Effect()
     }
 }

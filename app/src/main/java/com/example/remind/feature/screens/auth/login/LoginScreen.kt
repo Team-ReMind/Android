@@ -1,6 +1,7 @@
 package com.example.remind.feature.screens.auth.login
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,9 @@ fun LoginScreen(
             when(effect) {
                 is LoginContract.Effect.NavigateTo -> {
                     navController.navigate(effect.destinaton, effect.navOptions)
+                }
+                is LoginContract.Effect.Toastmessage -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

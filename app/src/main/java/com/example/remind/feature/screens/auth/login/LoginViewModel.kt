@@ -70,27 +70,39 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun socialLogin(token: String) {
-        viewModelScope.launch {
-            authUseCase.invoke(KakaoLoginRequest(token))
-                .onSuccess {
-                    runBlocking { tokenManager.saveAccessToken(
-                        it.data.accessToken,
-                        it.data.refreshToken
+
+private fun socialLogin(token: String) {
+    viewModelScope.launch {
+        val result = authUseCase.invoke(KakaoLoginRequest(token))
+        when(result) {
+            is ApiResult.Success -> {
+                runBlocking { tokenManager.saveAccessToken(
+                    result.data.data.accessToken,
+                    result.data.data.refreshToken
                     ) }
-                    postEffect(
-                        LoginContract.Effect.NavigateTo(
+                postEffect(
+                    LoginContract.Effect.NavigateTo(
                         destinaton = Screens.Register.SelectType.route,
                         navOptions = navOptions {
-                            popUpTo(Screens.Register.Login.route) {
-                                inclusive = true
-                            }
+                            popUpTo(
+                                Screens.Register.Login.route
+                            )
                         }
-                    ))
-                }
-
+                    )
+                )
+            }
+            is ApiResult.Failure.UnknownApiError -> {
+                postEffect(LoginContract.Effect.Toastmessage("리마인드 서버 관리자에게 문의하세요"))
+            }
+            is ApiResult.Failure.NetworkError -> {
+                postEffect(LoginContract.Effect.Toastmessage("네트워크 설정을 확인해주세요"))
+            }
+            is ApiResult.Failure.HttpError -> {
+                postEffect(LoginContract.Effect.Toastmessage("Http 오류가 발생했습니다"))
+            }
         }
     }
+}
 
 
 }

@@ -10,6 +10,13 @@
     <string name="스스로를_돌아볼_수_있는">스스로를 돌아볼 수 있는\n당신만의 공간으로 초대합니다.</string>
     <string name="카카오로_로그인하기">카카오로 로그인하기</string>
     <string name="진료실_밖_일상을_더하다">진료실 밖 일상을 더하다</string>
+    <string name="환자용">환자용</string>
+    <string name="의사용">의사용</string>
+    <string name="센터용">센터용</string>
+    <string name="다음">다음</string>
+
+    <string name="사용_입장_선택">사용 입장 선택</string>
+    <string name="어떤_입장에서_사용하실지_선택해주세요">어떤 입장에서 사용하실지 선택해주세요!</string>
 
     <string name="님_">김말랑 님,</string>
     <string name="좋은_하루_되세요">좋은 하루 되세요!</string>

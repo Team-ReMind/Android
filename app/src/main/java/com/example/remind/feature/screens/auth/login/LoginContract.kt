@@ -8,7 +8,7 @@ import com.example.remind.core.base.UiState
 
 class LoginContract {
     data class State(
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
     ): UiState
 
     sealed class Event: UiEvent {

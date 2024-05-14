@@ -9,13 +9,15 @@ import com.example.remind.core.base.UiState
 
 class OnBoardingContract {
     data class State(
-        val blah: String? = null
+        //val blah: String? = null
+        val selectedType: String? = null
     ): UiState
 
     sealed class Event: UiEvent {
         data class DoctorButtonClicked(val context: Context): Event()
         data class CenterButtonClicked(val context: Context): Event()
         data class PatienceButtonClicked(val context: Context): Event()
+        data class NextButtonClicked(val context: Context): Event()
     }
 
     sealed class Effect: UiEffect {

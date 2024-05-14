@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -18,36 +19,26 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 fun BasicButton(
     modifier: Modifier = Modifier,
     text: String,
+    RoundedCorner: Dp,
     backgroundColor: Color,
     textColor: Color,
     verticalPadding: Dp,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    textStyle: TextStyle
 ) {
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         onClick = onClick,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(RoundedCorner),
+        contentPadding = PaddingValues(vertical = verticalPadding),
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
             contentColor = textColor
         ),
-        contentPadding = PaddingValues(vertical = verticalPadding),
     ) {
         Text(
             text = text,
-            style = RemindTheme.typography.c1Medium
+            style = textStyle
         )
     }
-}
-
-@Composable
-@Preview
-fun BasicButtonPreview() {
-    BasicButton(
-        text = "삭제",
-        backgroundColor = RemindTheme.colors.main_6,
-        onClick = {},
-        verticalPadding = 0.dp,
-        textColor = RemindTheme.colors.text
-    )
 }

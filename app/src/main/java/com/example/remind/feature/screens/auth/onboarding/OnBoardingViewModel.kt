@@ -5,8 +5,6 @@ import androidx.navigation.navOptions
 import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.network.interceptor.TokenManager
-import com.example.remind.feature.screens.auth.login.LoginContract
-import com.example.remind.feature.screens.auth.splash.SplashContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -21,16 +19,23 @@ class OnBoardingViewModel @Inject constructor(
     override fun reduceState(event: OnBoardingContract.Event) {
         when(event) {
             is OnBoardingContract.Event.DoctorButtonClicked -> {
-                saveUserType("Doctor")
-                navigateToDoctor()
+                updateState(currentState.copy("ROLE_DOCTOR"))
+//                saveUserType("Doctor")
+//                navigateToDoctor()
             }
             is OnBoardingContract.Event.CenterButtonClicked -> {
-                saveUserType("Center")
-                navigateToCenter()
+                updateState(currentState.copy("ROLE_CENTER"))
+//                saveUserType("Center")
+//                navigateToCenter()
+            }
+            is OnBoardingContract.Event.PatienceButtonClicked -> {
+                updateState(currentState.copy("ROLE_USER"))
+//                saveUserType("Patience")
+//                navigateToPatience()
             }
             else -> {
-                saveUserType("Patience")
-                navigateToPatience()
+                saveUserType(currentState.selectedType!!)
+                navigateToNext(currentState.selectedType!!)
             }
         }
     }
@@ -41,39 +46,63 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
-    fun navigateToDoctor() {
-        postEffect(
-            OnBoardingContract.Effect.NavigateTo(
-                destination = Screens.Doctor.DoctorMain.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Register.SelectType.route) {
-                        inclusive = true
+    fun navigateToNext(selectType: String) {
+        if(selectType == "ROLE_DOCTOR") {
+            postEffect(
+                OnBoardingContract.Effect.NavigateTo(
+                    destination = Screens.Register.OnBoardingCheckDoctor.route,
+                    navOptions = navOptions {
+                        popUpTo(Screens.Register.SelectType.route) {
+                            inclusive = true
+                        }
                     }
-                }
-            ))
+                ))
+        }
+        if(selectType == "ROLE_USER") {
+            postEffect(
+                OnBoardingContract.Effect.NavigateTo(
+                    destination = Screens.Register.OnBoardingPatience.route,
+                    navOptions = navOptions {
+                        popUpTo(Screens.Register.SelectType.route) {
+                            inclusive = true
+                        }
+                    }
+                ))
+        }
+        if(selectType == "ROLE_CENTER") {
+            postEffect(
+                OnBoardingContract.Effect.NavigateTo(
+                    destination = Screens.Register.OnBoardingCenter.route,
+                    navOptions = navOptions {
+                        popUpTo(Screens.Register.SelectType.route) {
+                            inclusive = true
+                        }
+                    }
+                ))
+        }
     }
 
-    fun navigateToCenter() {
-        postEffect(
-            OnBoardingContract.Effect.NavigateTo(
-                destination = Screens.Center.CenterMain.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Register.SelectType.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
-
-    fun navigateToPatience() {
-        postEffect(
-            OnBoardingContract.Effect.NavigateTo(
-                destination = Screens.Patience.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Register.SelectType.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
+//    fun navigateToCenter() {
+//        postEffect(
+//            OnBoardingContract.Effect.NavigateTo(
+//                destination = Screens.Center.CenterMain.route,
+//                navOptions = navOptions {
+//                    popUpTo(Screens.Register.SelectType.route) {
+//                        inclusive = true
+//                    }
+//                }
+//            ))
+//    }
+//
+//    fun navigateToPatience() {
+//        postEffect(
+//            OnBoardingContract.Effect.NavigateTo(
+//                destination = Screens.Patience.route,
+//                navOptions = navOptions {
+//                    popUpTo(Screens.Register.SelectType.route) {
+//                        inclusive = true
+//                    }
+//                }
+//            ))
+//    }
 }

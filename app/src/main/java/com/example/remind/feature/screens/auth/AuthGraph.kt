@@ -25,7 +25,6 @@ fun NavGraphBuilder.RegisterGraph(
         startDestination = Screens.Register.Login.route
     ) {
         composable(route = Screens.Register.Login.route) {
-            val viewModel: LoginViewModel = hiltViewModel()
             LoginScreen(navHostController)
         }
         composable(route = Screens.Register.SelectType.route) {

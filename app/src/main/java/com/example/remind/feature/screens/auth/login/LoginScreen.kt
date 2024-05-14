@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
+import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.designsystem.theme.RemindTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -85,26 +86,21 @@ fun LoginScreen(
                     painter = painterResource(R.drawable.ic_loginimg),
                     contentDescription = null
                 )
-                Button(
+                BasicButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                         .padding(bottom = 32.dp, start = 20.dp, end = 20.dp),
+                    text = stringResource(id = R.string.카카오로_로그인하기),
+                    RoundedCorner = 12.dp,
+                    backgroundColor = Color(0xFFF9E217),
+                    textColor = Color(0xFF13151B),
+                    verticalPadding = 13.dp,
                     onClick = {
                        viewModel.setEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
                     },
-                    shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(vertical = 13.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFF9E217),
-                        contentColor =Color(0xFF13151B)
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.카카오로_로그인하기),
-                        style = RemindTheme.typography.b2Bold.copy(color = Color(0xFF13151B))
-                    )
-                }
+                    textStyle = RemindTheme.typography.b2Bold
+                )
             }
         }
     }

@@ -7,6 +7,8 @@ import androidx.navigation.navOptions
 import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.KakaoLoginRequest
+import com.example.remind.data.network.adapter.ApiResult
+import com.example.remind.data.network.adapter.onFailure
 import com.example.remind.data.network.adapter.onSuccess
 import com.example.remind.data.network.interceptor.TokenManager
 import com.example.remind.domain.usecase.KakaoTokenUseCase
@@ -39,7 +41,6 @@ class LoginViewModel @Inject constructor(
         }
     }
     private fun KakaoLogin(context : Context) {
-
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if(error != null) {
                 Log.e("kakao", "카카오 로그인 실패")
@@ -87,7 +88,9 @@ class LoginViewModel @Inject constructor(
                         }
                     ))
                 }
+
         }
     }
+
 
 }

@@ -15,19 +15,19 @@ fun PatienceGraph(
     NavHost(
         navController = navController,
         route = Screens.Patience.route,
-        startDestination = Screens.Patience.Fitst.route
+        startDestination = Screens.Patience.Home.route
     ) {
-        composable(route = Screens.Patience.Fitst.route) {
-            FirstScreen()
+        composable(route = Screens.Patience.Home.route) {
+            HomeScreen()
         }
-        composable(route = Screens.Patience.Second.route) {
-            SecondScreen()
+        composable(route = Screens.Patience.MoodChart.route) {
+            MoodChartScreen()
         }
-        composable(route = Screens.Patience.Third.route) {
-            ThirdScreen()
+        composable(route = Screens.Patience.Medicine.route) {
+            MedicineScreen()
         }
-        composable(route = Screens.Patience.Fourth.route) {
-            FourthScreen()
+        composable(route = Screens.Patience.MyPage.route) {
+            MyPageScreen()
         }
     }
 }

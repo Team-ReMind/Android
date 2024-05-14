@@ -32,7 +32,6 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 @Composable
 fun PatienceScreen() {
     val navController: NavHostController = rememberNavController()
-    //val context = LocalContext.current
     Scaffold(
         bottomBar = {
             var selectedIndex by rememberSaveable { mutableStateOf(0) }
@@ -63,9 +62,9 @@ fun PatienceScreen() {
                                     .height(24.dp)
                                     .padding(bottom = 4.dp),
                                 tint = if(selectedIndex == index) {
-                                    RemindTheme.colors.icon
+                                    RemindTheme.colors.main_6
                                 } else {
-                                    RemindTheme.colors.sub_1
+                                    RemindTheme.colors.slate_300
                                 }
                             )
                         },
@@ -74,14 +73,14 @@ fun PatienceScreen() {
                                 text = navItem.label,
                                 fontSize = 10.sp,
                                 color = if(selectedIndex == index) {
-                                    RemindTheme.colors.sub_1
+                                    RemindTheme.colors.main_6
                                 } else {
-                                    RemindTheme.colors.grayscale_1
+                                    RemindTheme.colors.slate_300
                                 }
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = Color.White
+                            indicatorColor = RemindTheme.colors.main_6
                         )
                     )
                 }

@@ -29,9 +29,9 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
     val effect = _effect.receiveAsFlow()
 
     fun setEvent(event: Event) {
-        val newEvent = event
+        //val newEvent = event
         viewModelScope.launch {
-            _event.emit(newEvent)
+            _event.emit(event)
         }
     }
 
@@ -42,9 +42,14 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
         }
     }
 
-    protected fun setState(reduce: State.() -> State) {
-        val newState = currentState.reduce()
-        _uiState.value = newState
+    protected fun updateState(currentState: State) {
+        _uiState.value = currentState
+    }
+
+    protected fun postEffect(effect: Effect) {
+        viewModelScope.launch {
+            _effect.send(effect)
+        }
     }
 
     init {
@@ -54,11 +59,11 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect>(
     private fun subscribeEvents() {
         viewModelScope.launch {
             event.collect {
-                handleEvent(it)
+                reduceState(it)
             }
         }
     }
 
-    abstract fun handleEvent(event: Event)
+    abstract fun reduceState(event: Event)
 
 }

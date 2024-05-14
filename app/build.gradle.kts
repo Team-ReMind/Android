@@ -54,7 +54,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -89,6 +89,7 @@ dependencies {
     //hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     //Retrofit, okhttp
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -117,5 +118,30 @@ dependencies {
     //splash screen api
     implementation( "androidx.core:core-splashscreen:1.0.1")
 
+    //vico module
+    implementation("com.patrykandpatrick.vico:compose:1.12.0")
+    implementation("com.patrykandpatrick.vico:compose-m3:1.12.0")
+    implementation("com.patrykandpatrick.vico:core:1.12.0")
+    implementation("com.patrykandpatrick.vico:views:1.12.0")
 
+    //serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    //timber
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+
+    //lifecycle
+    implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
+
+    //chucker
+    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+
+    //landscapist - glide
+    implementation("com.github.skydoves:landscapist-glide:2.3.3")
+    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.1")
+
+    //tabrow
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 }

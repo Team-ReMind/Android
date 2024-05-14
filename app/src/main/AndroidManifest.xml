@@ -16,19 +16,28 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:windowSoftInputMode="adjustResize"
+        android:theme="@style/AppTheme"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SplashScreenAPI"
         tools:targetApi="31" >
-
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.SplashScreen.SplashScreen" >
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="kakaolink"
+                    android:scheme="${kakaoKey}" />
             </intent-filter>
         </activity>
         <activity
@@ -46,7 +55,7 @@
         <service
             android:name="com.example.remind.app.FirebaseMessageService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

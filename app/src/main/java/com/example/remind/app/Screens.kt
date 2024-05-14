@@ -7,6 +7,11 @@ sealed class Screens(val route: String) {
     object Register: Screens("register") {
         object Login: Screens("login")
         object SelectType: Screens("selecttype")
+        object OnBoardingPatience: Screens("patience_onboarding")
+        object OnBoardingCheckDoctor: Screens("doctor_1")
+        object OnBoardingLoadingDoctor: Screens("doctor_2")
+        object OnBoardingCenter: Screens("center_onboarding")
+        object OnBoardingFinal: Screens("final_onboarding")
     }
 
     object Doctor: Screens("doctor") {

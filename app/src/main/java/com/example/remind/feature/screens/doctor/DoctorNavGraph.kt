@@ -14,11 +14,11 @@ fun NavGraphBuilder.DoctorGraph(
         startDestination = Screens.Doctor.DoctorMain.route
     ) {
         composable(route = Screens.Doctor.DoctorMain.route) {
-            DoctorMain()
+            DoctorMain(navHostController)
         }
         composable(route = Screens.Doctor.DoctorPatienceRegister.route) {
             //나중에 바뀌어야함
-            DoctorMain()
+            DoctorMain(navHostController)
         }
     }
 }

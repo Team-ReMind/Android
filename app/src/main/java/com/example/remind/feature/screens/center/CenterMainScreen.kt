@@ -56,7 +56,7 @@ fun CenterMainScreen(
                 .fillMaxSize()
                 .background(color = RemindTheme.colors.white)
         ) {
-            MainAppBar(modifier = Modifier)
+            MainAppBar(modifier = Modifier, onClick = {})
             Spacer(modifier = Modifier.height(20.dp))
             LazyColumn() {
                 item {
@@ -75,7 +75,7 @@ fun CenterMainScreen(
                     Column() {
                         TabLayout(selectedIndex = selectedIndex)
                         if(selectedIndex.value == 0) {
-                            StickyHeaderComponent(modifier = Modifier)
+                            StickyHeaderComponent(modifier = Modifier, onRegisterClicked = {})
                         }
                     }
 

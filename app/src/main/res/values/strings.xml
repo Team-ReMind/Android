@@ -7,6 +7,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="스스로를_돌아볼_수_있는">스스로를 돌아볼 수 있는\n당신만의 공간으로 초대합니다.</string>
+    <string name="카카오로_로그인하기">카카오로 로그인하기</string>
+
     <string name="님_">김말랑 님,</string>
     <string name="좋은_하루_되세요">좋은 하루 되세요!</string>
     <string name="관리_중인_환자">관리 중인 환자</string>

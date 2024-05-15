@@ -41,20 +41,20 @@ class AuthInterceptor @Inject constructor(
         val originalRequest = chain.request()
         val authenticationRequest = accessToken?.let {
             originalRequest.newBuilder()
-                .addHeader(AUTHORIZATION, it)
+                .addHeader(AUTHORIZATION, "Bearer $accessToken")
                 .build()
         }
         val response = authenticationRequest?.let { chain.proceed(it) }
         if(response?.code == 401 && refreshToken.isNotEmpty()) {
             Timber.d("들어옴")
-            val newToken = runBlocking { updateToken(refreshToken, context) }
+            val newToken = runBlocking { updateToken(accessToken,refreshToken, context) }
             if(newToken is ApiResult.Success) {
                 val newAccessToken = newToken.data.data.accessToken
                 val refreshToken = newToken.data.data.refreshToken
                 runBlocking { tokenManager.saveAccessToken(newAccessToken,refreshToken ) }
                 response.close()
                 val newAuthenticationRequest = originalRequest.newBuilder()
-                    .header("X-AUTH-TOKEN", newAccessToken)
+                    .header(AUTHORIZATION, "Bearer $newAccessToken")
                     .build()
                 return chain.proceed(newAuthenticationRequest)
             } else {
@@ -66,13 +66,14 @@ class AuthInterceptor @Inject constructor(
 }
 
 private suspend fun updateToken(
+    accessToken: String,
     refreshToken: String,
     context: Context
 ): ApiResult<TokenResponse> {
     val retrofit = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
-        .client(createOkHttpClient(refreshToken, context))
+        .client(createOkHttpClient(accessToken, context))
         .build()
     val service = retrofit.create(AuthService::class.java)
 
@@ -96,7 +97,7 @@ private fun createOkHttpClient(
         .addInterceptor { chain ->
             val originalRequest = chain.request()
             val modifiedRequest = originalRequest.newBuilder()
-                .header(AUTHORIZATION, refreshToken)
+                .header(AUTHORIZATION, "Bearer $refreshToken")
                 .build()
 
             chain.proceed(modifiedRequest)

@@ -1,5 +1,6 @@
 package com.example.remind.data.network.interceptor
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -38,7 +39,7 @@ class TokenManager @Inject constructor(
             prefs[ACCESS_TOKEN] = accessToken
             prefs[REFRESH_TOKEN] = refreshToken
         }
-        Timber.d("액세스: $accessToken 리프레시: $refreshToken")
+        Log.d("TokenManager","액세스: $accessToken 리프레시: $refreshToken")
     }
 
     suspend fun saveUserName(userName: String) {

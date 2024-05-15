@@ -1,6 +1,7 @@
 package com.example.remind.feature.screens.auth.onboarding
 
 import android.graphics.Paint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,9 @@ fun OnBoardingFinalScreen(
             when(effect) {
                 is OnBoardingContract.Effect.NavigateTo -> {
                     navController.navigate(effect.destination, effect.navOptions)
+                }
+                is OnBoardingContract.Effect.Toastmessage -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

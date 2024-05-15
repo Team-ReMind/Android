@@ -54,6 +54,7 @@ fun LoginScreen(
                 is LoginContract.Effect.Toastmessage -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
+                else->{}
             }
         }
     }

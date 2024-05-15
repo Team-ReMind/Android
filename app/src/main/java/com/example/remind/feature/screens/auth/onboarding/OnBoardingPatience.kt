@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.auth.onboarding
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import com.example.remind.R
 import com.example.remind.core.common.component.BasicOnBoardingAppBar
 import com.example.remind.core.designsystem.theme.Pretendard
 import com.example.remind.core.designsystem.theme.RemindTheme
+import com.example.remind.data.model.request.OnBoardingRequest
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -57,7 +59,9 @@ fun OnBoardingPatienceScreen(
                 is OnBoardingContract.Effect.NavigateTo -> {
                     navController.navigate(effect.destination, effect.navOptions)
                 }
-
+                is OnBoardingContract.Effect.Toastmessage -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -117,7 +121,15 @@ fun OnBoardingPatienceScreen(
                 backgroundColor = RemindTheme.colors.main_6,
                 text = stringResource(id = R.string.다음),
                 onClick = {
-                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinal(context))
+                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinal(
+                       OnBoardingRequest(
+                           centerName = "",
+                           city = "",
+                           district = "",
+                           protectorPhoneNumber = "01088644622",
+                           rolesType = "ROLE_PATIENT"
+                       )
+                   ))
                 },
                 textColor = RemindTheme.colors.white,
                 enable = true

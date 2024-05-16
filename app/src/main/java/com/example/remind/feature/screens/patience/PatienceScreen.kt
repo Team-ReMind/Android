@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.example.remind.core.common.navigation.NavItem
 import com.example.remind.core.common.navigation.listOfNavItem
 import com.example.remind.core.designsystem.theme.RemindTheme
@@ -46,7 +47,7 @@ fun PatienceScreen() {
                         onClick = {
                             selectedIndex = index
                             navController.navigate(navItem.route) {
-                                popUpTo(0) {
+                                popUpTo(navController.graph.id) {
                                     inclusive = true
                                 }
                                 launchSingleTop = true

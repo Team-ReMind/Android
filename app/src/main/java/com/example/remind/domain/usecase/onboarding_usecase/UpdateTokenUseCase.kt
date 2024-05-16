@@ -1,4 +1,4 @@
-package com.example.remind.domain.usecase
+package com.example.remind.domain.usecase.onboarding_usecase
 
 import com.example.remind.data.model.request.TokenRequest
 import com.example.remind.data.model.response.TokenResponse

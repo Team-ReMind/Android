@@ -7,9 +7,9 @@ import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.OnBoardingRequest
 import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.data.network.interceptor.TokenManager
-import com.example.remind.domain.usecase.OnBoardingUserCase
-import com.example.remind.feature.screens.auth.login.LoginContract
-import com.example.remind.feature.screens.auth.splash.SplashContract
+import com.example.remind.data.repository.auth.TokenRepository
+import com.example.remind.domain.usecase.onboarding_usecase.FcmTokenUseCase
+import com.example.remind.domain.usecase.onboarding_usecase.OnBoardingUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -18,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val onBoardingUserCase: OnBoardingUserCase,
+    private val tokenUseCase: FcmTokenUseCase,
     private val tokenManager: TokenManager
 ): BaseViewModel<OnBoardingContract.Event, OnBoardingContract.State, OnBoardingContract.Effect>(
     initialState = OnBoardingContract.State()
@@ -34,7 +35,8 @@ class OnBoardingViewModel @Inject constructor(
                 updateState(currentState.copy("ROLE_PATIENT"))
             }
             is OnBoardingContract.Event.NextButtonFinal -> {
-                postOnBoarding(event.onBoardingData)
+                getFcmToken()
+                postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
                 if(currentState.moveAble == true) navigateToFinal()
             }
             is OnBoardingContract.Event.NextButtonToPatience -> {
@@ -109,6 +111,13 @@ class OnBoardingViewModel @Inject constructor(
             ))
     }
 
+    private fun getFcmToken() {
+        viewModelScope.launch {
+            val fcmToken = tokenUseCase.invoke()
+            updateState(currentState.copy(fcmToken = fcmToken))
+        }
+    }
+
     private fun postOnBoarding(data: OnBoardingRequest) {
         viewModelScope.launch {
             val result = onBoardingUserCase.invoke(data)
@@ -123,8 +132,6 @@ class OnBoardingViewModel @Inject constructor(
                     postEffect(OnBoardingContract.Effect.Toastmessage("네트워크 설정을 확인해주세요"))
                 }
                 is ApiResult.Failure.HttpError -> {
-                    //나중에 지워야함!!!!!!!!!!!!!!!!!!!!!!!!!!!예비로 넣어둠
-                    updateState(currentState.copy(moveAble = true))
                     postEffect(OnBoardingContract.Effect.Toastmessage("Http 오류가 발생했습니다"))
                 }
             }

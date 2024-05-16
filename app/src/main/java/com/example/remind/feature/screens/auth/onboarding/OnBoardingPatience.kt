@@ -127,7 +127,8 @@ fun OnBoardingPatienceScreen(
                            city = "",
                            district = "",
                            protectorPhoneNumber = "01088644622",
-                           rolesType = "ROLE_PATIENT"
+                           rolesType = "ROLE_PATIENT",
+                           fcmToken = ""
                        )
                    ))
                 },

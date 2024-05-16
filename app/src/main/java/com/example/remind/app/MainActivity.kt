@@ -28,15 +28,6 @@ class MainActivity : ComponentActivity() {
                }
             }
         }
-        //곧 지워질 코드
-        Firebase.messaging.token.addOnCompleteListener { task ->
-            if(!task.isSuccessful) {
-                Log.e("tagg", "failed")
-            } else {
-                val token = task.result
-                Log.d("taag", "$token")
-            }
-        }
     }
 }
 

@@ -12,7 +12,8 @@ import com.example.remind.feature.screens.auth.login.LoginContract
 class OnBoardingContract {
     data class State(
         val selectedType: String? = null,
-        val moveAble: Boolean = false
+        val moveAble: Boolean = false,
+        val fcmToken: String = ""
     ): UiState
 
     sealed class Event: UiEvent {

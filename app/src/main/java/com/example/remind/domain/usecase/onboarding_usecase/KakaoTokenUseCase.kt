@@ -1,4 +1,4 @@
-package com.example.remind.domain.usecase
+package com.example.remind.domain.usecase.onboarding_usecase
 
 import com.example.remind.data.model.request.KakaoLoginRequest
 import com.example.remind.data.model.response.SocialLoginResponse

@@ -8,10 +8,8 @@ import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.KakaoLoginRequest
 import com.example.remind.data.network.adapter.ApiResult
-import com.example.remind.data.network.adapter.onFailure
-import com.example.remind.data.network.adapter.onSuccess
 import com.example.remind.data.network.interceptor.TokenManager
-import com.example.remind.domain.usecase.KakaoTokenUseCase
+import com.example.remind.domain.usecase.onboarding_usecase.KakaoTokenUseCase
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause

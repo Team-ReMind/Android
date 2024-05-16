@@ -16,7 +16,6 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -177,16 +176,22 @@ fun CheckReading(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun OnBoardingPreview() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        BasicOnBoardingAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            weight = 0.5f,
-            title = stringResource(id = R.string.사용자_정보)
-        )
+        Column() {
+            Text(
+                text = stringResource(id = R.string.긴급_상황_발생_시_보호자에게_연락),
+                style = RemindTheme.typography.b3Medium.copy(color = RemindTheme.colors.black)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(id = R.string.긴급_상황_발생시_담당자가_보호자에게),
+                style = RemindTheme.typography.c1Regular.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 6.sp)
+            )
+        }
     }
 }

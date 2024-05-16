@@ -28,14 +28,6 @@ import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.common.component.BasicTextButton
 import com.example.remind.core.designsystem.theme.RemindTheme
-import com.example.remind.feature.screens.auth.onboarding.typeButton
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApiClient
-import com.patrykandpatrick.vico.compose.chart.Chart
-import com.patrykandpatrick.vico.compose.style.ChartStyle
-import com.patrykandpatrick.vico.views.chart.line.lineChart
 
 @Composable
 fun MoodChartScreen() {
@@ -80,22 +72,6 @@ fun MoodChartScreen() {
     }
 }
 
-//@Composable
-//fun MoodChart(
-//    modifier: Modifier = Modifier
-//) {
-//    Box(
-//        modifier = modifier
-//            .background(RemindTheme.colors.white, shape = RoundedCornerShape(12.dp))
-//            .border(width = 1.dp, color = RemindTheme.colors.grayscale_2, shape = RoundedCornerShape(12.dp))
-//    ) {
-//        Chart(
-//            modifier = modifier.align(Alignment.Center),
-//            chart = lineChart(),
-//            chartModelProducer =
-//        )
-//    }
-//}
 
 @Preview
 @Composable

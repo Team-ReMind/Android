@@ -10,7 +10,6 @@ import com.example.remind.data.network.adapter.ApiResult
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-//용도에 따라 나누기
 interface AuthService {
     @POST("/member/refresh")
     suspend fun updateToken(

@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.remind"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -120,11 +120,8 @@ dependencies {
     //splash screen api
     implementation( "androidx.core:core-splashscreen:1.0.1")
 
-    //vico module
-    implementation("com.patrykandpatrick.vico:compose:1.12.0")
-    implementation("com.patrykandpatrick.vico:compose-m3:1.12.0")
-    implementation("com.patrykandpatrick.vico:core:1.12.0")
-    implementation("com.patrykandpatrick.vico:views:1.12.0")
+    //graph library
+    implementation("com.github.jaikeerthick:Composable-Graphs:v1.2.3")
 
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")

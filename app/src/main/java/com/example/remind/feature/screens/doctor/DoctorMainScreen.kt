@@ -212,20 +212,24 @@ fun StickyHeaderComponent(
                     .padding(start = 4.dp)
                     .weight(1f),
                 text = stringResource(id = R.string.삭제),
+                RoundedCorner= 20.dp,
                 backgroundColor = RemindTheme.colors.main_4,
                 textColor = RemindTheme.colors.white,
-                verticalPadding = 0.dp,
-                onClick = {}
+                verticalPadding = 13.dp,
+                onClick = {},
+                textStyle = RemindTheme.typography.b1Bold
             )
             BasicButton(
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .weight(1f),
                 text = stringResource(id = R.string.추가하기),
+                RoundedCorner= 20.dp,
                 backgroundColor = RemindTheme.colors.main_6,
                 textColor = RemindTheme.colors.white,
-                verticalPadding =0.dp,
-                onClick = onRegisterClicked
+                verticalPadding =13.dp,
+                onClick = onRegisterClicked,
+                textStyle = RemindTheme.typography.b1Bold
             )
         }
     }

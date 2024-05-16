@@ -34,6 +34,7 @@ class RemindColors (
     val grayscale_2: Color = Color(0xFFEEEEEE),
     val grayscale_1: Color = Color(0xFFF3F4F6),
     val white: Color = Color(0xFFFFFFFF),
+    val black: Color = Color(0xFF000000),
 
 )
 

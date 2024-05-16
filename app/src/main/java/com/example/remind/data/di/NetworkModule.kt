@@ -7,6 +7,8 @@ import com.example.remind.data.network.interceptor.AuthInterceptor
 import com.example.remind.data.network.service.AuthService
 import com.example.remind.data.repository.auth.AuthRepository
 import com.example.remind.data.repository.auth.AuthRepositoryImpl
+import com.example.remind.data.repository.auth.TokenRepository
+import com.example.remind.data.repository.auth.TokenRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -63,5 +65,9 @@ object NetworkModule {
         @Singleton
         @Binds
         abstract fun providesAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+        @Singleton
+        @Binds
+        abstract fun providesTokenRepository(tokenRepositoryImpl: TokenRepositoryImpl): TokenRepository
     }
+
 }

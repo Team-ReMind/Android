@@ -65,7 +65,7 @@ fun PatienceScreen() {
                                     RemindTheme.colors.main_6
                                 } else {
                                     RemindTheme.colors.slate_300
-                                }
+                                },
                             )
                         },
                         label = {
@@ -80,9 +80,9 @@ fun PatienceScreen() {
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = RemindTheme.colors.main_6
-                        )
+                            indicatorColor = Color.Transparent
                     )
+                  )
                 }
             }
         }

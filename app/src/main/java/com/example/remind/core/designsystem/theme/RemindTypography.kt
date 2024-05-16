@@ -308,6 +308,32 @@ data class RemindTypography(
             trim = LineHeightStyle.Trim.None
         )
     ),
+    val onBoardingFont: TextStyle = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        lineHeight = 48.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
+    val onSplashFont: TextStyle = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 15.sp,
+        lineHeight = 3.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    )
 )
 
 val LocalTypography = staticCompositionLocalOf { RemindTypography() }

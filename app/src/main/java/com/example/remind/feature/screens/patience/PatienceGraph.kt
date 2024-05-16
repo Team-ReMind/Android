@@ -1,12 +1,15 @@
 package com.example.remind.feature.screens.patience
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import com.example.remind.app.Screens
 import androidx.navigation.compose.composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PatienceGraph(
     navController: NavHostController,

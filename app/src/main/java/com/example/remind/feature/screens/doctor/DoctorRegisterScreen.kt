@@ -120,9 +120,11 @@ fun RequestListItem(
             BasicButton(
                 text = stringResource(id = R.string.수락),
                 backgroundColor = RemindTheme.colors.main_6,
+                RoundedCorner = 20.dp,
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 18.dp,
-                onClick = onClick
+                onClick = onClick,
+                textStyle = RemindTheme.typography.b2Bold
             )
         }
         Spacer(modifier = modifier.height(10.dp))
@@ -159,9 +161,11 @@ fun RequestListItem(
             BasicButton(
                 text = stringResource(id = R.string.수락),
                 backgroundColor = RemindTheme.colors.main_6,
+                RoundedCorner = 20.dp,
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 5.dp,
-                onClick = onClick
+                onClick = onClick,
+                textStyle = RemindTheme.typography.b2Bold
             )
         }
         Box(

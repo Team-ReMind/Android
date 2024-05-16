@@ -7,9 +7,9 @@ import androidx.navigation.navOptions
 import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.KakaoLoginRequest
-import com.example.remind.data.network.adapter.onSuccess
+import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.data.network.interceptor.TokenManager
-import com.example.remind.domain.usecase.KakaoTokenUseCase
+import com.example.remind.domain.usecase.onboarding_usecase.KakaoTokenUseCase
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -34,12 +34,11 @@ class LoginViewModel @Inject constructor(
                 is LoginContract.Event.KakaoLoginButtonClicked -> {
                     KakaoLogin(event.context)
                 }
-
+                else->{}
             }
         }
     }
     private fun KakaoLogin(context : Context) {
-
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if(error != null) {
                 Log.e("kakao", "카카오 로그인 실패")
@@ -69,25 +68,43 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun socialLogin(token: String) {
-        viewModelScope.launch {
-            authUseCase.invoke(KakaoLoginRequest(token))
-                .onSuccess {
-                    runBlocking { tokenManager.saveAccessToken(
-                        it.data.accessToken,
-                        it.data.refreshToken
-                    ) }
-                    postEffect(
-                        LoginContract.Effect.NavigateTo(
+
+private fun socialLogin(token: String) {
+    viewModelScope.launch {
+        val result = authUseCase.invoke(KakaoLoginRequest(token))
+        when(result) {
+            is ApiResult.Success -> {
+                runBlocking { tokenManager.saveAccessToken(
+                    result.data.data.accessToken,
+                    result.data.data.refreshToken
+                    )
+                    tokenManager.saveUserName(result.data.data.name)
+                }
+                postEffect(
+                    LoginContract.Effect.NavigateTo(
                         destinaton = Screens.Register.SelectType.route,
                         navOptions = navOptions {
-                            popUpTo(Screens.Register.Login.route) {
-                                inclusive = true
-                            }
+                            popUpTo(
+                                Screens.Register.Login.route
+                            )
                         }
-                    ))
-                }
+                    )
+                )
+                Timber.d("${tokenManager.getAccessToken()} ||| ${tokenManager.getRefreshToken()}")
+            }
+            is ApiResult.Failure.UnknownApiError -> {
+                postEffect(LoginContract.Effect.Toastmessage("리마인드 서버 관리자에게 문의하세요"))
+            }
+            is ApiResult.Failure.NetworkError -> {
+                postEffect(LoginContract.Effect.Toastmessage("네트워크 설정을 확인해주세요"))
+            }
+            is ApiResult.Failure.HttpError -> {
+                postEffect(LoginContract.Effect.Toastmessage("Http 오류가 발생했습니다"))
+            }
+            else -> {}
         }
     }
+}
+
 
 }

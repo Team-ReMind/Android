@@ -1,10 +1,12 @@
 package com.example.remind.data.network.interceptor
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.remind.core.util.Constants.ACCESS_TOKEN
 import com.example.remind.core.util.Constants.REFRESH_TOKEN
+import com.example.remind.core.util.Constants.USER_NAME
 import com.example.remind.core.util.Constants.USER_TYPE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -37,7 +39,18 @@ class TokenManager @Inject constructor(
             prefs[ACCESS_TOKEN] = accessToken
             prefs[REFRESH_TOKEN] = refreshToken
         }
-        Timber.d("액세스: $accessToken 리프레시: $refreshToken")
+        Log.d("TokenManager","액세스: $accessToken 리프레시: $refreshToken")
+    }
+
+    suspend fun saveUserName(userName: String) {
+        datastore.edit { prefs ->
+            prefs[USER_NAME] = userName
+        }
+    }
+    fun getUserName(): Flow<String?> {
+        return datastore.data.map { prefs->
+            prefs[USER_NAME]
+        }
     }
 
     suspend fun saveUserType(userType: String) {

@@ -1,7 +1,9 @@
 package com.example.remind.data.network.service
 
 import com.example.remind.data.model.request.KakaoLoginRequest
+import com.example.remind.data.model.request.OnBoardingRequest
 import com.example.remind.data.model.request.TokenRequest
+import com.example.remind.data.model.response.OnBoardingResponse
 import com.example.remind.data.model.response.SocialLoginResponse
 import com.example.remind.data.model.response.TokenResponse
 import com.example.remind.data.network.adapter.ApiResult
@@ -19,4 +21,9 @@ interface AuthService {
     suspend fun KakaoLogin(
         @Body body: KakaoLoginRequest
     ): ApiResult<SocialLoginResponse>
+
+    @POST("/member/onboarding")
+    suspend fun OnBoarding(
+        @Body body: OnBoardingRequest
+    ): ApiResult<OnBoardingResponse>
 }

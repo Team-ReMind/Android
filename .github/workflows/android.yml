@@ -49,7 +49,7 @@ jobs:
       uses: MeilCli/slack-upload-file@v4
       with:
         slack_token: ${{ secrets.SLACK_TOKEN }}
-        channels: ${{ secrets.SLACK_CHANNEL }}
+        channel_id: ${{ secrets.SLACK_CHANNEL }}
         initial_comment: 'ReMind APP 배포 시작합니다'
         file_type: 'apk'
         file_name: 'app-debug.apk'

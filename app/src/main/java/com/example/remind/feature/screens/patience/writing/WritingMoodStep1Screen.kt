@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -40,9 +39,7 @@ import com.example.remind.data.model.FeelingScoreModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun WritingMoodStep1Screen(
-    navController: NavHostController
-){
+fun WritingMoodStep1Screen(navController: NavHostController) {
     val viewModel: WritingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -74,7 +71,7 @@ fun WritingMoodStep1Screen(
                 onClick = {
                     viewModel.navigateToRoute(
                         destination = Screens.Patience.Home.route,
-                        current = Screens.WritingMood.WritingMoodStep1.route
+                        current = Screens.Patience.Home.WritingMoodStep1.route
                     )
                 }
             ) {
@@ -94,7 +91,7 @@ fun WritingMoodStep1Screen(
             Text(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(id = R.string.오늘_하루_어떤_기분을_느끼셨나요_),
-                style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.text)
+                style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.text, lineHeight = 44.sp)
             )
             Text(
                 modifier = Modifier.padding(top = 12.dp),
@@ -137,8 +134,8 @@ fun WritingMoodStep1Screen(
                 verticalPadding = 13.dp,
                 onClick = {
                           viewModel.navigateToRoute(
-                             destination = Screens.WritingMood.WritingMoodStep2.route,
-                              current = Screens.WritingMood.WritingMoodStep1.route
+                             destination = Screens.Patience.Home.WritingMoodStep2.route,
+                              current = Screens.Patience.Home.WritingMoodStep1.route
                           )
                 },
                 textStyle = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.white)

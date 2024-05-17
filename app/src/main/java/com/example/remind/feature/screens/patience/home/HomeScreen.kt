@@ -1,8 +1,7 @@
-package com.example.remind.feature.screens.patience
+package com.example.remind.feature.screens.patience.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,13 +29,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -44,20 +43,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
-import com.example.remind.core.common.component.BasicListItem
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.CalendarUiModel
 import com.example.remind.data.repository.CalendarDataSource
-import com.example.remind.feature.viewmodel.CustomViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(){
+fun HomeScreen(navController: NavHostController) {
+    val viewModel: HomeViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when(effect) {
+                is HomeContract.Effect.NavigateTo -> {
+                    navController.navigate(effect.destinaton, effect.navOptions)
+                }
+                else -> {}
+            }
+        }
+    }
+
     RemindTheme {
         Column(
             modifier = Modifier
@@ -128,7 +144,11 @@ fun HomeScreen(){
                         style = RemindTheme.typography.b3Medium.copy(color = Color(0xFF9B9B9B))
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    EmptyTodayMoodContainer(clickToWrite = {})
+                    EmptyTodayMoodContainer(
+                        clickToWrite = {
+                            viewModel.navigateToWriting()
+                        }
+                    )
                     Spacer(modifier = Modifier.height(80.dp))
                 }
             }

@@ -9,7 +9,6 @@ import com.example.remind.feature.screens.doctor.DoctorGraph
 import com.example.remind.feature.screens.patience.PatienceScreen
 import com.example.remind.feature.screens.auth.RegisterGraph
 import com.example.remind.feature.screens.auth.splash.SplashGraph
-import com.example.remind.feature.screens.patience.writing.WritingGraph
 
 @Composable
 fun RemindNavHost() {
@@ -25,7 +24,7 @@ fun RemindNavHost() {
         }
         DoctorGraph(navHostController)
         CenterGraph(navHostController)
-        WritingGraph(navHostController)
+        //WritingGraph(navHostController)
     }
 }
 

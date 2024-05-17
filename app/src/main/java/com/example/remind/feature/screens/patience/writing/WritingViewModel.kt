@@ -1,11 +1,7 @@
 package com.example.remind.feature.screens.patience.writing
 
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.navOptions
-import com.example.remind.R
-import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
-import com.example.remind.data.model.FeelingScoreModel
 import javax.inject.Inject
 
 class WritingViewModel @Inject constructor(

@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.auth.onboarding
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
 import com.example.remind.app.Screens
@@ -124,6 +125,7 @@ class OnBoardingViewModel @Inject constructor(
             when(result) {
                 is ApiResult.Success -> {
                     updateState(currentState.copy(moveAble = true))
+                    tokenManager.saveUserId(result.data.data.userId)
                 }
                 is ApiResult.Failure.UnknownApiError -> {
                     postEffect(OnBoardingContract.Effect.Toastmessage("리마인드 서버 관리자에게 문의하세요"))

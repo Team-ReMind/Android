@@ -15,6 +15,7 @@ class WritingContract {
     sealed class Event: UiEvent {
         data class FeelingButtonClicked(val feelingType: String): Event()
         data class NextButtonClicked(val destinationRoute: String, val currentRoute: String): Event()
+        data class PreviousButtonClicked(val destinationRoute: String, val currentRoute: String): Event()
     }
 
     sealed class Effect: UiEffect {

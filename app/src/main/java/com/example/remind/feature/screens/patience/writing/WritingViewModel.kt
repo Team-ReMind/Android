@@ -19,12 +19,15 @@ class WritingViewModel @Inject constructor(
                 updateState(currentState.copy(selectFeelingType = event.feelingType))
             }
             is WritingContract.Event.NextButtonClicked -> {
-                navigateToNext(event.destinationRoute, event.currentRoute)
+                navigateToRoute(event.destinationRoute, event.currentRoute)
+            }
+            is WritingContract.Event.PreviousButtonClicked -> {
+                navigateToRoute(event.destinationRoute, event.currentRoute)
             }
         }
     }
 
-    fun navigateToNext(destination: String, current: String) {
+    fun navigateToRoute(destination: String, current: String) {
         postEffect(
             WritingContract.Effect.NavigateTo(
                 destinaton = destination,

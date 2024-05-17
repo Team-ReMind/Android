@@ -71,7 +71,12 @@ fun WritingMoodStep1Screen(
             )
         ) {
             IconButton(
-                onClick = { /*TODO*/ }
+                onClick = {
+                    viewModel.navigateToRoute(
+                        destination = Screens.Patience.Home.route,
+                        current = Screens.WritingMood.WritingMoodStep1.route
+                    )
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrowleft),
@@ -131,7 +136,7 @@ fun WritingMoodStep1Screen(
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 13.dp,
                 onClick = {
-                          viewModel.navigateToNext(
+                          viewModel.navigateToRoute(
                              destination = Screens.WritingMood.WritingMoodStep2.route,
                               current = Screens.WritingMood.WritingMoodStep1.route
                           )

@@ -45,24 +45,13 @@ fun SplashScreen(
                         .fillMaxSize()
                         .background(color = RemindTheme.colors.main_6)
                 )
-                Column(
+                Image(
                     modifier = Modifier
-                        .align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .width(139.dp)
-                            .height(83.dp),
-                        painter = painterResource(id = R.drawable.ic_logo_splash),
-                        contentDescription = null,
-                    )
-                    Text(
-                        modifier = Modifier.padding(top = 24.dp),
-                        text = stringResource(id = R.string.진료실_밖_일상을_더하다),
-                        style = RemindTheme.typography.onSplashFont.copy(color = RemindTheme.colors.white)
-                    )
-                }
+                        .align(Alignment.Center)
+                        .padding(start = 73.dp, end = 73.dp),
+                    painter = painterResource(id = R.drawable.ic_splash_logo),
+                    contentDescription = null,
+                )
             }
         }
     }

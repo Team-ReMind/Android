@@ -46,7 +46,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     - name: Slack - Upload APK
       if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged)
-      uses: MeilCli/slack-upload-file@v1.0.0
+      uses: MeilCli/slack-upload-file@v4
       with:
         slack_token: ${{ secrets.SLACK_TOKEN }}
         channels: ${{ secrets.SLACK_CHANNEL }}

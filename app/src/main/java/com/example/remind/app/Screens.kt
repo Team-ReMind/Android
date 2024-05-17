@@ -28,4 +28,9 @@ sealed class Screens(val route: String) {
         object Medicine: Screens("Medicine")
         object MyPage: Screens("MyPage")
     }
+    object WritingMood: Screens("writing_mood") {
+        object WritingMoodStep1: Screens("writing_step1")
+        object WritingMoodStep2: Screens("writing_step2")
+        object WritingMoodStep3: Screens("writing_step3")
+    }
 }

@@ -4,7 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
+    <string name="next">Next</string>침
     <string name="previous">Previous</string>
 
     <string name="스스로를_돌아볼_수_있는">스스로를 돌아볼 수 있는\n당신만의 공간으로 초대합니다.</string>
@@ -48,12 +48,15 @@
     <string name="도움">도움</string>
     <string name="도움이_필요하신가요">도움이 필요하신가요?</string>
     <string name="자살예방_상담_전화_연결하기">자살예방 상담 전화 연결하기</string>
-
-
-
+    <string name="기분별_활동_차트">기분별 활동 차트</string>
+    <string name="무엇을_할_때_기분이_좋은지_확인">무엇을 할 때 기분이 좋은지 확인해보세요!</string>
     <string name="무드_차트">무드 차트</string>
     <string name="주간_차트_기록">주간 차트 기록</string>
-
+    <string name="_님의_약_처방">%1$s 님의 약 처방</string>
+    <string name="알림_설정">알림 설정</string>
+    <string name="아침">아침</string>
+    <string name="점심">점심</string>
+    <string name="저녁">저녁</string>
 
     <string name="약_복용_체크">약 복용 체크</string>
     <string name="등록된_약이_없어요">등록된 약이 없어요!</string>

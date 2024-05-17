@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.example.remind.data.model.CalendarUiModel
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.time.temporal.WeekFields
 import java.util.Locale
@@ -40,6 +41,13 @@ class CalendarDataSource {
         val month = date.monthValue
         val year = date.year
         return "${year}년 ${month}월 ${weekOfYear}주차"
+    }
+
+    fun getDayForSearch(date: LocalDate): String {
+        val year = date.year
+        val month = date.monthValue
+        val date = date.dayOfMonth
+        return "${year}.${month}.${date}"
     }
 
     private fun toUiModel(

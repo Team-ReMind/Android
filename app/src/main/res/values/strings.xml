@@ -41,7 +41,13 @@
     <string name="보통">보통</string>
     <string name="나쁨">나쁨</string>
     <string name="끔찍함">끔찍함</string>
-
+    <string name="오늘_하루_어떤_활동을_하셨나요_" >오늘 하루,\n어떤 활동을 하셨나요?</string>
+    <string name="오늘의_활동을_선택해주세요">오늘의 활동을 선택해주세요!</string>
+    <string name="활동_편집">활동 편집</string>
+    <string name="건너뛰기">건너뛰기</string>
+    <string name="도움">도움</string>
+    <string name="도움이_필요하신가요">도움이 필요하신가요?</string>
+    <string name="자살예방_상담_전화_연결하기">자살예방 상담 전화 연결하기</string>
 
 
 

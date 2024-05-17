@@ -1,6 +1,7 @@
 package com.example.remind.feature.screens.patience.writing
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,6 +10,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -16,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -62,25 +68,23 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
     }
     RemindTheme{
         Column(
-            modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp
-            )
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = RemindTheme.colors.white)
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp
+                )
         ) {
+            Spacer(modifier = Modifier.height(24.dp))
             IconButton(
                 onClick = {
-                    viewModel.navigateToRoute(
-                        destination = Screens.Patience.Home.route,
-                        current = Screens.Patience.Home.WritingMoodStep1.route
-                    )
+                    viewModel.navigateToHome()
                 }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrowleft),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(width = 9.dp, height = 16.dp)
-                        .padding(top = 24.dp, start = 6.dp),
                     tint = RemindTheme.colors.icon
                 )
 
@@ -102,6 +106,7 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
             //이모티콘 박스
             Box(
                 modifier = Modifier
+                    .background(color = RemindTheme.colors.white)
                     .border(
                         width = 1.dp,
                         shape = RoundedCornerShape(18.dp),
@@ -110,7 +115,9 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
                     .padding(start = 20.dp, end = 20.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(top = 15.dp, bottom = 15.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp, bottom = 15.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     for(i in 0..4) {
@@ -127,10 +134,17 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
             }
             Spacer(modifier = Modifier.weight(1f))
             BasicButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        bottom = 32.dp
+                    ),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
-                backgroundColor = RemindTheme.colors.main_6,
-                textColor = RemindTheme.colors.white,
+                backgroundColor = if(uiState.selectFeelingType != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                textColor = if(uiState.selectFeelingType != null) RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = {
                           viewModel.navigateToRoute(
@@ -171,24 +185,29 @@ fun IconContainer(
     Box(
         modifier = modifier
             .background(color = backgroundColor, shape = RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                modifier = modifier.padding(
-                    top = 18.dp,
-                    start = 15.dp,
-                    end = 15.dp,
-                    bottom = 16.dp
-                ),
+                modifier = modifier
+                    .padding(
+                        top = 18.dp,
+                        start = 15.dp,
+                        end = 15.dp,
+                        bottom = 16.dp
+                    )
+                    .size(
+                        width = 25.dp,
+                        height = 25.dp
+                    ),
                 painter = painterResource(id = feelingScoreModel.imgeRes),
                 contentDescription = null
             )
             Text(
                 modifier = modifier.padding(bottom = 15.dp),
-                text = feelingScoreModel.text,
+                text = feelingScoreModel.feeling,
                 style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.slate_700)
             )
         }
@@ -198,4 +217,12 @@ fun IconContainer(
 @Preview(showBackground = true)
 @Composable
 fun WritingPreview() {
+    Icon(
+        modifier = Modifier
+            .size(width = 9.dp, height = 16.dp)
+            .padding(top = 24.dp, start = 6.dp),
+        painter = painterResource(id = R.drawable.ic_arrowleft),
+        contentDescription = null,
+        tint = RemindTheme.colors.icon
+    )
 }

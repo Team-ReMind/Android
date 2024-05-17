@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.patience.writing
 
+import android.content.Context
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import com.example.remind.core.base.UiEffect
@@ -15,6 +16,7 @@ class WritingContract {
         data class FeelingButtonClicked(val feelingType: String): Event()
         data class NextButtonClicked(val destinationRoute: String, val currentRoute: String): Event()
         data class PreviousButtonClicked(val destinationRoute: String, val currentRoute: String): Event()
+        data class NavigateToHome(val context: Context): Event()
     }
 
     sealed class Effect: UiEffect {

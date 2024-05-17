@@ -61,6 +61,7 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.CalendarUiModel
 import com.example.remind.data.repository.CalendarDataSource
 import kotlinx.coroutines.flow.collectLatest
+import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -256,7 +257,7 @@ fun DateSelectHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "2024년 4월 1주차",
+            text = ShowCurrentWeek(),
             style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.grayscale_3)
         )
         Spacer(modifier = modifier.weight(1f))
@@ -420,31 +421,12 @@ fun EmptyTodayMoodContainer(
         )
     }
 }
-//다이얼로그
-@Composable
-fun DialogContent() {
-    Column {
-        Spacer(
-            modifier = Modifier
-                .height(9.dp)
-                .fillMaxWidth()
-        )
-        Text(
-            text = stringResource(id = R.string.약_미복용_사유),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize()
-                .padding(top = 9.dp),
-            style = RemindTheme.typography.b1Bold.copy(color = RemindTheme.colors.text)
-        )
-        Spacer(
-            modifier = Modifier
-                .height(29.dp)
-                .fillMaxWidth()
-        )
 
-    }
+
+fun ShowCurrentWeek():String {
+    val dataSource = CalendarDataSource()
+    val currentWeek = dataSource.getWeekly(LocalDate.now())
+    return currentWeek
 }
 
 

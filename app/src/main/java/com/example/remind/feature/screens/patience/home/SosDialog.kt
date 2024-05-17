@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.remind.R
+import com.example.remind.core.common.component.BasicDialog
 import com.example.remind.core.designsystem.theme.RemindTheme
 
 @Composable
@@ -28,15 +29,24 @@ fun SosDialog (
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
     onClickToCall: () -> Unit,
-    showDialog: MutableState<Boolean>
+    showDialog: Boolean
 ) {
-
+    BasicDialog(
+        popupContent = {
+            Content(
+                onDismissClick = onDismissClick,
+                onClickToCall = onClickToCall
+            )
+       },
+        showDialog = showDialog
+    )
 }
 
 @Composable
 fun Content(
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
+    onClickToCall: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -81,10 +91,12 @@ fun Content(
                 style = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.black)
             )
             Image(
-                modifier = modifier.padding(
+                modifier = modifier
+                    .padding(
                     top = 15.dp,
                     bottom = 36.dp
-                ),
+                )
+                    .clickable (onClick = onClickToCall),
                 painter = painterResource(id = R.drawable.ic_phone_fill),
                 contentDescription = null
             )
@@ -95,5 +107,5 @@ fun Content(
 @Preview
 @Composable
 fun SosPreview() {
-    Content(onDismissClick = {})
+    //Content(onDismissClick = {})
 }

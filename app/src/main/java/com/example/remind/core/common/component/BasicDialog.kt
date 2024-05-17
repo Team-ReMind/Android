@@ -10,7 +10,7 @@ import androidx.compose.ui.window.DialogProperties
 fun BasicDialog(
     modifier: Modifier = Modifier,
     popupContent: @Composable () -> Unit,
-    showDialog: MutableState<Boolean>,
+    showDialog: Boolean,
     onDismissRequest: () -> Unit = {}
 ) {
     Dialog(

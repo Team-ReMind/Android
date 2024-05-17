@@ -9,12 +9,14 @@ import com.example.remind.core.base.UiState
 
 class HomeContract {
     data class State(
-        //지워야함 예시로 넣어둠
-        val selectFeelingType: String? = null,
+        val sosDialogState: Boolean = false
     ): UiState
 
     sealed class Event: UiEvent {
         data class WritingButtonClicked(val context: Context): Event()
+        object showSosDialog: Event()
+        object DismissDialog: Event()
+        data class CallButtonClicked(val context: Context, val number: String):Event()
     }
     sealed class Effect: UiEffect {
         data class NavigateTo(
@@ -23,6 +25,10 @@ class HomeContract {
             val builder: NavOptionsBuilder.() -> Unit = {}
         ): HomeContract.Effect()
         data class Toastmessage(val message: String): Effect()
+        data class getCall(
+            val context: Context,
+            val number: String
+        ): Effect()
     }
 
 

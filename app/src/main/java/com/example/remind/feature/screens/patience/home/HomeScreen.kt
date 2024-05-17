@@ -1,6 +1,13 @@
 package com.example.remind.feature.screens.patience.home
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,11 +45,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -59,6 +68,18 @@ fun HomeScreen(navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
+    val context = LocalContext.current
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted: Boolean ->
+            if(isGranted) {
+                viewModel.setSosCall(context, "109")
+            } else{
+                Log.d("calltag", "권한 미부여")
+            }
+        }
+    )
+
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
@@ -69,9 +90,34 @@ fun HomeScreen(navController: NavHostController) {
                 is HomeContract.Effect.NavigateTo -> {
                     navController.navigate(effect.destinaton, effect.navOptions)
                 }
-                else -> {}
+                is HomeContract.Effect.getCall -> {
+                    val intent = Intent(Intent.ACTION_CALL).apply {
+                        data = Uri.parse("tel:${109}")
+                    }
+                    if(intent.resolveActivity(context.packageManager) != null) {
+                        context.startActivity(intent)
+                    }
+                }
+                else-> {}
             }
         }
+    }
+
+    if(uiState.sosDialogState) {
+        SosDialog(
+            onDismissClick = { viewModel.reduceState(HomeContract.Event.DismissDialog) },
+            onClickToCall = {
+               when(PackageManager.PERMISSION_GRANTED) {
+                   ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) -> {
+                       viewModel.setSosCall(context, "109")
+                   }
+                   else -> {
+                       requestPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+                   }
+               }
+            },
+            showDialog = uiState.sosDialogState
+        )
     }
 
     RemindTheme {
@@ -80,7 +126,9 @@ fun HomeScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .background(color = RemindTheme.colors.white)
         ) {
-            HomeTopBar(onClick = {})
+            HomeTopBar(onClick = {
+                viewModel.setEvent(HomeContract.Event.showSosDialog)
+            })
             DateSelectHeader(previousBtn = {}, nextBtn = {}, calendarBtn = {})
             Content(
                 modifier = Modifier.fillMaxWidth(),
@@ -159,7 +207,7 @@ fun HomeScreen(navController: NavHostController) {
 @Composable
 fun HomeTopBar(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -398,6 +446,8 @@ fun DialogContent() {
 
     }
 }
+
+
 
 
 

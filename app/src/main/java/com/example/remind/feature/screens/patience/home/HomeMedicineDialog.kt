@@ -39,7 +39,7 @@ fun HomeMedicineDialog (
     selectBackground: Color,
     confirmBackground: Color,
     confirmTextColor: Color,
-    showDialog: MutableState<Boolean>,
+    showDialog:Boolean,
 ) {
     BasicDialog(
         popupContent = {

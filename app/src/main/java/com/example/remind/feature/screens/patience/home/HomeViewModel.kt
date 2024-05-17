@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.patience.home
 
+import android.content.Context
 import androidx.navigation.navOptions
 import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
@@ -12,6 +13,15 @@ class HomeViewModel @Inject constructor(): BaseViewModel<HomeContract.Event, Hom
         when(event) {
             is HomeContract.Event.WritingButtonClicked -> {
                 navigateToWriting()
+            }
+            is HomeContract.Event.showSosDialog -> {
+                updateState(currentState.copy(sosDialogState = true))
+            }
+            is HomeContract.Event.DismissDialog -> {
+                updateState(currentState.copy(sosDialogState = false))
+            }
+            is HomeContract.Event.CallButtonClicked -> {
+                setSosCall(event.context, event.number)
             }
         }
     }
@@ -26,6 +36,12 @@ class HomeViewModel @Inject constructor(): BaseViewModel<HomeContract.Event, Hom
                     }
                 }
             )
+        )
+    }
+
+    fun setSosCall( context: Context,  number:String) {
+        postEffect(
+            HomeContract.Effect.getCall(context, number)
         )
     }
 }

@@ -40,8 +40,9 @@ fun StepComponent(
     }
 }
 
+
 @Preview
 @Composable
 fun StepComponentPreview() {
-    StepComponent(text = 1, backgroundColor = RemindTheme.colors.main_6, textColor = RemindTheme.colors.white)
+
 }

@@ -29,6 +29,15 @@
     <string name="미복용">미복용</string>
     <string name="약_미복용_사유">약 미복용 사유</string>
 
+    <string name="오늘_하루_어떤_기분을_느끼셨나요_">오늘하루,\n어떤 기분을 느끼셨나요?</string>
+    <string name="오늘_하루의_전반적인_기분을_선택해주세요">오늘 하루의 전반적인 기분을 선택해주세요!</string>
+    <string name="정말_좋음">정말 좋음</string>
+    <string name="좋음">좋음</string>
+    <string name="보통">보통</string>
+    <string name="나쁨">나쁨</string>
+    <string name="끔찍함">끔찍함</string>
+
+
     <string name="무드_차트">무드 차트</string>
     <string name="주간_차트_기록">주간 차트 기록</string>
 

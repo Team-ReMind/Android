@@ -35,9 +35,6 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
-    fun getUserName():String {
-        return currentState.userName
-    }
 
     override fun reduceState(event: OnBoardingContract.Event) {
         when(event) {
@@ -116,7 +113,9 @@ class OnBoardingViewModel @Inject constructor(
             OnBoardingContract.Effect.NavigateTo(
                 destination = Screens.Register.OnBoardingFinal.route,
                 navOptions = navOptions {
-
+                    popUpTo(Screens.Register.OnBoardingPatience.route) {
+                        inclusive = true
+                    }
                 }
             ))
     }

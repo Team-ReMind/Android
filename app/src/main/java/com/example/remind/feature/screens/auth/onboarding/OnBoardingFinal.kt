@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -55,15 +56,41 @@ fun OnBoardingFinalScreen(
     }
 
     RemindTheme {
-        PatienceFinal(
-            name = "배예진",
-            onClick = {
-                viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
-                    Screens.Patience.route,
-                    Screens.Register.OnBoardingFinal.route
-                ))
+        when(uiState.selectedType) {
+            "ROLE_PATIENT" -> {
+            PatienceFinal(
+                name = uiState.userName,
+                onClick = {
+                    viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
+                        Screens.Patience.route,
+                        Screens.Register.OnBoardingFinal.route
+                    ))
+                }
+            )
+          }
+            "ROLE_DOCTOR" -> {
+                DoctorFinal(
+                    name = uiState.userName,
+                    onClick = {
+                        viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
+                            Screens.Doctor.DoctorMain.route,
+                            Screens.Register.OnBoardingFinal.route
+                        ))
+                    }
+                )
             }
-        )
+            "ROLE_CENTER" -> {
+                CenterFinal(
+                    name = uiState.userName,
+                    onClick = {
+                        viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
+                            Screens.Center.CenterMain.route,
+                            Screens.Register.OnBoardingFinal.route
+                        ))
+                    },
+                )
+            }
+        }
     }
 }
 
@@ -122,11 +149,108 @@ fun PatienceFinal(
         )
     }
 }
+
+@Composable
+fun DoctorFinal(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    name: String
+) {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Image (
+            modifier = Modifier
+                .fillMaxSize(),
+            painter = painterResource(id = R.drawable.img_doctor_final),
+            contentScale = ContentScale.FillBounds,
+            contentDescription = null
+        )
+        Column(
+            modifier = modifier
+                .align(Alignment.TopStart)
+                .padding(top = 90.dp, start = 20.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.만나서_반갑습니다_, name),
+                style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.white, lineHeight = 40.sp)
+            )
+            Text(
+                text = stringResource(id = R.string.회원가입이_완료되었습니다),
+                style = RemindTheme.typography.b3Regular.copy(color = RemindTheme.colors.white)
+            )
+        }
+        BasicButton(
+            modifier = modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
+            text = stringResource(id = R.string.시작하기),
+            RoundedCorner = 12.dp,
+            backgroundColor = RemindTheme.colors.main_6,
+            textColor = RemindTheme.colors.white,
+            verticalPadding = 13.dp,
+            onClick = onClick,
+            textStyle = RemindTheme.typography.b2Bold
+        )
+    }
+}
+
+@Composable
+fun CenterFinal(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    name: String
+) {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Image (
+            modifier = Modifier
+                .fillMaxSize(),
+            painter = painterResource(id = R.drawable.img_center_final),
+            contentScale = ContentScale.FillBounds,
+            contentDescription = null
+        )
+        Column(
+            modifier = modifier
+                .align(Alignment.TopStart)
+                .padding(top = 90.dp, start = 20.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.만나서_반갑습니다_담당자님_, name),
+                style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.white, lineHeight = 40.sp)
+            )
+            Text(
+                modifier = modifier.padding(top = 12.dp),
+                text = stringResource(id = R.string.회원가입이_완료되었습니다),
+                style = RemindTheme.typography.b3Regular.copy(color = RemindTheme.colors.main_1)
+            )
+        }
+        BasicButton(
+            modifier = modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
+            text = stringResource(id = R.string.시작하기),
+            RoundedCorner = 12.dp,
+            backgroundColor = RemindTheme.colors.main_6,
+            textColor = RemindTheme.colors.white,
+            verticalPadding = 13.dp,
+            onClick = onClick,
+            textStyle = RemindTheme.typography.b2Bold
+        )
+    }
+}
+
+
 @Preview
 @Composable
 fun FinalPreview() {
-    PatienceFinal(
-        name = "배예진",
-        onClick = {}
+    CenterFinal(
+        onClick = {
+
+        },
+        name = "배예진"
     )
 }

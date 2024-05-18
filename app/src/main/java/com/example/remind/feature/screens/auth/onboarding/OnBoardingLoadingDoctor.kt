@@ -3,7 +3,9 @@ package com.example.remind.feature.screens.auth.onboarding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -44,9 +46,10 @@ fun OnBoardingLoadingDoctorScreen(navController: NavHostController) {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
                 painter = painterResource(id = R.drawable.img_doctor_loading),
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )
             Column(
@@ -56,7 +59,7 @@ fun OnBoardingLoadingDoctorScreen(navController: NavHostController) {
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = 12.dp),
-                    text = stringResource(id = R.string.만나서_반갑습니다_, viewModel.getUserName()),
+                    text = stringResource(id = R.string.만나서_반갑습니다_),
                     style = RemindTheme.typography.h1Bold.copy(
                         color = RemindTheme.colors.white,
                         lineHeight = 40.sp
@@ -74,7 +77,41 @@ fun OnBoardingLoadingDoctorScreen(navController: NavHostController) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LoadingPreview() {
+    RemindTheme {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                modifier = Modifier
+                    .fillMaxSize(),
+                painter = painterResource(id = R.drawable.img_doctor_loading),
+                contentScale = ContentScale.FillBounds,
+                contentDescription = null
+            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(start = 20.dp, top = 95.dp)
+            ) {
+                Text(
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    text = stringResource(id = R.string.만나서_반갑습니다_),
+                    style = RemindTheme.typography.h1Bold.copy(
+                        color = RemindTheme.colors.white,
+                        lineHeight = 40.sp
+                    )
+                )
+                Text(
+                    text = stringResource(id = R.string.의사_면허_인증_중),
+                    style = RemindTheme.typography.b3Regular.copy(
+                        color = RemindTheme.colors.white,
+                        lineHeight = 28.sp
+                    )
+                )
+            }
+        }
+    }
 }

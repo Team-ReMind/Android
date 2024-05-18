@@ -86,6 +86,7 @@
     <string name="무드">무드</string>
 
     <string name="의사_면허_인증">의사 면허 인증</string>
+    <string name="의사_면허_인증_중">의사 면허 인증 중이에요.\n인증은 최대 24시간 이내 처리됩니다.</string>
     <string name="정신질환_환자_사례관리">정신질환 환자 사례관리 지원 서비스 리마인드는\n보건복지부 면허인증 서비스를 통해\n면허번호 인증을 실시하고 있습니다.</string>
     <string name="인증_신청">인증 신청</string>
     <string name="만나서_반갑습니다_">만나서 반갑습니다.\n%1$s 선생님!</string>

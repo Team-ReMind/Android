@@ -4,7 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>침
+    <string name="next">Next</string>
     <string name="previous">Previous</string>
 
     <string name="스스로를_돌아볼_수_있는">스스로를 돌아볼 수 있는\n당신만의 공간으로 초대합니다.</string>

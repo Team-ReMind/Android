@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
+import com.example.remind.app.Screens
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.designsystem.theme.RemindTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +58,10 @@ fun OnBoardingFinalScreen(
         PatienceFinal(
             name = "배예진",
             onClick = {
-                viewModel.setEvent(OnBoardingContract.Event.NextButtonToPatience(context))
+                viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
+                    Screens.Patience.route,
+                    Screens.Register.OnBoardingFinal.route
+                ))
             }
         )
     }

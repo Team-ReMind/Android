@@ -8,10 +8,10 @@ import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.OnBoardingRequest
 import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.data.network.interceptor.TokenManager
-import com.example.remind.data.repository.auth.TokenRepository
 import com.example.remind.domain.usecase.onboarding_usecase.FcmTokenUseCase
 import com.example.remind.domain.usecase.onboarding_usecase.OnBoardingUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -24,6 +24,21 @@ class OnBoardingViewModel @Inject constructor(
 ): BaseViewModel<OnBoardingContract.Event, OnBoardingContract.State, OnBoardingContract.Effect>(
     initialState = OnBoardingContract.State()
 ) {
+    init {
+        viewModelScope.launch {
+            val userName = tokenManager.getUserName().first()
+            userName?.let { currentState.copy(userName = it) }?.let {
+                updateState(
+                    it
+                )
+            }
+        }
+    }
+
+    fun getUserName():String {
+        return currentState.userName
+    }
+
     override fun reduceState(event: OnBoardingContract.Event) {
         when(event) {
             is OnBoardingContract.Event.DoctorButtonClicked -> {
@@ -41,12 +56,17 @@ class OnBoardingViewModel @Inject constructor(
                 if(currentState.moveAble == true) navigateToFinal()
             }
             is OnBoardingContract.Event.NextButtonToPatience -> {
-                navigateToPatience()
+                //navigateToRoute(event.destinationRoute, event.currentRoute)
             }
-            else -> {
+            is OnBoardingContract.Event.NextButtonClicked -> {
                 saveUserType(currentState.selectedType!!)
                 navigateToNext(currentState.selectedType!!)
             }
+            //의사부터 이걸로 통합시킴
+            is OnBoardingContract.Event.NavigateButtonClicked -> {
+                navigateToRoute(event.destinationRoute, event.currentRoute)
+            }
+            else ->{}
         }
     }
 
@@ -100,16 +120,31 @@ class OnBoardingViewModel @Inject constructor(
                 }
             ))
     }
-    fun navigateToPatience() {
+//    fun navigateToPatience() {
+//        postEffect(
+//            OnBoardingContract.Effect.NavigateTo(
+//                destination = Screens.Patience.route,
+//                navOptions = navOptions {
+//                    popUpTo(Screens.Register.OnBoardingFinal.route) {
+//                        inclusive = true
+//                    }
+//                }
+//            ))
+//    }
+
+
+    //나중에 이걸로 통합 수정하기
+    fun navigateToRoute(destinationRoute: String, currentRoute: String) {
         postEffect(
             OnBoardingContract.Effect.NavigateTo(
-                destination = Screens.Patience.route,
+                destination = destinationRoute,
                 navOptions = navOptions {
-                    popUpTo(Screens.Register.OnBoardingFinal.route) {
+                    popUpTo(currentRoute) {
                         inclusive = true
                     }
                 }
-            ))
+            )
+        )
     }
 
     private fun getFcmToken() {
@@ -136,6 +171,7 @@ class OnBoardingViewModel @Inject constructor(
                 is ApiResult.Failure.HttpError -> {
                     postEffect(OnBoardingContract.Effect.Toastmessage("Http 오류가 발생했습니다"))
                 }
+                else -> {}
             }
         }
     }

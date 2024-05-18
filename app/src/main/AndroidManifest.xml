@@ -25,6 +25,9 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
         tools:targetApi="31" >
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="${kakaoKey}"/>
         <activity
             android:name=".app.MainActivity"
             android:exported="true"

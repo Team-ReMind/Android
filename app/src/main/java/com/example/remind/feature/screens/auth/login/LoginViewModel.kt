@@ -60,7 +60,9 @@ class LoginViewModel @Inject constructor(
                     }
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if(token != null) {
-                    Log.e("kakao", "카카오톡으로 로그인 성공")
+                    viewModelScope.launch {
+                        socialLogin(token.accessToken)
+                    }
                 }
             }
         } else {

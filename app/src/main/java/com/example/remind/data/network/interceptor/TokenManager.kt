@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.remind.core.util.Constants.ACCESS_TOKEN
 import com.example.remind.core.util.Constants.REFRESH_TOKEN
+import com.example.remind.core.util.Constants.USER_ID
 import com.example.remind.core.util.Constants.USER_NAME
 import com.example.remind.core.util.Constants.USER_TYPE
 import kotlinx.coroutines.flow.Flow
@@ -50,6 +51,18 @@ class TokenManager @Inject constructor(
     fun getUserName(): Flow<String?> {
         return datastore.data.map { prefs->
             prefs[USER_NAME]
+        }
+    }
+
+    suspend fun saveUserId(userId: Int) {
+        datastore.edit { prefs ->
+            prefs[USER_ID]
+        }
+    }
+
+    fun getUserId(): Flow<Int?> {
+        return datastore.data.map { prefs->
+            prefs[USER_ID]
         }
     }
 

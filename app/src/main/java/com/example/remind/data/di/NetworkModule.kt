@@ -5,6 +5,7 @@ import com.example.remind.BuildConfig
 import com.example.remind.data.network.adapter.ApiResultCallAdapterFactory
 import com.example.remind.data.network.interceptor.AuthInterceptor
 import com.example.remind.data.network.service.AuthService
+import com.example.remind.data.network.service.PatientService
 import com.example.remind.data.repository.auth.AuthRepository
 import com.example.remind.data.repository.auth.AuthRepositoryImpl
 import com.example.remind.data.repository.auth.TokenRepository
@@ -57,6 +58,12 @@ object NetworkModule {
     @Provides
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providePatientService(retrofit: Retrofit): PatientService {
+        return retrofit.create(PatientService::class.java)
     }
 
     @Module

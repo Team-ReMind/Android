@@ -104,5 +104,5 @@ fun MedicineItem(
 @Preview
 @Composable
 fun ItemPreview() {
-    //MedicineItem(time = "아침", score= 2.0, doseClick = {}, unadministeredClick = {})
+    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {})
 }

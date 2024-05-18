@@ -9,6 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import com.example.remind.app.Screens
 import androidx.navigation.compose.composable
+import com.example.remind.feature.screens.patience.home.HomeScreen
+import com.example.remind.feature.screens.patience.writing.WritingMoodStep1Screen
+import com.example.remind.feature.screens.patience.writing.WritingMoodStep2Screen
+import com.example.remind.feature.screens.patience.writing.WritingMoodStep3Screen
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PatienceGraph(
@@ -21,7 +26,16 @@ fun PatienceGraph(
         startDestination = Screens.Patience.Home.route
     ) {
         composable(route = Screens.Patience.Home.route) {
-            HomeScreen()
+            HomeScreen(navController)
+        }
+        composable(route = Screens.Patience.Home.WritingMoodStep1.route) {
+            WritingMoodStep1Screen(navController)
+        }
+        composable(route = Screens.Patience.Home.WritingMoodStep2.route) {
+            WritingMoodStep2Screen()
+        }
+        composable(route = Screens.Patience.Home.WritingMoodStep3.route) {
+            WritingMoodStep3Screen()
         }
         composable(route = Screens.Patience.MoodChart.route) {
             MoodChartScreen()

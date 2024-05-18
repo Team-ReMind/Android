@@ -5,7 +5,10 @@ import androidx.annotation.RequiresApi
 import com.example.remind.data.model.CalendarUiModel
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.time.temporal.WeekFields
+import java.util.Locale
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
@@ -23,7 +26,6 @@ class CalendarDataSource {
         return toUiModel(visibleDates, lastSelectedDate)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun getDateBetween(startDate: LocalDate, endDate: LocalDate): List<LocalDate> {
         val numOfDays = ChronoUnit.DAYS.between(startDate, endDate)
         return Stream.iterate(startDate) { date ->
@@ -33,7 +35,21 @@ class CalendarDataSource {
             .collect(Collectors.toList())
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+     fun getWeekly(date: LocalDate): String {
+        val weekFields = WeekFields.of(Locale.getDefault())
+        val weekOfYear = date.get(weekFields.weekOfMonth())
+        val month = date.monthValue
+        val year = date.year
+        return "${year}년 ${month}월 ${weekOfYear}주차"
+    }
+
+    fun getDayForSearch(date: LocalDate): String {
+        val year = date.year
+        val month = date.monthValue
+        val date = date.dayOfMonth
+        return "${year}.${month}.${date}"
+    }
+
     private fun toUiModel(
         dateList: List<LocalDate>,
         lastSelectedDate: LocalDate

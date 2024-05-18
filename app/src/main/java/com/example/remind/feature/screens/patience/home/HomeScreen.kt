@@ -1,8 +1,14 @@
-package com.example.remind.feature.screens.patience
+package com.example.remind.feature.screens.patience.home
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -30,41 +35,99 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
-import com.example.remind.core.common.component.BasicListItem
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.CalendarUiModel
 import com.example.remind.data.repository.CalendarDataSource
-import com.example.remind.feature.viewmodel.CustomViewModel
+import kotlinx.coroutines.flow.collectLatest
+import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(){
+fun HomeScreen(navController: NavHostController) {
+    val viewModel: HomeViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+    val context = LocalContext.current
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted: Boolean ->
+            if(isGranted) {
+                viewModel.setSosCall(context, "109")
+            } else{
+                Log.d("calltag", "권한 미부여")
+            }
+        }
+    )
+
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when(effect) {
+                is HomeContract.Effect.NavigateTo -> {
+                    navController.navigate(effect.destinaton, effect.navOptions)
+                }
+                is HomeContract.Effect.getCall -> {
+                    val intent = Intent(Intent.ACTION_CALL).apply {
+                        data = Uri.parse("tel:${109}")
+                    }
+                    if(intent.resolveActivity(context.packageManager) != null) {
+                        context.startActivity(intent)
+                    }
+                }
+                else-> {}
+            }
+        }
+    }
+
+    if(uiState.sosDialogState) {
+        SosDialog(
+            onDismissClick = { viewModel.reduceState(HomeContract.Event.DismissDialog) },
+            onClickToCall = {
+               when(PackageManager.PERMISSION_GRANTED) {
+                   ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) -> {
+                       viewModel.setSosCall(context, "109")
+                   }
+                   else -> {
+                       requestPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+                   }
+               }
+            },
+            showDialog = uiState.sosDialogState
+        )
+    }
+
     RemindTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = RemindTheme.colors.white)
         ) {
-            HomeTopBar(onClick = {})
+            HomeTopBar(onClick = {
+                viewModel.setEvent(HomeContract.Event.showSosDialog)
+            })
             DateSelectHeader(previousBtn = {}, nextBtn = {}, calendarBtn = {})
             Content(
                 modifier = Modifier.fillMaxWidth(),
@@ -128,7 +191,11 @@ fun HomeScreen(){
                         style = RemindTheme.typography.b3Medium.copy(color = Color(0xFF9B9B9B))
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    EmptyTodayMoodContainer(clickToWrite = {})
+                    EmptyTodayMoodContainer(
+                        clickToWrite = {
+                            viewModel.navigateToWriting()
+                        }
+                    )
                     Spacer(modifier = Modifier.height(80.dp))
                 }
             }
@@ -139,7 +206,7 @@ fun HomeScreen(){
 @Composable
 fun HomeTopBar(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -188,7 +255,7 @@ fun DateSelectHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "2024년 4월 1주차",
+            text = ShowCurrentWeek(),
             style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.grayscale_3)
         )
         Spacer(modifier = modifier.weight(1f))
@@ -352,32 +419,15 @@ fun EmptyTodayMoodContainer(
         )
     }
 }
-//다이얼로그
-@Composable
-fun DialogContent() {
-    Column {
-        Spacer(
-            modifier = Modifier
-                .height(9.dp)
-                .fillMaxWidth()
-        )
-        Text(
-            text = stringResource(id = R.string.약_미복용_사유),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize()
-                .padding(top = 9.dp),
-            style = RemindTheme.typography.b1Bold.copy(color = RemindTheme.colors.text)
-        )
-        Spacer(
-            modifier = Modifier
-                .height(29.dp)
-                .fillMaxWidth()
-        )
 
-    }
+
+fun ShowCurrentWeek():String {
+    val dataSource = CalendarDataSource()
+    val currentWeek = dataSource.getWeekly(LocalDate.now())
+    return currentWeek
 }
+
+
 
 
 

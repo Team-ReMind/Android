@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS"
         android:minSdkVersion="33"/>
@@ -20,6 +25,9 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
         tools:targetApi="31" >
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="${kakaoKey}"/>
         <activity
             android:name=".app.MainActivity"
             android:exported="true"

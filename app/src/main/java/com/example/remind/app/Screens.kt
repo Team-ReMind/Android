@@ -23,7 +23,11 @@ sealed class Screens(val route: String) {
         object CenterPatienceRegister: Screens("PatienceRegister_center")
     }
     object Patience: Screens("patience") {
-        object Home: Screens("HomeScreen")
+        object Home: Screens("HomeScreen") {
+            object WritingMoodStep1: Screens("writing_step1")
+            object WritingMoodStep2: Screens("writing_step2")
+            object WritingMoodStep3: Screens("writing_step3")
+        }
         object MoodChart: Screens("MoodChart")
         object Medicine: Screens("Medicine")
         object MyPage: Screens("MyPage")

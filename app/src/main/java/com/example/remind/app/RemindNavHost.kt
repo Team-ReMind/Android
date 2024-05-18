@@ -24,6 +24,7 @@ fun RemindNavHost() {
         }
         DoctorGraph(navHostController)
         CenterGraph(navHostController)
+        //WritingGraph(navHostController)
     }
 }
 

@@ -21,27 +21,49 @@
     <string name="긴급_상황_발생시_담당자가_보호자에게">긴급 상황 발생 시 담당자가 보호자에게 연락 할 수 있습니다.</string>
     <string name="반가워요_환자님">반가워요, %1$s님!</string>
     <string name="오늘_하루의_통합적_기분을_선택해주세요">오늘 하루의 통합적 기분을 선택해주세요!</string>
-    <string name="반가워요_센터님">반갑습니다.\n%1$s 담당자 님!</string>
+    <string name="만나서_반갑습니다_담당자님_">만나서 반갑습니다.\n%1$s 담당자님!</string>
     <string name="반가워요_의사님">반갑습니다. %1$s님!</string>
     <string name="시작하기">시작하기</string>
     <string name="중요도">중요도</string>
     <string name="복용">복용</string>
     <string name="미복용">미복용</string>
     <string name="약_미복용_사유">약 미복용 사유</string>
+    <string name="까먹었어요">까먹었어요!</string>
+    <string name="스케줄_관리를_해야해요">스케줄 관리를 해야해요!</string>
+    <string name="다른_약물을_복용했어요">다른 약물을 복용했어요!</string>
+    <string name="부작용이_의심돼요">부작용이 의심돼요!</string>
+    <string name="완료">완료</string>
 
+    <string name="오늘_하루_어떤_기분을_느끼셨나요_">오늘하루,\n어떤 기분을 느끼셨나요?</string>
+    <string name="오늘_하루의_전반적인_기분을_선택해주세요">오늘 하루의 전반적인 기분을 선택해주세요!</string>
+    <string name="정말_좋음">정말 좋음</string>
+    <string name="좋음">좋음</string>
+    <string name="보통">보통</string>
+    <string name="나쁨">나쁨</string>
+    <string name="끔찍함">끔찍함</string>
+    <string name="오늘_하루_어떤_활동을_하셨나요_" >오늘 하루,\n어떤 활동을 하셨나요?</string>
+    <string name="오늘의_활동을_선택해주세요">오늘의 활동을 선택해주세요!</string>
+    <string name="활동_편집">활동 편집</string>
+    <string name="건너뛰기">건너뛰기</string>
+    <string name="도움">도움</string>
+    <string name="도움이_필요하신가요">도움이 필요하신가요?</string>
+    <string name="자살예방_상담_전화_연결하기">자살예방 상담 전화 연결하기</string>
+    <string name="기분별_활동_차트">기분별 활동 차트</string>
+    <string name="무엇을_할_때_기분이_좋은지_확인">무엇을 할 때 기분이 좋은지 확인해보세요!</string>
     <string name="무드_차트">무드 차트</string>
     <string name="주간_차트_기록">주간 차트 기록</string>
-
-
+    <string name="_님의_약_처방">%1$s 님의 약 처방</string>
+    <string name="알림_설정">알림 설정</string>
+    <string name="아침">아침</string>
+    <string name="점심">점심</string>
+    <string name="저녁">저녁</string>
     <string name="약_복용_체크">약 복용 체크</string>
     <string name="등록된_약이_없어요">등록된 약이 없어요!</string>
     <string name="오늘_하루_기분이_어떠셨나요">오늘 하루 기분이 어떠셨나요?</string>
     <string name="당신의_하루가_궁금해요">당신의 하루가 궁금해요</string>
     <string name="오늘의_기분_기록하기">오늘의 기분 기록하기</string>
-
     <string name="사용_입장_선택">사용 입장 선택</string>
     <string name="어떤_입장에서_사용하실지_선택해주세요">어떤 입장에서 사용하실지 선택해주세요!</string>
-
     <string name="님_">김말랑 님,</string>
     <string name="좋은_하루_되세요">좋은 하루 되세요!</string>
     <string name="관리_중인_환자">관리 중인 환자</string>
@@ -62,4 +84,11 @@
     <string name="환자">환자</string>
     <string name="약_복용">약 복용</string>
     <string name="무드">무드</string>
+
+    <string name="의사_면허_인증">의사 면허 인증</string>
+    <string name="의사_면허_인증_중">의사 면허 인증 중이에요.\n인증은 최대 24시간 이내 처리됩니다.</string>
+    <string name="정신질환_환자_사례관리">정신질환 환자 사례관리 지원 서비스 리마인드는\n보건복지부 면허인증 서비스를 통해\n면허번호 인증을 실시하고 있습니다.</string>
+    <string name="인증_신청">인증 신청</string>
+    <string name="만나서_반갑습니다_">만나서 반갑습니다.\n%1$s 선생님!</string>
+    <string name="회원가입이_완료되었습니다">회원가입이 완료되었습니다.</string>
 </resources>

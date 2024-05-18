@@ -12,6 +12,7 @@ import com.example.remind.feature.screens.auth.login.LoginContract
 class OnBoardingContract {
     data class State(
         val selectedType: String? = null,
+        val userName: String = "",
         val moveAble: Boolean = false,
         val fcmToken: String = ""
     ): UiState
@@ -23,6 +24,7 @@ class OnBoardingContract {
         data class NextButtonClicked(val context: Context): Event()
         data class NextButtonFinal(val onBoardingData: OnBoardingRequest): Event()
         data class NextButtonToPatience(val context: Context): Event()
+        data class NavigateButtonClicked(val destinationRoute: String, val currentRoute: String): Event()
     }
 
     sealed class Effect: UiEffect {

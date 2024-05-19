@@ -15,6 +15,7 @@
 
     <application
         android:name=".app.App"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,9 +26,6 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
         tools:targetApi="31" >
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="${kakaoKey}"/>
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
@@ -36,7 +34,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>

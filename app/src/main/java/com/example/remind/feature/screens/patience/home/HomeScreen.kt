@@ -85,6 +85,8 @@ fun HomeScreen(navController: NavHostController) {
     var year = LocalDate.now().year
     var month = LocalDate.now().monthValue
     var day = LocalDate.now().dayOfMonth
+    var sendDate: String = ""
+    var medicineTime: String = ""
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
@@ -129,8 +131,9 @@ fun HomeScreen(navController: NavHostController) {
     if(uiState.medicineDialogState) {
         HomeMedicineDialog(
             onDismissClick = { viewModel.reduceState(HomeContract.Event.dismissMediDialog) },
-            onConfirmClick = { /*TODO*/ },
-            selectReason = { /*TODO*/ },
+            onConfirmClick = {
+               viewModel.setEvent(HomeContract.Event.SendNotTakingReason(medicineTime, sendDate, uiState.notTakingReason!!))
+            },
             showDialog = uiState.medicineDialogState
         )
     }
@@ -152,6 +155,7 @@ fun HomeScreen(navController: NavHostController) {
                     selectDate = date.date.dayOfMonth
                     var selectYear = date.date.year
                     var selectMonth = date.date.format(DateTimeFormatter.ofPattern("MM"))
+                    sendDate = "${selectYear}-${selectMonth}-${selectDate}"
                     viewModel.getMedicineDaily(0, "${selectYear}-${selectMonth}-${selectDate}")
                     calendarUiModel = calendarUiModel.copy(
                         selectedDate = date,
@@ -209,10 +213,13 @@ fun HomeScreen(navController: NavHostController) {
                                 var timeText: String=""
                                 if(item.medicinesType == "BREAKFAST"){
                                     timeText = "아침"
+                                    medicineTime = timeText
                                 } else if(item.medicinesType == "LUNCH") {
                                     timeText = "점심"
+                                    medicineTime = timeText
                                 } else if(item.medicinesType == "DINNER") {
                                     timeText = "저녁"
+                                    medicineTime = timeText
                                 }
                                 MedicineItem(
                                     time = timeText,

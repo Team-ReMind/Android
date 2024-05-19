@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.common.component.BasicDialog
@@ -31,19 +34,13 @@ fun HomeMedicineDialog (
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit,
-    selectReason: () -> Unit,
     showDialog:Boolean,
 ) {
     BasicDialog(
         popupContent = {
-            Content(
+            ContentMedicineDialog(
                 onDismissClick = onDismissClick,
-                onConfirmClick = onConfirmClick,
-                selectReason = selectReason,
-                selectBackground = RemindTheme.colors.main_5,
-                confirmBackground = RemindTheme.colors.main_5,
-                confirmTextColor = RemindTheme.colors.white
-            )
+                onConfirmClick = onConfirmClick)
         },
         showDialog = showDialog
     )
@@ -51,15 +48,13 @@ fun HomeMedicineDialog (
 
 
 @Composable
-fun Content(
+fun ContentMedicineDialog(
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit,
-    selectReason: () -> Unit,
-    selectBackground: Color,
-    confirmBackground: Color,
-    confirmTextColor: Color
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reasonList = listOf(
         stringResource(id = R.string.까먹었어요),
         stringResource(id = R.string.스케줄_관리를_해야해요),
@@ -99,23 +94,49 @@ fun Content(
         ) {
             Row {
                 for(i in 0..1) {
-                    ReasonButton(
-                        modifier = Modifier.weight(1f),
-                        text = reasonList.get(i),
-                        background = selectBackground,
-                        onClick = selectReason
-                    )
+                    Box(
+                        modifier = modifier
+                            .background(
+                                color = if (uiState.notTakingReason != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .padding(end = 3.dp)
+                            .clickable(
+                                onClick = { uiState.copy(notTakingReason = reasonList.get(i)) }
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(vertical = 7.dp),
+                            text = reasonList.get(i),
+                            style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.slate_700)
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
             Row {
                 for(i in 2..3) {
-                    ReasonButton(
-                        modifier = Modifier.weight(1f),
-                        text = reasonList.get(i),
-                        background = selectBackground,
-                        onClick = selectReason
-                    )
+                    Box(
+                        modifier = modifier
+                            .background(
+                                color = if (uiState.notTakingReason != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .padding(end = 3.dp)
+                            .clickable(
+                                onClick = { uiState.copy(notTakingReason = reasonList.get(i)) }
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(vertical = 7.dp),
+                            text = reasonList.get(i),
+                            style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.slate_700)
+                        )
+                    }
                 }
             }
             BasicButton(
@@ -124,8 +145,8 @@ fun Content(
                     .padding(top = 22.dp, bottom = 16.dp),
                 text = stringResource(id = R.string.완료),
                 RoundedCorner = 12.dp,
-                backgroundColor = confirmBackground,
-                textColor = confirmTextColor,
+                backgroundColor = if(uiState.notTakingReason != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                textColor = if(uiState.notTakingReason != null) RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = onConfirmClick,
                 textStyle = RemindTheme.typography.b2Bold
@@ -135,40 +156,16 @@ fun Content(
     }
 }
 
-@Composable
-fun ReasonButton (
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit,
-    background: Color
-) {
-    Box(
-        modifier = modifier
-            .background(color = background, shape = RoundedCornerShape(20.dp))
-            .padding(end = 3.dp)
-            .clickable(
-                onClick = onClick
-            )
-    ) {
-        Text(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(vertical = 7.dp),
-            text = text,
-            style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.slate_700)
-        )
-    }
+
+fun saveText(text: String): String {
+    var selectText = text
+    return selectText
 }
 
 @Preview(showBackground = false)
 @Composable
 fun DialogPreview() {
-    Content(
+    ContentMedicineDialog(
         onDismissClick = {  },
-        onConfirmClick = {  },
-        selectReason = {  },
-        selectBackground = RemindTheme.colors.slate_100,
-        confirmBackground = RemindTheme.colors.slate_100,
-        confirmTextColor = RemindTheme.colors.slate_300
-    )
+        onConfirmClick = {})
 }

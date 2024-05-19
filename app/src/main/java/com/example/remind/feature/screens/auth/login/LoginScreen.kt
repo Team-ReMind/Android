@@ -77,7 +77,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(start = 22.dp, top = 117.dp),
-                    text = stringResource(id = R.string.스스로를_돌아볼_수_있는),
+                    text = stringResource(id = R.string.여러분_곁을_따뜻하게_지켜드릴게요),
                     style = RemindTheme.typography.onBoardingFont.copy(color = RemindTheme.colors.white)
                 )
                 Image(
@@ -105,4 +105,15 @@ fun LoginScreen(
             }
         }
     }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun LoginPreview() {
+    Text(
+        modifier = Modifier
+            .padding(start = 22.dp, top = 117.dp),
+        text = stringResource(id = R.string.여러분_곁을_따뜻하게_지켜드릴게요),
+        style = RemindTheme.typography.onBoardingFont.copy(color = RemindTheme.colors.white)
+    )
 }

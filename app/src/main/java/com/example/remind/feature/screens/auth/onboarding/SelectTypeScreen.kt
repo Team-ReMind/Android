@@ -65,19 +65,19 @@ fun SelectTypeScreen(
             BasicOnBoardingAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 weight = 0.3f,
-                title = stringResource(id = R.string.환자_관리)
+                title = ""
             )
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 31.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 35.dp),
                 textAlign = TextAlign.Start,
-                text = stringResource(id = R.string.사용_입장_선택),
+                text = stringResource(id = R.string.사용자_유형_선택),
                 style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.text)
             )
             Text(
                 modifier = Modifier.padding(start = 20.dp, top = 12.dp),
                 textAlign = TextAlign.Start,
-                text = stringResource(id = R.string.어떤_입장에서_사용하실지_선택해주세요),
-                style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3)
+                text = stringResource(id = R.string.서비스_이용을_위한_사용자_유형을_선택해주세요),
+                style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 22.sp)
             )
             Spacer(modifier = Modifier.weight(1f))
             Column(
@@ -183,12 +183,13 @@ fun typeButton(
     }
 }
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun SelectTypePreview() {
-    BasicOnBoardingAppBar(
-        //modifier = Modifier.fillMaxWidth(),
-        weight = 0.3f,
-        title = stringResource(id = R.string.환자_관리)
+    Text(
+        modifier = Modifier.padding(start = 20.dp, top = 12.dp),
+        textAlign = TextAlign.Start,
+        text = stringResource(id = R.string.서비스_이용을_위한_사용자_유형을_선택해주세요),
+        style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 22.sp)
     )
 }

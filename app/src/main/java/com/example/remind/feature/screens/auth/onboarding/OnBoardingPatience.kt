@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicOnBoardingAppBar
+import com.example.remind.core.common.component.RemindTextField
 import com.example.remind.core.designsystem.theme.Pretendard
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.request.OnBoardingRequest
@@ -51,6 +52,13 @@ fun OnBoardingPatienceScreen(
     val effectFlow = viewModel.effect
     val context = LocalContext.current
     var isChecked by remember{ mutableStateOf(false) }
+
+    val textState = remember { mutableStateOf("") }
+    val handleTextChange = { newText: String ->
+        textState.value = newText
+    }
+
+    val textFieldModifier = Modifier.padding(16.dp)
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -99,13 +107,17 @@ fun OnBoardingPatienceScreen(
                 ),
             )
             Spacer(modifier = Modifier.height(56.dp))
-            Image(
+            RemindTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp),
-                painter = painterResource(id = R.drawable.ic_example1),
-                contentDescription = null
+                onTextChanged = handleTextChange,
+                text = textState.value,
+                roundedShape = 8.dp,
+                hintText = stringResource(id = R.string.번호를_입력해주세요),
+                verticalPadding = 12.dp
             )
+
             Spacer(modifier = Modifier.height(12.dp))
             CheckReading(
                 modifier = Modifier.fillMaxWidth(),
@@ -125,7 +137,7 @@ fun OnBoardingPatienceScreen(
                            centerName = "",
                            city = "",
                            district = "",
-                           protectorPhoneNumber = "01088644622",
+                           protectorPhoneNumber = textState.value,
                            rolesType = "ROLE_PATIENT",
                            fcmToken = ""
                        )

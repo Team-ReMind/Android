@@ -6,16 +6,23 @@ import androidx.navigation.NavOptionsBuilder
 import com.example.remind.core.base.UiEffect
 import com.example.remind.core.base.UiEvent
 import com.example.remind.core.base.UiState
+import com.example.remind.data.model.response.DailyTakingMedicineList
+import com.example.remind.data.model.response.MedicineData
 
 class HomeContract {
     data class State(
-        val sosDialogState: Boolean = false
+        val sosDialogState: Boolean = false,
+        val medicineDialogState:Boolean = false,
+        val memberId:Int? = null,
+        val medicineDailyData: List<DailyTakingMedicineList> = emptyList()
     ): UiState
 
     sealed class Event: UiEvent {
         data class WritingButtonClicked(val context: Context): Event()
         object showSosDialog: Event()
         object DismissDialog: Event()
+        object showMediDialog: Event()
+        object dismissMediDialog: Event()
         data class CallButtonClicked(val context: Context, val number: String):Event()
     }
     sealed class Effect: UiEffect {

@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,11 +56,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
+import com.example.remind.core.common.component.MedicineItem
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.CalendarUiModel
 import com.example.remind.data.repository.CalendarDataSource
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -68,6 +71,7 @@ fun HomeScreen(navController: NavHostController) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
+    var selectDate: Int = 0
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted: Boolean ->
@@ -78,7 +82,9 @@ fun HomeScreen(navController: NavHostController) {
             }
         }
     )
-
+    var year = LocalDate.now().year
+    var month = LocalDate.now().monthValue
+    var day = LocalDate.now().dayOfMonth
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
@@ -97,7 +103,8 @@ fun HomeScreen(navController: NavHostController) {
                         context.startActivity(intent)
                     }
                 }
-                else-> {}
+                else-> {
+                }
             }
         }
     }
@@ -119,6 +126,15 @@ fun HomeScreen(navController: NavHostController) {
         )
     }
 
+    if(uiState.medicineDialogState) {
+        HomeMedicineDialog(
+            onDismissClick = { viewModel.reduceState(HomeContract.Event.dismissMediDialog) },
+            onConfirmClick = { /*TODO*/ },
+            selectReason = { /*TODO*/ },
+            showDialog = uiState.medicineDialogState
+        )
+    }
+
     RemindTheme {
         Column(
             modifier = Modifier
@@ -133,6 +149,10 @@ fun HomeScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 data = calendarUiModel,
                 onDateClicked = { date ->
+                    selectDate = date.date.dayOfMonth
+                    var selectYear = date.date.year
+                    var selectMonth = date.date.format(DateTimeFormatter.ofPattern("MM"))
+                    viewModel.getMedicineDaily(0, "${selectYear}-${selectMonth}-${selectDate}")
                     calendarUiModel = calendarUiModel.copy(
                         selectedDate = date,
                         visibleDates = calendarUiModel.visibleDates.map {
@@ -179,7 +199,35 @@ fun HomeScreen(navController: NavHostController) {
                         style = RemindTheme.typography.b2Bold.copy(color = Color(0xFF1F2937))
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    EmptyMedicineList()
+                    if(uiState.medicineDailyData.isEmpty()) {
+                        EmptyMedicineList()
+                    } else {
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            itemsIndexed(uiState.medicineDailyData) {index, item ->
+                                var timeText: String=""
+                                if(item.medicinesType == "BREAKFAST"){
+                                    timeText = "아침"
+                                } else if(item.medicinesType == "LUNCH") {
+                                    timeText = "점심"
+                                } else if(item.medicinesType == "DINNER") {
+                                    timeText = "저녁"
+                                }
+                                MedicineItem(
+                                    time = timeText,
+                                    score = item.importance.toFloat(),
+                                    doseClick = {
+                                       viewModel.setEvent(HomeContract.Event.showMediDialog)
+                                    },
+                                    unadministeredClick = {},
+                                    isTaking = item.isTaking,
+                                    isTakingTime = item.takingTime,
+                                    notTakingReason = item.notTakingReason
+                                )
+                            }
+                        }
+                    }
                     Spacer(modifier = Modifier.height(23.dp))
                     Text(
                         text = stringResource(id = R.string.오늘_하루_기분이_어떠셨나요),
@@ -376,6 +424,10 @@ fun EmptyMedicineList(
             style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.slate_400)
         )
     }
+}
+
+fun MedicineList() {
+
 }
 
 @Composable

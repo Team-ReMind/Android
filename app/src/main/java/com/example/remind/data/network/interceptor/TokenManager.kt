@@ -56,7 +56,7 @@ class TokenManager @Inject constructor(
 
     suspend fun saveUserId(userId: Int) {
         datastore.edit { prefs ->
-            prefs[USER_ID]
+            prefs[USER_ID] = userId
         }
     }
 

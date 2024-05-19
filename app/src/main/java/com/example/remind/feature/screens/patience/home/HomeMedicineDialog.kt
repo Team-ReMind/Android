@@ -6,17 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,9 +32,6 @@ fun HomeMedicineDialog (
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit,
     selectReason: () -> Unit,
-    selectBackground: Color,
-    confirmBackground: Color,
-    confirmTextColor: Color,
     showDialog:Boolean,
 ) {
     BasicDialog(
@@ -47,9 +40,9 @@ fun HomeMedicineDialog (
                 onDismissClick = onDismissClick,
                 onConfirmClick = onConfirmClick,
                 selectReason = selectReason,
-                selectBackground = selectBackground,
-                confirmBackground = confirmBackground,
-                confirmTextColor = confirmTextColor
+                selectBackground = RemindTheme.colors.main_5,
+                confirmBackground = RemindTheme.colors.main_5,
+                confirmTextColor = RemindTheme.colors.white
             )
         },
         showDialog = showDialog

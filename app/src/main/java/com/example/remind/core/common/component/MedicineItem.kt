@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,6 +32,9 @@ fun MedicineItem(
     score: Float,
     doseClick: () -> Unit,
     unadministeredClick: () -> Unit,
+    isTaking: Boolean,
+    isTakingTime: String,
+    notTakingReason: String
 ) {
     Box(
         modifier = modifier
@@ -63,33 +67,51 @@ fun MedicineItem(
                 )
             }
             Spacer(modifier = modifier.height(4.dp))
-            Row() {
-                //시간이 정해져있을 경우 바꿔지도록 하기
+            if(isTaking == false) {
+                Row() {
+                    //시간이 정해져있을 경우 바꿔지도록 하기
+                    Text(
+                        modifier = modifier
+                            .weight(0.5f)
+                            .background(
+                                color = RemindTheme.colors.main_6,
+                                shape = RoundedCornerShape(bottomStart = 12.dp)
+                            )
+                            .clickable { doseClick },
+                        text = stringResource(id = R.string.복용),
+                        textAlign= TextAlign.Center,
+                        style = RemindTheme.typography.c1Bold.copy(
+                            color = RemindTheme.colors.white,
+                            lineHeight = 20.sp
+                        )
+                    )
+                    Spacer(modifier = modifier.width(2.dp))
+                    Text(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = RemindTheme.colors.main_5,
+                                shape = RoundedCornerShape(bottomEnd = 12.dp)
+                            )
+                            .clickable { unadministeredClick },
+                        text = stringResource(id = R.string.미복용),
+                        textAlign= TextAlign.Center,
+                        style = RemindTheme.typography.c1Bold.copy(
+                            color = RemindTheme.colors.white,
+                            lineHeight = 20.sp
+                        )
+                    )
+                }
+            } else {
                 Text(
                     modifier = modifier
-                        .weight(0.5f)
+                        .fillMaxWidth()
                         .background(
-                            color = RemindTheme.colors.main_6,
+                            color = RemindTheme.colors.slate_500,
                             shape = RoundedCornerShape(bottomStart = 12.dp)
                         )
                         .clickable { doseClick },
-                    text = stringResource(id = R.string.복용),
-                    textAlign= TextAlign.Center,
-                    style = RemindTheme.typography.c1Bold.copy(
-                        color = RemindTheme.colors.white,
-                        lineHeight = 20.sp
-                    )
-                )
-                Spacer(modifier = modifier.width(2.dp))
-                Text(
-                    modifier = modifier
-                        .weight(0.5f)
-                        .background(
-                            color = RemindTheme.colors.main_5,
-                            shape = RoundedCornerShape(bottomEnd = 12.dp)
-                        )
-                        .clickable { unadministeredClick },
-                    text = stringResource(id = R.string.미복용),
+                    text = if(notTakingReason.isNotEmpty()) "미복용" else isTakingTime,
                     textAlign= TextAlign.Center,
                     style = RemindTheme.typography.c1Bold.copy(
                         color = RemindTheme.colors.white,
@@ -104,5 +126,5 @@ fun MedicineItem(
 @Preview
 @Composable
 fun ItemPreview() {
-    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {})
+    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {}, isTaking = true, isTakingTime = "오전 7:00", notTakingReason = "미복용")
 }

@@ -51,9 +51,15 @@ class OnBoardingViewModel @Inject constructor(
                 saveUserType("ROLE_PATIENT")
             }
             is OnBoardingContract.Event.NextButtonFinal -> {
-                getFcmToken()
-                postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
-                if(currentState.moveAble == true) navigateToFinal()
+//                getFcmToken()
+//                postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
+                if(currentState.selectedType == "ROLE_PATIENT") {
+                    navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingPatience.route, true)
+                    getFcmToken()
+                    postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
+                } else if(currentState.selectedType == "ROLE_CENTER") {
+                    navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingCenter.route, true)
+                }
             }
             is OnBoardingContract.Event.NextButtonToPatience -> {
                 //navigateToRoute(event.destinationRoute, event.currentRoute)
@@ -86,31 +92,7 @@ class OnBoardingViewModel @Inject constructor(
             navigateToRoute(Screens.Register.OnBoardingCenter.route, Screens.Register.SelectType.route,false)
         }
     }
-    fun navigateToFinal() {
-        postEffect(
-            OnBoardingContract.Effect.NavigateTo(
-                destination = Screens.Register.OnBoardingFinal.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Register.OnBoardingPatience.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
-//    fun navigateToPatience() {
-//        postEffect(
-//            OnBoardingContract.Effect.NavigateTo(
-//                destination = Screens.Patience.route,
-//                navOptions = navOptions {
-//                    popUpTo(Screens.Register.OnBoardingFinal.route) {
-//                        inclusive = true
-//                    }
-//                }
-//            ))
-//    }
 
-
-    //나중에 이걸로 통합 수정하기
     fun navigateToRoute(destinationRoute: String, currentRoute: String, inclusiveData: Boolean) {
         postEffect(
             OnBoardingContract.Effect.NavigateTo(

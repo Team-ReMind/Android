@@ -31,7 +31,7 @@ fun OnBoardingLoadingDoctorScreen(navController: NavHostController) {
     val effectFlow = viewModel.effect
     LaunchedEffect(true) {
         delay(3000)
-        viewModel.navigateToFinal()
+        //viewModel.navigateToFinal()
         effectFlow.collectLatest { effect->
             when(effect) {
                 is OnBoardingContract.Effect.NavigateTo -> {

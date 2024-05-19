@@ -33,60 +33,25 @@ class SplashViewModel @Inject constructor(
     fun checkUserState() {
         val userType = currentState.userType
         when(userType) {
-            "ROLE_DOCTOR" -> navigateToDoctor()
-            "ROLE_CENTER" -> navigateToCenter()
-            "ROLE_PATIENT" -> navigateToPatience()
-            else -> navigateToLogin()
+            "ROLE_DOCTOR" -> navigateToRoute(Screens.Doctor.DoctorMain.route, Screens.Splash.SplashScreen.route)
+            "ROLE_CENTER" -> navigateToRoute(Screens.Center.CenterMain.route, Screens.Splash.SplashScreen.route)
+            "ROLE_PATIENT" -> navigateToRoute(Screens.Patience.route, Screens.Splash.SplashScreen.route)
+            else -> navigateToRoute(Screens.Register.Login.route, Screens.Splash.SplashScreen.route)
         }
     }
 
-    fun navigateToDoctor() {
+    fun navigateToRoute(destination: String, current: String) {
         postEffect(
             SplashContract.Effect.NavigateTo(
-                destination = Screens.Doctor.DoctorMain.route,
+                destination = destination,
                 navOptions = navOptions {
-                    popUpTo(Screens.Splash.SplashScreen.route) {
+                    popUpTo(current) {
                         inclusive = true
                     }
                 }
             ))
     }
 
-    fun navigateToCenter() {
-        postEffect(
-            SplashContract.Effect.NavigateTo(
-                destination = Screens.Center.CenterMain.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Splash.SplashScreen.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
-
-    fun navigateToPatience() {
-        postEffect(
-            SplashContract.Effect.NavigateTo(
-                destination = Screens.Patience.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Splash.SplashScreen.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
-
-    fun navigateToLogin() {
-        postEffect(
-            SplashContract.Effect.NavigateTo(
-                destination = Screens.Register.Login.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Splash.SplashScreen.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
 
 
 }

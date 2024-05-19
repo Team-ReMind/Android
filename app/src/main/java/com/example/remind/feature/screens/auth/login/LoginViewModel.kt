@@ -95,7 +95,7 @@ private fun socialLogin(token: String) {
                 Timber.d("${tokenManager.getAccessToken()} ||| ${tokenManager.getRefreshToken()}")
             }
             is ApiResult.Failure.UnknownApiError -> {
-                postEffect(LoginContract.Effect.Toastmessage("리마인드 서버 관리자에게 문의하세요"))
+                postEffect(LoginContract.Effect.Toastmessage("리마인드 고객센터에 문의하세요"))
             }
             is ApiResult.Failure.NetworkError -> {
                 postEffect(LoginContract.Effect.Toastmessage("네트워크 설정을 확인해주세요"))

@@ -59,6 +59,7 @@ fun SplashScreen(
                 is SplashContract.Effect.NavigateTo -> {
                     navController.navigate(effect.destination, effect.navOptions)
                 }
+                else -> {}
             }
         }
     }

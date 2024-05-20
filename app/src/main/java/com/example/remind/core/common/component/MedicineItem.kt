@@ -69,7 +69,6 @@ fun MedicineItem(
             Spacer(modifier = modifier.height(4.dp))
             if(isTaking == false) {
                 Row() {
-                    //시간이 정해져있을 경우 바꿔지도록 하기
                     Text(
                         modifier = modifier
                             .weight(0.5f)
@@ -111,7 +110,7 @@ fun MedicineItem(
                             shape = RoundedCornerShape(bottomStart = 12.dp)
                         )
                         .clickable { doseClick },
-                    text = if(notTakingReason.isNotEmpty()) "미복용" else isTakingTime,
+                    text = if(notTakingReason != "") "미복용" else isTakingTime,
                     textAlign= TextAlign.Center,
                     style = RemindTheme.typography.c1Bold.copy(
                         color = RemindTheme.colors.white,

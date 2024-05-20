@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.auth
 
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -14,11 +15,13 @@ import com.example.remind.feature.screens.auth.onboarding.OnBoardingCheckDoctorS
 import com.example.remind.feature.screens.auth.onboarding.OnBoardingFinalScreen
 import com.example.remind.feature.screens.auth.onboarding.OnBoardingLoadingDoctorScreen
 import com.example.remind.feature.screens.auth.onboarding.OnBoardingPatienceScreen
+import com.example.remind.feature.screens.auth.onboarding.OnBoardingViewModel
 import com.example.remind.feature.screens.auth.onboarding.SelectTypeScreen
-
+import com.example.remind.feature.screens.patience.home.HomeViewModel
 
 fun NavGraphBuilder.RegisterGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    onBoardingViewModel: OnBoardingViewModel
 ) {
     navigation(
         route = Screens.Register.route,
@@ -28,10 +31,10 @@ fun NavGraphBuilder.RegisterGraph(
             LoginScreen(navHostController)
         }
         composable(route = Screens.Register.SelectType.route) {
-            SelectTypeScreen(navHostController)
+            SelectTypeScreen(navHostController, onBoardingViewModel)
         }
         composable(route = Screens.Register.OnBoardingPatience.route) {
-            OnBoardingPatienceScreen(navHostController)
+            OnBoardingPatienceScreen(navHostController, onBoardingViewModel)
         }
         composable(route = Screens.Register.OnBoardingCheckDoctor.route) {
             OnBoardingCheckDoctorScreen(navHostController)
@@ -43,7 +46,7 @@ fun NavGraphBuilder.RegisterGraph(
             OnBoardingCenterScreen()
         }
         composable(route = Screens.Register.OnBoardingFinal.route) {
-            OnBoardingFinalScreen(navHostController)
+            OnBoardingFinalScreen(navHostController,onBoardingViewModel)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.remind.data.model.response
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,9 +17,9 @@ data class MedicineData(
 @Serializable
 data class DailyTakingMedicineList(
     val importance: Int,
-    val isTaking: Boolean,
+    val isTaking: Boolean? = null,
     val medicinesType: String,
-    val notTakingReason: String,
+    val notTakingReason: String? = null,
     val prescriptionId: Int,
-    val takingTime: String
+    val takingTime: String? = null
 )

@@ -32,6 +32,7 @@ class OnBoardingViewModel @Inject constructor(
                     it
                 )
             }
+            getFcmToken()
         }
     }
 
@@ -39,26 +40,22 @@ class OnBoardingViewModel @Inject constructor(
     override fun reduceState(event: OnBoardingContract.Event) {
         when(event) {
             is OnBoardingContract.Event.DoctorButtonClicked -> {
-                updateState(currentState.copy("ROLE_DOCTOR"))
+                updateState(currentState.copy(selectedType = "ROLE_DOCTOR"))
                 saveUserType("ROLE_DOCTOR")
             }
             is OnBoardingContract.Event.CenterButtonClicked -> {
-                updateState(currentState.copy("ROLE_CENTER"))
+                updateState(currentState.copy(selectedType = "ROLE_CENTER"))
                 saveUserType("ROLE_CENTER")
             }
             is OnBoardingContract.Event.PatienceButtonClicked -> {
-                updateState(currentState.copy("ROLE_PATIENT"))
+                updateState(currentState.copy(selectedType = "ROLE_PATIENT"))
                 saveUserType("ROLE_PATIENT")
             }
             is OnBoardingContract.Event.NextButtonFinal -> {
-//                getFcmToken()
-//                postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
-                if(currentState.selectedType == "ROLE_PATIENT") {
-                    navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingPatience.route, true)
-                    getFcmToken()
+                viewModelScope.launch {
                     postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
-                } else if(currentState.selectedType == "ROLE_CENTER") {
-                    navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingCenter.route, true)
+                    navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingPatience.route, true)
+                    Log.d("dklfawek", "${currentState.selectedType}")
                 }
             }
             is OnBoardingContract.Event.NextButtonToPatience -> {
@@ -110,10 +107,11 @@ class OnBoardingViewModel @Inject constructor(
         viewModelScope.launch {
             val fcmToken = tokenUseCase.invoke()
             updateState(currentState.copy(fcmToken = fcmToken))
+            Log.d("alwkejflakwe", "${fcmToken}")
         }
     }
 
-    private fun postOnBoarding(data: OnBoardingRequest) {
+    private suspend fun postOnBoarding(data: OnBoardingRequest) {
         viewModelScope.launch {
             val result = onBoardingUserCase.invoke(data)
             when(result) {

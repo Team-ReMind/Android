@@ -28,7 +28,8 @@ fun RemindTextField(
     text: String,
     roundedShape: Dp,
     hintText: String,
-    verticalPadding: Dp,
+    topPadding: Dp,
+    bottomPadding: Dp
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused = interactionSource.collectIsFocusedAsState()
@@ -59,7 +60,7 @@ fun RemindTextField(
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(top = verticalPadding, bottom = verticalPadding, start= 12.dp)
+                    .padding(top = topPadding, bottom = bottomPadding, start= 12.dp)
             ) {
                 if(hintTextVisible) {
                     Text(
@@ -76,11 +77,5 @@ fun RemindTextField(
 @Preview(showBackground = false)
 @Composable
 fun BasicTextFieldPreview() {
-    RemindTextField(
-        onTextChanged = {},
-        text = "",
-        roundedShape = 8.dp,
-        hintText = "fjle",
-        verticalPadding = 13.dp,
-    )
+
 }

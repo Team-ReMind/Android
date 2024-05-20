@@ -1,9 +1,13 @@
 package com.example.remind.data.network.service
 
 import com.example.remind.data.model.request.SetMedicineInfoRequest
+import com.example.remind.data.model.request.WritingMoodRequest
+import com.example.remind.data.model.response.ActivityListResponse
 import com.example.remind.data.model.response.MedicineInfoResponse
 import com.example.remind.data.model.response.MedicingDailyInfoResponse
+import com.example.remind.data.model.response.MoodChartResponse
 import com.example.remind.data.model.response.SetMedicineInfoResponse
+import com.example.remind.data.model.response.WritingMoodResponse
 import com.example.remind.data.network.adapter.ApiResult
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,8 +28,24 @@ interface PatientService {
         @Query("date") string:String,
     ): ApiResult<MedicingDailyInfoResponse>
 
-    @POST("//taking-medicine")
+    @POST("/taking-medicine")
     suspend fun setMedicineInfo(
         @Body body: SetMedicineInfoRequest
     ): ApiResult<SetMedicineInfoResponse>
+    @GET("/activity")
+    suspend fun getActivityList(
+    ): ApiResult<ActivityListResponse>
+
+    @POST("/mood")
+    suspend fun setTodayMood(
+        @Body body: WritingMoodRequest
+    ): ApiResult<WritingMoodResponse>
+
+    @GET("/mood/chart")
+    suspend fun getMoodChart(
+        @Query("year") year: Int,
+        @Query("month") month: Int,
+        @Query("day") day: Int,
+        @Query("size") size: Int,
+    ): ApiResult<MoodChartResponse>
 }

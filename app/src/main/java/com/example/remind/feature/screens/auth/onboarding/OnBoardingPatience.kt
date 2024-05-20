@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -35,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicOnBoardingAppBar
@@ -46,9 +46,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun OnBoardingPatienceScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel:OnBoardingViewModel
 ) {
-    val viewModel: OnBoardingViewModel = hiltViewModel()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
     var isChecked by remember{ mutableStateOf(false) }
@@ -57,8 +57,6 @@ fun OnBoardingPatienceScreen(
     val handleTextChange = { newText: String ->
         textState.value = newText
     }
-
-    val textFieldModifier = Modifier.padding(16.dp)
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -115,7 +113,8 @@ fun OnBoardingPatienceScreen(
                 text = textState.value,
                 roundedShape = 8.dp,
                 hintText = stringResource(id = R.string.번호를_입력해주세요),
-                verticalPadding = 12.dp
+                topPadding = 12.dp,
+                bottomPadding = 12.dp
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -139,7 +138,8 @@ fun OnBoardingPatienceScreen(
                            district = "",
                            protectorPhoneNumber = textState.value,
                            rolesType = "ROLE_PATIENT",
-                           fcmToken = ""
+                           fcmToken = "",
+                           doctorLicenseNumber = ""
                        )
                    ))
                 },

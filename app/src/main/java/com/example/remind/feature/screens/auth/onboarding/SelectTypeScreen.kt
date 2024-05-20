@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.auth.onboarding
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,9 +41,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SelectTypeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: OnBoardingViewModel
 ){
-    val viewModel: OnBoardingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
@@ -93,6 +94,7 @@ fun SelectTypeScreen(
                     backgroundColor = if(uiState.selectedType == "ROLE_PATIENT") RemindTheme.colors.main_4 else RemindTheme.colors.slate_100,
                     text = stringResource(id = R.string.환자용),
                     onClick = {
+                        Log.d("taaag", "환자용클릭됨")
                         viewModel.setEvent(OnBoardingContract.Event.PatienceButtonClicked(context))
                     },
                     textColor = RemindTheme.colors.slate_700,

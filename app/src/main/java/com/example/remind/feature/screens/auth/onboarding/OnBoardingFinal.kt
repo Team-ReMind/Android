@@ -35,9 +35,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun OnBoardingFinalScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: OnBoardingViewModel
 ) {
-    val viewModel: OnBoardingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current

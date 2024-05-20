@@ -9,5 +9,6 @@ data class OnBoardingRequest(
     val district: String,
     val protectorPhoneNumber: String,
     val rolesType: String,
-    val fcmToken: String
+    val fcmToken: String,
+    val doctorLicenseNumber: String
 )

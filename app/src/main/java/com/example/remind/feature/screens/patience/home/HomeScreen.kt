@@ -82,9 +82,9 @@ fun HomeScreen(navController: NavHostController) {
             }
         }
     )
-    var year = LocalDate.now().year
-    var month = LocalDate.now().monthValue
-    var day = LocalDate.now().dayOfMonth
+//    var year = LocalDate.now().year
+//    var month = LocalDate.now().monthValue
+//    var day = LocalDate.now().dayOfMonth
     var sendDate: String = ""
     var medicineTime: String = ""
     val dataSource = CalendarDataSource()
@@ -210,16 +210,10 @@ fun HomeScreen(navController: NavHostController) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             itemsIndexed(uiState.medicineDailyData) {index, item ->
-                                var timeText: String=""
-                                if(item.medicinesType == "BREAKFAST"){
-                                    timeText = "아침"
-                                    medicineTime = timeText
-                                } else if(item.medicinesType == "LUNCH") {
-                                    timeText = "점심"
-                                    medicineTime = timeText
-                                } else if(item.medicinesType == "DINNER") {
-                                    timeText = "저녁"
-                                    medicineTime = timeText
+                                var timeText: String= when(item.medicinesType) {
+                                    "BREAKFAST" -> "아침"
+                                    "LUNCH" -> "점심"
+                                    else -> "저녁"
                                 }
                                 MedicineItem(
                                     time = timeText,
@@ -228,9 +222,9 @@ fun HomeScreen(navController: NavHostController) {
                                        viewModel.setEvent(HomeContract.Event.showMediDialog)
                                     },
                                     unadministeredClick = {},
-                                    isTaking = item.isTaking,
-                                    isTakingTime = item.takingTime,
-                                    notTakingReason = item.notTakingReason
+                                    isTaking = item.isTaking ?: false,
+                                    isTakingTime = item.takingTime ?: "",
+                                    notTakingReason = item.notTakingReason ?: ""
                                 )
                             }
                         }
@@ -248,7 +242,7 @@ fun HomeScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(10.dp))
                     EmptyTodayMoodContainer(
                         clickToWrite = {
-                            viewModel.navigateToWriting()
+                            viewModel.setEvent(HomeContract.Event.WritingButtonClicked(context))
                         }
                     )
                     Spacer(modifier = Modifier.height(80.dp))
@@ -402,7 +396,7 @@ fun DayItem(
                 text = date.date.dayOfMonth.toString(),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 1.dp, horizontal = 7.dp)
+                    .padding(vertical = 2.dp, horizontal = 9.dp)
                     .background(color = RemindTheme.colors.white, shape = CircleShape),
                 style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.slate_800)
             )
@@ -431,10 +425,6 @@ fun EmptyMedicineList(
             style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.slate_400)
         )
     }
-}
-
-fun MedicineList() {
-
 }
 
 @Composable

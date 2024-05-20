@@ -8,17 +8,13 @@ import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.SetMedicineInfoRequest
 import com.example.remind.data.network.adapter.ApiResult
-import com.example.remind.data.network.interceptor.TokenManager
 import com.example.remind.domain.usecase.patience_usecase.PatientMedicineDailyUseCase
 import com.example.remind.domain.usecase.patience_usecase.SetMedicineInfoUseCase
-import com.example.remind.feature.screens.auth.login.LoginContract
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val tokenManager: TokenManager,
     private val patientMedicineDailyUseCase: PatientMedicineDailyUseCase,
     private val setMedicineInfoUseCase: SetMedicineInfoUseCase
 ): BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>(
@@ -27,7 +23,11 @@ class HomeViewModel @Inject constructor(
     override fun reduceState(event: HomeContract.Event) {
         when(event) {
             is HomeContract.Event.WritingButtonClicked -> {
-                navigateToWriting()
+                navigateToRoute(
+                    destination = Screens.Patience.Home.WritingMoodStep1.route,
+                    current = Screens.Patience.Home.route,
+                    inclusiveData = false
+                )
             }
             is HomeContract.Event.showSosDialog -> {
                 updateState(currentState.copy(sosDialogState = true))
@@ -45,25 +45,28 @@ class HomeViewModel @Inject constructor(
                 setSosCall(event.context, event.number)
             }
             is HomeContract.Event.SendNotTakingReason -> {
+                navigateToRoute(
+                    destination = Screens.Patience.Home.SplashCheering.route,
+                    current = Screens.Patience.Home.route,
+                    inclusiveData = false
+                )
                 sendNotTakingReason(event.medicineTime, event.date, event.notTakingReason)
             }
         }
     }
-
-
-
-    fun navigateToWriting() {
+    fun navigateToRoute(destination: String, current: String, inclusiveData: Boolean) {
         postEffect(
             HomeContract.Effect.NavigateTo(
-                destinaton = Screens.Patience.Home.WritingMoodStep1.route,
+                destinaton = destination,
                 navOptions = navOptions {
-                    popUpTo(Screens.Patience.Home.route) {
-                        inclusive = false
+                    popUpTo(current) {
+                        inclusive = inclusiveData
                     }
                 }
             )
         )
     }
+
     fun setSosCall( context: Context,  number:String) {
         postEffect(
             HomeContract.Effect.getCall(context, number)

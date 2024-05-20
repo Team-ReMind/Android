@@ -1,4 +1,4 @@
-package com.example.remind.feature.screens.patience
+package com.example.remind.feature.screens.patience.medicine
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

@@ -83,7 +83,8 @@ fun OnBoardingCheckDoctorScreen(navController: NavHostController) {
                             district = "",
                             protectorPhoneNumber = "01088644622",
                             rolesType = "ROLE_DOCTOR",
-                            fcmToken = ""
+                            fcmToken = "",
+                            doctorLicenseNumber = ""
                         )
                     ))
                 },

@@ -42,6 +42,7 @@ import com.example.remind.core.designsystem.theme.Pretendard
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.response.Prescription
 import com.example.remind.data.model.response.Rate
+import com.example.remind.feature.screens.patience.medicine.component.MedicineCalendar
 import com.example.remind.feature.screens.patience.moodchart.MoodChartContract
 import com.jaikeerthick.composable_graphs.composables.line.LineGraph
 import com.jaikeerthick.composable_graphs.composables.line.model.LineData
@@ -124,7 +125,59 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
                 modifier = Modifier.padding(top = 6.dp),
                 rate = uiState.rate
             )
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 66.dp)
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = RemindTheme.colors.slate_100,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+            ) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CalendarHeader(modifier = Modifier.padding(top = 9.dp))
+                    MedicineCalendar()
+                    Image(
+                        modifier = Modifier.padding(end = 15.dp, bottom = 24.dp),
+                        painter = painterResource(id = R.drawable.ex_info),
+                        contentDescription = null
+                    )
+                }
+            }
         }
+    }
+}
+@Preview
+@Composable
+fun CalendarHeader(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            modifier = modifier.size(width = 7.dp, height = 6.dp),
+            painter = painterResource(id = R.drawable.ic_arrow_graph_left),
+            contentDescription = null
+        )
+        Text(
+            modifier = modifier.padding(start = 4.dp),
+            text = "2024년 5월",
+            style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.text)
+        )
+        Image(
+            modifier = modifier
+                .padding(start = 4.dp)
+                .size(width = 7.dp, height = 6.dp),
+            painter = painterResource(id = R.drawable.ic_arrow_graph_right),
+            contentDescription = null
+        )
     }
 }
 
@@ -209,7 +262,11 @@ fun MedicineRateContainer(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = RemindTheme.colors.slate_100, shape = RoundedCornerShape(12.dp))
+            .border(
+                width = 1.dp,
+                color = RemindTheme.colors.slate_100,
+                shape = RoundedCornerShape(12.dp)
+            )
     ) {
         Column(
             modifier = modifier.padding(vertical = 19.dp, horizontal = 20.dp),

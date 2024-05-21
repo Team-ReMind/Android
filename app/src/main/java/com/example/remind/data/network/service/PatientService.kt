@@ -5,6 +5,8 @@ import com.example.remind.data.model.request.WritingMoodRequest
 import com.example.remind.data.model.response.ActivityListResponse
 import com.example.remind.data.model.response.GetFeelingActivityResponse
 import com.example.remind.data.model.response.GetFeelingPercentResponse
+import com.example.remind.data.model.response.GetMedicineRateResponse
+import com.example.remind.data.model.response.GetPrescriptionResponse
 import com.example.remind.data.model.response.MedicineInfoResponse
 import com.example.remind.data.model.response.MedicingDailyInfoResponse
 import com.example.remind.data.model.response.MoodChartResponse
@@ -58,4 +60,23 @@ interface PatientService {
     suspend fun getFeelingTypeActivity(
         @Query("feelingType") feelingType:String
     ): ApiResult<GetFeelingActivityResponse>
+
+    @GET("/prescription")
+    suspend fun getPrescription(
+        @Query("memberId") memberId: Int
+    ): ApiResult<GetPrescriptionResponse>
+
+    @GET("/taking-medicine/rate")
+    suspend fun getMedicineRate(
+        @Query("memberId") memberId: Int
+    ): ApiResult<GetMedicineRateResponse>
+
+    @GET("/taking-medicine/monthly")
+    suspend fun getMonthlyMedicine(
+        @Query("memberId") memberId: Int,
+        @Query("year") year: Int,
+        @Query("month") month: Int,
+    ): ApiResult<GetMedicineRateResponse>
+
+
 }

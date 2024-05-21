@@ -2,12 +2,10 @@ package com.example.remind.feature.screens.patience.moodchart
 
 import androidx.lifecycle.viewModelScope
 import com.example.remind.core.base.BaseViewModel
-import com.example.remind.data.model.response.MoodChartDto
 import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.domain.usecase.patience_usecase.GetFeelingActivityUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetFeelingPercentUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetMoodChartUseCase
-import com.example.remind.feature.screens.patience.home.HomeContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate

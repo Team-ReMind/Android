@@ -3,6 +3,8 @@ package com.example.remind.data.repository.patient
 import com.example.remind.data.model.request.SetMedicineInfoRequest
 import com.example.remind.data.model.request.WritingMoodRequest
 import com.example.remind.data.model.response.ActivityListResponse
+import com.example.remind.data.model.response.GetMedicineRateResponse
+import com.example.remind.data.model.response.GetPrescriptionResponse
 import com.example.remind.data.model.response.MedicingDailyInfoResponse
 import com.example.remind.data.model.response.MoodChartResponse
 import com.example.remind.data.model.response.OnBoardingResponse
@@ -41,5 +43,21 @@ class PatientMedicineRepositoryImpl @Inject constructor(
         size: Int
     ): ApiResult<MoodChartResponse> {
         return service.getMoodChart(year, month, day, size)
+    }
+
+    override suspend fun getPrescription(memberId: Int): ApiResult<GetPrescriptionResponse> {
+        return service.getPrescription(memberId)
+    }
+
+    override suspend fun getMedicineRate(memberId: Int): ApiResult<GetMedicineRateResponse> {
+       return service.getMedicineRate(memberId)
+    }
+
+    override suspend fun getMonthlyMedicine(
+        memberId: Int,
+        year: Int,
+        month: Int
+    ): ApiResult<GetMedicineRateResponse> {
+       return service.getMonthlyMedicine(memberId, year, month)
     }
 }

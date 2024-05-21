@@ -1,5 +1,7 @@
 package com.example.remind.feature.screens.patience.moodchart
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +43,7 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.graphScoreModel
 import com.example.remind.data.model.response.FeelingActivity
 import com.example.remind.data.repository.CalendarDataSource
+import com.example.remind.feature.screens.patience.home.HomeContract
 import com.example.remind.feature.screens.patience.moodchart.component.FeelingPercentGraph
 import com.jaikeerthick.composable_graphs.composables.line.LineGraph
 import com.jaikeerthick.composable_graphs.composables.line.model.LineData
@@ -48,6 +52,7 @@ import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphFillTy
 import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphStyle
 import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphVisibility
 import com.jaikeerthick.composable_graphs.style.LabelPosition
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 @Composable
 fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewModel) {
@@ -61,6 +66,17 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
         graphScoreModel(25, R.drawable.ic_bad),
         graphScoreModel(0, R.drawable.ic_terrible),
     )
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when(effect) {
+                is MoodChartContract.Effect.NavigateTo -> {
+                    navController.navigate(effect.destinaton, effect.navOptions)
+                }
+                else-> {
+                }
+            }
+        }
+    }
     RemindTheme {
         Column(
             modifier = Modifier

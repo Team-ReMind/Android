@@ -60,6 +60,7 @@
     <string name="아침">아침</string>
     <string name="점심">점심</string>
     <string name="저녁">저녁</string>
+    <string name="비상용">비상용</string>
     <string name="약_복용_체크">약 복용 체크</string>
     <string name="등록된_약이_없어요">등록된 약이 없어요!</string>
     <string name="오늘_하루_기분이_어떠셨나요">오늘 하루 기분이 어떠셨나요?</string>
@@ -96,6 +97,10 @@
     <string name="무드">무드</string>
     <string name="활동">활동</string>
     <string name="남긴_기록">남긴 기록</string>
+   <string name="약_복용률">약 복용률</string>
+    <string name="모두_복용_완료">모두 복용 완료</string>
+    <string name="부분_복용">부분 복용</string>
+
 
     <string name="의사_면허_인증">의사 면허 인증</string>
     <string name="의사_면허_인증_중">의사 면허 인증 중이에요.\n인증은 최대 24시간 이내 처리됩니다.</string>

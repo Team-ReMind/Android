@@ -31,12 +31,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.common.component.BasicTextButton
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.graphScoreModel
+import com.example.remind.data.model.response.FeelingActivity
 import com.example.remind.data.repository.CalendarDataSource
+import com.example.remind.feature.screens.patience.moodchart.component.FeelingPercentGraph
 import com.jaikeerthick.composable_graphs.composables.line.LineGraph
 import com.jaikeerthick.composable_graphs.composables.line.model.LineData
 import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphColors
@@ -168,6 +172,31 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                 text = stringResource(id = R.string.무엇을_할_때_기분이_좋은지_확인),
                 style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3)
             )
+            Box(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .border(
+                        width = 1.dp,
+                        color = RemindTheme.colors.grayscale_2,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+            ) {
+                FeelingPercentGraph(
+                    modifier = Modifier.padding(top = 12.dp, bottom = 21.dp, start = 8.dp, end = 8.dp),
+                    percentList = uiState.feelingTotalPerCent,
+                    onClick = {}
+                )
+            }
+            //활동 리스트들 들어가야함
+            Text(
+                modifier = Modifier.padding(top = 20.dp),
+                text = stringResource(id = R.string.무드_차트_월별_비교)
+            )
+            Image(
+                modifier = Modifier.padding(top = 8.dp, bottom = 45.dp),
+                painter =  painterResource(id = R.drawable.moodcontainer_example),
+                contentDescription = null
+            )
         }
     }
 }
@@ -237,6 +266,42 @@ fun ScoreList(
         )
     }
 }
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun ActivityListItem(
+    modifier: Modifier = Modifier,
+    feelingActivity: FeelingActivity,
+) {
+    Box(
+        modifier = modifier
+            .background(color = RemindTheme.colors.main_1, shape = RoundedCornerShape(8.dp))
+    ) {
+        Row(
+            modifier = modifier.padding(vertical = 7.dp, horizontal = 9.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            GlideImage(
+                modifier = Modifier.size(width = 23.dp, height = 23.dp),
+                model = feelingActivity.iconImage,
+                contentDescription = null
+            )
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = feelingActivity.name,
+                style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.text)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                modifier = Modifier.padding(end = 9.dp),
+                text = "${feelingActivity.percent}%",
+                style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.text)
+            )
+        }
+    }
+}
+
 
 fun ShowWeek(): String {
     val dataSoruce = CalendarDataSource()

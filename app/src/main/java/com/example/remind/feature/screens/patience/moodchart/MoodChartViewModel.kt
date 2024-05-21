@@ -28,6 +28,7 @@ class MoodChartViewModel @Inject constructor(
         viewModelScope.launch {
             getMoodChartData(year, month, date-3)
             extractList()
+            getFeelingPerCent()
         }
     }
     override fun reduceState(event: MoodChartContract.Event) {
@@ -52,6 +53,19 @@ class MoodChartViewModel @Inject constructor(
                     ))
                 }
                 else -> {}
+            }
+        }
+    }
+    private fun getFeelingPerCent() {
+        viewModelScope.launch {
+            val result = getFeelingPercentUseCase.invoke()
+            when(result) {
+                is ApiResult.Success -> {
+                    updateState(currentState.copy(
+                        feelingTotalPerCent = result.data.data
+                    ))
+                }
+                else ->{}
             }
         }
     }

@@ -42,11 +42,22 @@ class CalendarDataSource {
         val year = date.year
         return "${year}년 ${month}월 ${weekOfYear}주차"
     }
+    fun getWeeklyGraph(date: LocalDate): String {
+        val weekFields = WeekFields.of(Locale.getDefault())
+        val weekOfYear = date.get(weekFields.weekOfMonth())
+        val month = date.monthValue
+        return "${month}월 ${weekOfYear}주차"
+    }
 
     fun getDayForSearch(date: LocalDate): String {
         val year = date.year
         val month = date.monthValue
         val date = date.dayOfMonth
+        return "${year}.${month}.${date}"
+    }
+    fun getDayForSearchChange(date: String): String {
+        val year = LocalDate.now().year
+        val month = LocalDate.now().monthValue
         return "${year}.${month}.${date}"
     }
 

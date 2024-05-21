@@ -14,6 +14,8 @@ import com.example.remind.feature.screens.patience.home.HomeCheeringScreen
 import com.example.remind.feature.screens.patience.home.HomeScreen
 import com.example.remind.feature.screens.patience.home.HomeViewModel
 import com.example.remind.feature.screens.patience.medicine.MedicineScreen
+import com.example.remind.feature.screens.patience.moodchart.MoodChartScreen
+import com.example.remind.feature.screens.patience.moodchart.MoodChartViewModel
 import com.example.remind.feature.screens.patience.writing.WritingMoodStep1Screen
 import com.example.remind.feature.screens.patience.writing.WritingMoodStep2FeelingScreen
 import com.example.remind.feature.screens.patience.writing.WritingMoodStep2LastScreen
@@ -29,6 +31,7 @@ fun PatienceGraph(
 ) {
     val HomeviewModel: HomeViewModel = hiltViewModel()
     val WritingviewModel: WritingViewModel = hiltViewModel()
+    val MoodChartViewModel: MoodChartViewModel  = hiltViewModel()
     NavHost(
         navController = navController,
         route = Screens.Patience.route,
@@ -56,7 +59,7 @@ fun PatienceGraph(
             HomeCheeringScreen(navController)
         }
         composable(route = Screens.Patience.MoodChart.route) {
-            MoodChartScreen()
+            MoodChartScreen(navController, MoodChartViewModel)
         }
         composable(route = Screens.Patience.Medicine.route) {
             MedicineScreen()

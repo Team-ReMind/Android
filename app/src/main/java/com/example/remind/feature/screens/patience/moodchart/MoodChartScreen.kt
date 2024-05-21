@@ -1,12 +1,15 @@
-package com.example.remind.feature.screens.patience
+package com.example.remind.feature.screens.patience.moodchart
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -25,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.common.component.BasicTextButton
@@ -39,9 +45,10 @@ import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphStyle
 import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphVisibility
 import com.jaikeerthick.composable_graphs.style.LabelPosition
 import java.time.LocalDate
-
 @Composable
-fun MoodChartScreen() {
+fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewModel) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
     val scrollState = rememberScrollState()
     val graphYaxisList = listOf(
         graphScoreModel(100, R.drawable.ic_verygood),
@@ -53,6 +60,8 @@ fun MoodChartScreen() {
     RemindTheme {
         Column(
             modifier = Modifier
+                .fillMaxSize()
+                .background(color = RemindTheme.colors.white)
                 .padding(horizontal = 20.dp)
                 .verticalScroll(scrollState)
         ) {
@@ -79,7 +88,7 @@ fun MoodChartScreen() {
             Spacer(modifier = Modifier.height(8.dp))
             BasicButton(
                 modifier = Modifier.fillMaxWidth(),
-                text = "${showSelectDate()} 기록 확인",
+                text = if(uiState.date == "") "${showSelectDate()} 기록 확인" else "${showChangeDate(uiState.date)} 기록 확인",
                 RoundedCorner = 12.dp,
                 backgroundColor = RemindTheme.colors.main_6,
                 textColor = RemindTheme.colors.white,
@@ -91,6 +100,7 @@ fun MoodChartScreen() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(300.dp)
                     .border(
                         width = 1.dp,
                         shape = RoundedCornerShape(12.dp),
@@ -99,20 +109,53 @@ fun MoodChartScreen() {
             ) {
                 Row(
                     modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier.padding(end = 7.dp),
+                        painter = painterResource(id = R.drawable.ic_arrow_graph_left),
+                        contentDescription = null
+                    )
+                    Text(
+                        modifier = Modifier.padding(end = 7.dp),
+                        text = ShowWeek(),
+                        style = RemindTheme.typography.b3Medium.copy(color = RemindTheme.colors.text)
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_arrow_graph_right),
+                        contentDescription = null
+                    )
+                }
+                Row(
+                    modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.Center)
                         .padding(start = 7.dp, end = 10.dp)
                 ) {
                     Column(
-                        modifier = Modifier,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(top = 20.dp),
                         verticalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        for(i in 0..4) {
-                            ScoreList(data = graphYaxisList.get(i))
+                        graphYaxisList.forEach { data ->
+                            ScoreList(
+                                data = data,
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.width(25.dp))
-                    GraphComponent()
+                    if(uiState.xAxisData.isNotEmpty()) {
+                        GraphComponent(
+                            modifier = Modifier.weight(4f),
+                            dateList = uiState.xAxisData,
+                            pointClick = {clickedDate->
+                                viewModel.setEvent(MoodChartContract.Event.storeDate(clickedDate))
+                            }
+                        )
+                    }
                 }
             }
             Text(
@@ -129,14 +172,14 @@ fun MoodChartScreen() {
     }
 }
 
-
-//api연결후 수정 필요함
 @Composable
 fun GraphComponent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    dateList: List<String>,
+    pointClick: (String) -> Unit
 ){
-    val xAxisData = listOf("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat")
-    val yAxisData = listOf(100, 75, 100, 25, 75, 50, 50)
+    val xAxisData = dateList
+    val yAxisData = listOf(100, 83, 66, 49, 35,18,0)
     val dataModel = mutableListOf<LineData>()
     for(i in xAxisData.indices) {
         val lineData = LineData(xAxisData[i], yAxisData[i])
@@ -162,9 +205,12 @@ fun GraphComponent(
             yAxisLabelPosition = LabelPosition.LEFT
         )
         LineGraph(
+            modifier = Modifier.padding(top = 17.dp),
             data = dataModel,
             style = style,
-            onPointClick = {}
+            onPointClick = { lineData->
+                pointClick(lineData.x)
+            }
         )
     }
 
@@ -176,14 +222,15 @@ fun ScoreList(
     data: graphScoreModel
 ) {
     Column(
+        modifier = modifier.fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            modifier = modifier.size(15.dp, 15.dp),
+            modifier = Modifier.size(15.dp, 15.dp),
             painter = painterResource(id = data.img),
             contentDescription = null
         )
-        Spacer(modifier = modifier.height(1.dp))
+        Spacer(modifier = Modifier.height(1.dp))
         Text(
             text = data.score.toString(),
             style = RemindTheme.typography.c2Medium.copy(color = RemindTheme.colors.text)
@@ -191,15 +238,20 @@ fun ScoreList(
     }
 }
 
+fun ShowWeek(): String {
+    val dataSoruce = CalendarDataSource()
+    val result = dataSoruce.getWeeklyGraph(LocalDate.now())
+    return result
+}
+
 fun showSelectDate(): String {
     val dataSource = CalendarDataSource()
     val result = dataSource.getDayForSearch(LocalDate.now())
     return result
 }
-
-
-@Preview
-@Composable
-fun ChartPreview() {
-
+fun showChangeDate(date: String): String {
+    val dataSource = CalendarDataSource()
+    val result = dataSource.getDayForSearchChange(date)
+    return result
 }
+

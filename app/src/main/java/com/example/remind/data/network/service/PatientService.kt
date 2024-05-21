@@ -3,6 +3,8 @@ package com.example.remind.data.network.service
 import com.example.remind.data.model.request.SetMedicineInfoRequest
 import com.example.remind.data.model.request.WritingMoodRequest
 import com.example.remind.data.model.response.ActivityListResponse
+import com.example.remind.data.model.response.GetFeelingActivityResponse
+import com.example.remind.data.model.response.GetFeelingPercentResponse
 import com.example.remind.data.model.response.MedicineInfoResponse
 import com.example.remind.data.model.response.MedicingDailyInfoResponse
 import com.example.remind.data.model.response.MoodChartResponse
@@ -48,4 +50,12 @@ interface PatientService {
         @Query("day") day: Int,
         @Query("size") size: Int,
     ): ApiResult<MoodChartResponse>
+
+    @GET("/mood/chart/percents")
+    suspend fun getFeelingPercentChart(): ApiResult<GetFeelingPercentResponse>
+
+    @GET("/mood/chart/percent/activity")
+    suspend fun getFeelingPercentChart(
+        @Query("feelingType") feelingType:String
+    ): ApiResult<GetFeelingActivityResponse>
 }

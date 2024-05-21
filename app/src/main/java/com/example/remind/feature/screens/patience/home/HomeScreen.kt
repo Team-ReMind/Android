@@ -82,9 +82,6 @@ fun HomeScreen(navController: NavHostController) {
             }
         }
     )
-//    var year = LocalDate.now().year
-//    var month = LocalDate.now().monthValue
-//    var day = LocalDate.now().dayOfMonth
     var sendDate: String = ""
     var medicineTime: String = ""
     val dataSource = CalendarDataSource()
@@ -216,6 +213,9 @@ fun HomeScreen(navController: NavHostController) {
                                     else -> "저녁"
                                 }
                                 MedicineItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(end = 7.dp),
                                     time = timeText,
                                     score = item.importance.toFloat(),
                                     doseClick = {
@@ -476,14 +476,4 @@ fun ShowCurrentWeek():String {
     return currentWeek
 }
 
-
-
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun HomePreview() {
-    EmptyTodayMoodContainer(clickToWrite = {})
-}
 

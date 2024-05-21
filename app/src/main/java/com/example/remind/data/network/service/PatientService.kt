@@ -55,7 +55,7 @@ interface PatientService {
     suspend fun getFeelingPercentChart(): ApiResult<GetFeelingPercentResponse>
 
     @GET("/mood/chart/percent/activity")
-    suspend fun getFeelingPercentChart(
+    suspend fun getFeelingTypeActivity(
         @Query("feelingType") feelingType:String
     ): ApiResult<GetFeelingActivityResponse>
 }

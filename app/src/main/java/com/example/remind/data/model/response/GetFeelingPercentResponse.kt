@@ -7,5 +7,5 @@ data class GetFeelingPercentResponse(
 )
 data class PercentList(
     val feelingType: String,
-    val percent: Int
+    val percent: Double
 )

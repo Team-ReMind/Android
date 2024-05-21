@@ -47,7 +47,9 @@ class MoodChartViewModel @Inject constructor(
             when(result) {
                 is ApiResult.Success -> {
                     updateState(currentState.copy(
-                        moodChartData = result.data.data
+                        moodChartData = result.data.data,
+                        xAxisData = result.data.data.moodChartDtos.map { it.localDate },
+                        yAxisData = result.data.data.moodChartDtos.map { it.score }
                     ))
                 }
                 else -> {}

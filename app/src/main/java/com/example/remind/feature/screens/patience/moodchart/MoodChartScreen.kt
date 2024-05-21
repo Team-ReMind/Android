@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -170,11 +172,14 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                     if(uiState.xAxisData.isNotEmpty()) {
                         GraphComponent(
                             modifier = Modifier.weight(4f),
-                            dateList = uiState.xAxisData,
+                            dateListX = uiState.xAxisData,
+                            dateListY = uiState.yAxisData,
                             pointClick = {clickedDate->
                                 viewModel.setEvent(MoodChartContract.Event.storeDate(clickedDate))
                             }
                         )
+                    } else {
+                        CircularProgressIndicator()
                     }
                 }
             }
@@ -197,11 +202,16 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                         shape = RoundedCornerShape(12.dp)
                     )
             ) {
-                FeelingPercentGraph(
-                    modifier = Modifier.padding(top = 12.dp, bottom = 21.dp, start = 8.dp, end = 8.dp),
-                    percentList = uiState.feelingTotalPerCent,
-                    onClick = {}
-                )
+                if(uiState.feelingTotalPerCent.isNotEmpty()) {
+                    FeelingPercentGraph(
+                        modifier = Modifier.padding(top = 12.dp, bottom = 21.dp, start = 8.dp, end = 8.dp),
+                        percentList = uiState.feelingTotalPerCent,
+                        onClick = {}
+                    )
+                } else {
+                    CircularProgressIndicator()
+                }
+
             }
             //활동 리스트들 들어가야함
             Text(
@@ -209,8 +219,11 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                 text = stringResource(id = R.string.무드_차트_월별_비교)
             )
             Image(
-                modifier = Modifier.padding(top = 8.dp, bottom = 45.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 105.dp),
                 painter =  painterResource(id = R.drawable.moodcontainer_example),
+                contentScale = ContentScale.FillWidth,
                 contentDescription = null
             )
         }
@@ -220,11 +233,12 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
 @Composable
 fun GraphComponent(
     modifier: Modifier = Modifier,
-    dateList: List<String>,
+    dateListX: List<String>,
+    dateListY: List<Int>,
     pointClick: (String) -> Unit
 ){
-    val xAxisData = dateList
-    val yAxisData = listOf(100, 83, 66, 49, 35,18,0)
+    val xAxisData = dateListX
+    val yAxisData = dateListY
     val dataModel = mutableListOf<LineData>()
     for(i in xAxisData.indices) {
         val lineData = LineData(xAxisData[i], yAxisData[i])

@@ -30,7 +30,7 @@ fun FeelingPercentGraph(
     onClick: () -> Unit
 ) {
     val convertPercentList:List<Float> = percentList.map {
-        (it.percent.toFloat())/100.0f
+        (it.percent.toInt())/100.0f
     }
     val feelingList = listOf(
         FeelingScoreModel(R.drawable.ic_verygood, "정말 좋음", "VERY_GOOD"),
@@ -50,10 +50,6 @@ fun FeelingPercentGraph(
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "${percentList.get(0).percent}%",
-                style = RemindTheme.typography.c2Bold.copy(color = RemindTheme.colors.main_5)
-            )
             Box(
                 modifier = Modifier
                     .weight(convertPercentList.get(0))
@@ -75,10 +71,6 @@ fun FeelingPercentGraph(
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "${percentList.get(1).percent}%",
-                style = RemindTheme.typography.c2Bold.copy(color = RemindTheme.colors.main_5)
-            )
             Box(
                 modifier = Modifier
                     .weight(convertPercentList.get(1))
@@ -100,11 +92,6 @@ fun FeelingPercentGraph(
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "${percentList.get(2).percent}%",
-                style = RemindTheme.typography.c2Bold.copy(color = RemindTheme.colors.main_5)
-            )
-
             Box(
                 modifier = Modifier
                     .weight(convertPercentList.get(2))
@@ -124,11 +111,11 @@ fun FeelingPercentGraph(
             }
         }
         Box(
-        modifier = Modifier
-            .weight(convertPercentList.get(3))
-            .background(color = RemindTheme.colors.grayscale_1)
-            .clickable(
-                onClick = onClick
+            modifier = Modifier
+                .weight(convertPercentList.get(3))
+                .background(color = RemindTheme.colors.grayscale_1)
+                .clickable(
+                    onClick = onClick
             ),
         contentAlignment = Alignment.Center
         ) {

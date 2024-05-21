@@ -14,6 +14,7 @@ class MoodChartContract {
     data class State(
         val moodChartData: Mood = Mood(true, emptyList()),
         val xAxisData: List<String> = emptyList(),
+        val yAxisData: List<Int> = emptyList(),
         val date: String = "",
         val feelingTotalPerCent: List<PercentList> = emptyList()
     ): UiState

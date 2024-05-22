@@ -10,6 +10,10 @@ import com.example.remind.data.repository.auth.AuthRepository
 import com.example.remind.data.repository.auth.AuthRepositoryImpl
 import com.example.remind.data.repository.auth.TokenRepository
 import com.example.remind.data.repository.auth.TokenRepositoryImpl
+import com.example.remind.data.repository.patient.PatientMedicineRepository
+import com.example.remind.data.repository.patient.PatientMedicineRepositoryImpl
+import com.example.remind.data.repository.patient.PatientMoodChartRepository
+import com.example.remind.data.repository.patient.PatientMoodChartRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -75,6 +79,13 @@ object NetworkModule {
         @Singleton
         @Binds
         abstract fun providesTokenRepository(tokenRepositoryImpl: TokenRepositoryImpl): TokenRepository
+
+        @Singleton
+        @Binds
+        abstract fun providesPatientMedicineRepository(patientMedicineRepositoryImpl: PatientMedicineRepositoryImpl): PatientMedicineRepository
+        @Singleton
+        @Binds
+        abstract fun providesPatientMoodChartRepository(patientMoodChartRepositoryImpl: PatientMoodChartRepositoryImpl): PatientMoodChartRepository
     }
 
 }

@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -35,9 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicOnBoardingAppBar
+import com.example.remind.core.common.component.RemindTextField
 import com.example.remind.core.designsystem.theme.Pretendard
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.request.OnBoardingRequest
@@ -45,12 +46,17 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun OnBoardingPatienceScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel:OnBoardingViewModel
 ) {
-    val viewModel: OnBoardingViewModel = hiltViewModel()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
     var isChecked by remember{ mutableStateOf(false) }
+
+    val textState = remember { mutableStateOf("") }
+    val handleTextChange = { newText: String ->
+        textState.value = newText
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -71,7 +77,7 @@ fun OnBoardingPatienceScreen(
         ) {
             BasicOnBoardingAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                weight = 0.5f,
+                weight = 0.7f,
                 title = stringResource(id = R.string.사용자_정보)
             )
             Text(
@@ -99,13 +105,19 @@ fun OnBoardingPatienceScreen(
                 ),
             )
             Spacer(modifier = Modifier.height(56.dp))
-            Image(
+            RemindTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp),
-                painter = painterResource(id = R.drawable.ic_example1),
-                contentDescription = null
+                onTextChanged = handleTextChange,
+                text = textState.value,
+                roundedShape = 8.dp,
+                hintText = stringResource(id = R.string.번호를_입력해주세요),
+                topPadding = 12.dp,
+                bottomPadding = 12.dp,
+                maxLine = 1
             )
+
             Spacer(modifier = Modifier.height(12.dp))
             CheckReading(
                 modifier = Modifier.fillMaxWidth(),
@@ -120,16 +132,7 @@ fun OnBoardingPatienceScreen(
                 backgroundColor = RemindTheme.colors.main_6,
                 text = stringResource(id = R.string.다음),
                 onClick = {
-                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinal(
-                       OnBoardingRequest(
-                           centerName = "",
-                           city = "",
-                           district = "",
-                           protectorPhoneNumber = "01088644622",
-                           rolesType = "ROLE_PATIENT",
-                           fcmToken = ""
-                       )
-                   ))
+                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinalPatience(number = textState.value))
                 },
                 textColor = RemindTheme.colors.white,
                 enable = true

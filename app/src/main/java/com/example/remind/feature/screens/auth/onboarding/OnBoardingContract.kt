@@ -7,24 +7,24 @@ import com.example.remind.core.base.UiEffect
 import com.example.remind.core.base.UiEvent
 import com.example.remind.core.base.UiState
 import com.example.remind.data.model.request.OnBoardingRequest
-import com.example.remind.feature.screens.auth.login.LoginContract
 
 class OnBoardingContract {
     data class State(
         val selectedType: String? = null,
         val userName: String = "",
         val moveAble: Boolean = false,
-        val fcmToken: String = ""
+        val fcmToken: String = "",
+        val userInfo: OnBoardingRequest = OnBoardingRequest()
     ): UiState
 
     sealed class Event: UiEvent {
         data class DoctorButtonClicked(val context: Context): Event()
         data class CenterButtonClicked(val context: Context): Event()
         data class PatienceButtonClicked(val context: Context): Event()
-        data class NextButtonClicked(val context: Context): Event()
-        data class NextButtonFinal(val onBoardingData: OnBoardingRequest): Event()
-        data class NextButtonToPatience(val context: Context): Event()
-        data class NavigateButtonClicked(val destinationRoute: String, val currentRoute: String): Event()
+        data class NextButtonFinalPatience(val number: String): Event()
+        data class NextButtonFinalDoctor(val certifinumber: String): Event()
+        data class NavigateButtonClicked(val destinationRoute: String, val currentRoute: String, val inclusive: Boolean): Event()
+        data class StoreUserInfoButtonClicked(val info: OnBoardingRequest): Event()
     }
 
     sealed class Effect: UiEffect {

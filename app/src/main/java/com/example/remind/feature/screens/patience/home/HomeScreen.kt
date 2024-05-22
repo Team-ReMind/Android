@@ -16,6 +16,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +24,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,27 +50,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
+import com.example.remind.core.common.component.MedicineItem
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.CalendarUiModel
 import com.example.remind.data.repository.CalendarDataSource
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(navController: NavHostController) {
-    val viewModel: HomeViewModel = hiltViewModel()
+fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
+    var selectDate: Int = 0
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted: Boolean ->
@@ -78,7 +81,8 @@ fun HomeScreen(navController: NavHostController) {
             }
         }
     )
-
+    var sendDate: String = ""
+    var medicineTime: String = ""
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
@@ -97,7 +101,8 @@ fun HomeScreen(navController: NavHostController) {
                         context.startActivity(intent)
                     }
                 }
-                else-> {}
+                else-> {
+                }
             }
         }
     }
@@ -119,6 +124,17 @@ fun HomeScreen(navController: NavHostController) {
         )
     }
 
+    if(uiState.medicineDialogState) {
+        HomeMedicineDialog(
+            onDismissClick = { viewModel.reduceState(HomeContract.Event.dismissMediDialog) },
+            onConfirmClick = {
+               viewModel.setEvent(HomeContract.Event.SendNotTakingReason(context))
+            },
+            showDialog = uiState.medicineDialogState,
+            viewModel = viewModel
+        )
+    }
+
     RemindTheme {
         Column(
             modifier = Modifier
@@ -133,6 +149,11 @@ fun HomeScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 data = calendarUiModel,
                 onDateClicked = { date ->
+                    selectDate = date.date.dayOfMonth
+                    var selectYear = date.date.year
+                    var selectMonth = date.date.format(DateTimeFormatter.ofPattern("MM"))
+                    sendDate = "${selectYear}-${selectMonth}-${selectDate}"
+                    viewModel.getMedicineDaily(0, "${selectYear}-${selectMonth}-${selectDate}")
                     calendarUiModel = calendarUiModel.copy(
                         selectedDate = date,
                         visibleDates = calendarUiModel.visibleDates.map {
@@ -179,7 +200,37 @@ fun HomeScreen(navController: NavHostController) {
                         style = RemindTheme.typography.b2Bold.copy(color = Color(0xFF1F2937))
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    EmptyMedicineList()
+                    if(uiState.medicineDailyData.isEmpty()) {
+                        EmptyMedicineList()
+                    } else {
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            itemsIndexed(uiState.medicineDailyData) {index, item ->
+                                var timeText: String= when(item.medicinesType) {
+                                    "BREAKFAST" -> "아침"
+                                    "LUNCH" -> "점심"
+                                    else -> "저녁"
+                                }
+                                MedicineItem(
+                                    modifier = Modifier
+                                        .padding(end = 7.dp)
+                                        .widthIn(min = 100.dp, max = 102.dp),
+                                    time = timeText,
+                                    score = item.importance.toFloat(),
+                                    doseClick = {
+                                       viewModel.setEvent(HomeContract.Event.medicineSuccess(item.medicinesType))
+                                    },
+                                    unadministeredClick = {
+                                        viewModel.setEvent(HomeContract.Event.showMediDialog(item.medicinesType))
+                                    },
+                                    isTaking = item.isTaking ?: false,
+                                    isTakingTime = item.takingTime ?: "",
+                                    notTakingReason = item.notTakingReason ?: ""
+                                )
+                            }
+                        }
+                    }
                     Spacer(modifier = Modifier.height(23.dp))
                     Text(
                         text = stringResource(id = R.string.오늘_하루_기분이_어떠셨나요),
@@ -193,7 +244,7 @@ fun HomeScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(10.dp))
                     EmptyTodayMoodContainer(
                         clickToWrite = {
-                            viewModel.navigateToWriting()
+                            viewModel.setEvent(HomeContract.Event.WritingButtonClicked(context))
                         }
                     )
                     Spacer(modifier = Modifier.height(80.dp))
@@ -217,7 +268,7 @@ fun HomeTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.ic_main_logo),
             contentDescription = null,
             modifier = modifier
                 .size(
@@ -347,7 +398,7 @@ fun DayItem(
                 text = date.date.dayOfMonth.toString(),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 1.dp, horizontal = 7.dp)
+                    .padding(vertical = 2.dp, horizontal = 9.dp)
                     .background(color = RemindTheme.colors.white, shape = CircleShape),
                 style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.slate_800)
             )
@@ -427,14 +478,4 @@ fun ShowCurrentWeek():String {
     return currentWeek
 }
 
-
-
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun HomePreview() {
-    EmptyTodayMoodContainer(clickToWrite = {})
-}
 

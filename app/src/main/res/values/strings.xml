@@ -7,7 +7,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="스스로를_돌아볼_수_있는">스스로를 돌아볼 수 있는\n당신만의 공간으로 초대합니다.</string>
+    <string name="여러분_곁을_따뜻하게_지켜드릴게요">여러분 곁을\n따듯하게 지켜드릴게요!</string>
     <string name="카카오로_로그인하기">카카오로 로그인하기</string>
     <string name="진료실_밖_일상을_더하다">진료실 밖 일상을 더하다</string>
     <string name="환자용">환자용</string>
@@ -33,6 +33,9 @@
     <string name="다른_약물을_복용했어요">다른 약물을 복용했어요!</string>
     <string name="부작용이_의심돼요">부작용이 의심돼요!</string>
     <string name="완료">완료</string>
+    <string name="해당_활동이_어떤_영향을_주었나요">해당 활동이 어떤 영향을 주었나요?</string>
+    <string name="활동을_할_때">활동을 할 때 느낀 것을 간단하게 남겨볼까요?</string>
+    <string name="알림_추가">알림 추가</string>
 
     <string name="오늘_하루_어떤_기분을_느끼셨나요_">오늘하루,\n어떤 기분을 느끼셨나요?</string>
     <string name="오늘_하루의_전반적인_기분을_선택해주세요">오늘 하루의 전반적인 기분을 선택해주세요!</string>
@@ -57,13 +60,14 @@
     <string name="아침">아침</string>
     <string name="점심">점심</string>
     <string name="저녁">저녁</string>
+    <string name="비상용">비상용</string>
     <string name="약_복용_체크">약 복용 체크</string>
     <string name="등록된_약이_없어요">등록된 약이 없어요!</string>
     <string name="오늘_하루_기분이_어떠셨나요">오늘 하루 기분이 어떠셨나요?</string>
     <string name="당신의_하루가_궁금해요">당신의 하루가 궁금해요</string>
     <string name="오늘의_기분_기록하기">오늘의 기분 기록하기</string>
-    <string name="사용_입장_선택">사용 입장 선택</string>
-    <string name="어떤_입장에서_사용하실지_선택해주세요">어떤 입장에서 사용하실지 선택해주세요!</string>
+    <string name="사용자_유형_선택">사용자 유형 선택</string>
+    <string name="서비스_이용을_위한_사용자_유형을_선택해주세요">서비스 이용을 위한\n사용자 유형을 선택해주세요!</string>
     <string name="님_">김말랑 님,</string>
     <string name="좋은_하루_되세요">좋은 하루 되세요!</string>
     <string name="관리_중인_환자">관리 중인 환자</string>
@@ -71,19 +75,31 @@
     <string name="삭제">삭제</string>
     <string name="추가하기">추가하기</string>
     <string name="환자_관리">환자 관리</string>
-
+    <string name="번호를_입력해주세요">번호를 입력해주세요.</string>
+    <string name="요일">요일</string>
+    <string name="오늘의_활동은_최대_3개까지">오늘의 활동은 최대 3개까지 등록 가능해요!</string>
+    <string name="활동_추가하기">활동 추가하기</string>
     <string name="삭제하기">삭제하기</string>
     <string name="환자_추가하기">환자 추가하기</string>
     <string name="담당_환자_추가시_코드_번호를_공유하세요">담당 환자 추가시 코드 번호를 공유하세요!</string>
     <string name="추가_요청">추가 요청</string>
     <string name="수락">수락</string>
-
+    <string name="힌트_오랜만에_">Ex) 오랜만에 활기찬 기분을 느꼈다.</string>
+    <string name="오늘_하루_감사한점_3가지">오늘 하루,\n감사한 점 3가지를\n기록해 볼까요?</string>
+    <string name="간단한_일기를_써도_좋아요">간단한 일기를 써도 좋아요:)</string>
+    <string name="일기_예시">1.아름다운 벚꽃을 볼 수 있음에 감사해요.\n2.오늘 맛있는 빵을 먹어 감사해요.\n3.운동 할 수 있는 건강한 몸이 있음에 감사해요.</string>
+    <string name="무드_차트_월별_비교">무드 차트 월별 비동</string>
     <string name="주의관리_필요_환자">주의관리 필요 환자</string>
     <string name="대처하기">대처하기</string>
     <string name="보호자">보호자</string>
     <string name="환자">환자</string>
     <string name="약_복용">약 복용</string>
     <string name="무드">무드</string>
+    <string name="활동">활동</string>
+    <string name="남긴_기록">남긴 기록</string>
+   <string name="약_복용률">약 복용률</string>
+    <string name="모두_복용_완료">모두 복용 완료</string>
+    <string name="부분_복용">부분 복용</string>
 
     <string name="의사_면허_인증">의사 면허 인증</string>
     <string name="의사_면허_인증_중">의사 면허 인증 중이에요.\n인증은 최대 24시간 이내 처리됩니다.</string>

@@ -96,7 +96,6 @@ fun DoctorMain(
                         formattedIndex = index.toString()
                     }
                     BasicListItem(
-                        //modifier = Modifier.padding(start = 26.dp, end = 28.dp),
                         modifier = Modifier,
                         name = item.name,
                         index = formattedIndex,

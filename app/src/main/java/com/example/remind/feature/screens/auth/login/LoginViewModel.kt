@@ -10,6 +10,7 @@ import com.example.remind.data.model.request.KakaoLoginRequest
 import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.data.network.interceptor.TokenManager
 import com.example.remind.domain.usecase.onboarding_usecase.KakaoTokenUseCase
+import com.example.remind.feature.screens.auth.splash.SplashContract
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -44,7 +45,6 @@ class LoginViewModel @Inject constructor(
                 Log.e("kakao", "카카오 로그인 실패")
             } else if(token != null) {
                 UserApiClient.instance.me { user, error ->
-                    Timber.tag("kakao").e(token.accessToken + " && " + user)
                     viewModelScope.launch {
                         socialLogin(token.accessToken)
                     }
@@ -81,32 +81,45 @@ private fun socialLogin(token: String) {
                     result.data.data.refreshToken
                     )
                     tokenManager.saveUserName(result.data.data.name)
+                    if(result.data.data.rolesType != "ROLE_UNREGISTER") {
+                        tokenManager.saveUserType(result.data.data.rolesType)
+                    }
                 }
-                postEffect(
-                    LoginContract.Effect.NavigateTo(
-                        destinaton = Screens.Register.SelectType.route,
-                        navOptions = navOptions {
-                            popUpTo(
-                                Screens.Register.Login.route
-                            )
-                        }
-                    )
-                )
-                Timber.d("${tokenManager.getAccessToken()} ||| ${tokenManager.getRefreshToken()}")
+                when(result.data.data.rolesType) {
+                    "ROLE_DOCTOR" -> navigateToRoute(Screens.Doctor.DoctorMain.route, Screens.Register.Login.route)
+                    "ROLE_CENTER" -> navigateToRoute(Screens.Center.CenterMain.route, Screens.Register.Login.route)
+                    "ROLE_PATIENT" -> navigateToRoute(Screens.Patience.route, Screens.Register.Login.route)
+                    else -> navigateToRoute(Screens.Register.SelectType.route, Screens.Register.Login.route)
+                }
             }
             is ApiResult.Failure.UnknownApiError -> {
-                postEffect(LoginContract.Effect.Toastmessage("리마인드 서버 관리자에게 문의하세요"))
+                setToastMessage("리마인드 고객센터에 문의하세요")
             }
             is ApiResult.Failure.NetworkError -> {
-                postEffect(LoginContract.Effect.Toastmessage("네트워크 설정을 확인해주세요"))
+                setToastMessage("네트워크 설정을 확인해주세요")
             }
             is ApiResult.Failure.HttpError -> {
-                postEffect(LoginContract.Effect.Toastmessage("Http 오류가 발생했습니다"))
+                setToastMessage("api 응답에러 ${result.code}")
             }
             else -> {}
         }
     }
 }
+    fun navigateToRoute(destination: String, current: String) {
+        postEffect(
+            LoginContract.Effect.NavigateTo(
+                destinaton = destination,
+                navOptions = navOptions {
+                    popUpTo(current) {
+                        inclusive = true
+                    }
+                }
+            )
+        )
+    }
 
+    fun setToastMessage(text: String) {
+        postEffect(LoginContract.Effect.Toastmessage(text))
+    }
 
 }

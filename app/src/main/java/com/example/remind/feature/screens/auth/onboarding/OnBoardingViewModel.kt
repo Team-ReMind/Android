@@ -32,6 +32,7 @@ class OnBoardingViewModel @Inject constructor(
                     it
                 )
             }
+            getFcmToken()
         }
     }
 
@@ -39,29 +40,52 @@ class OnBoardingViewModel @Inject constructor(
     override fun reduceState(event: OnBoardingContract.Event) {
         when(event) {
             is OnBoardingContract.Event.DoctorButtonClicked -> {
-                updateState(currentState.copy("ROLE_DOCTOR"))
+                updateState(currentState.copy(selectedType = "ROLE_DOCTOR"))
+                saveUserType("ROLE_DOCTOR")
             }
             is OnBoardingContract.Event.CenterButtonClicked -> {
-                updateState(currentState.copy("ROLE_CENTER"))
+                updateState(currentState.copy(selectedType = "ROLE_CENTER"))
+                saveUserType("ROLE_CENTER")
             }
             is OnBoardingContract.Event.PatienceButtonClicked -> {
-                updateState(currentState.copy("ROLE_PATIENT"))
+                updateState(currentState.copy(selectedType = "ROLE_PATIENT"))
+                saveUserType("ROLE_PATIENT")
             }
-            is OnBoardingContract.Event.NextButtonFinal -> {
-                getFcmToken()
-                postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
-                if(currentState.moveAble == true) navigateToFinal()
+            //환자가 마지막 끝나는 화면으로 가는 기능
+            is OnBoardingContract.Event.NextButtonFinalPatience -> {
+                viewModelScope.launch {
+                    updateState(currentState.copy(
+                        userInfo = currentState.userInfo.copy(
+                            fcmToken = currentState.fcmToken,
+                            protectorPhoneNumber = event.number
+                        )
+                    ))
+                    postOnBoarding(currentState.userInfo)
+                    navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingPatience.route, true)
+                }
             }
-            is OnBoardingContract.Event.NextButtonToPatience -> {
-                //navigateToRoute(event.destinationRoute, event.currentRoute)
+            //의사가 마지막 끝나는 화면으로 가는 기능
+            is OnBoardingContract.Event.NextButtonFinalDoctor -> {
+                viewModelScope.launch {
+                    updateState(currentState.copy(
+                        userInfo = currentState.userInfo.copy(
+                            fcmToken = event.certifinumber
+                        )
+                    ))
+                    postOnBoarding(currentState.userInfo)
+                    navigateToRoute(Screens.Register.OnBoardingLoadingDoctor.route, Screens.Register.OnBoardingCheckDoctor.route, true)
+                }
             }
-            is OnBoardingContract.Event.NextButtonClicked -> {
-                saveUserType(currentState.selectedType!!)
+            //사용자 정보 작성하고 각자 입장의 온보딩으로 이동
+            is OnBoardingContract.Event.StoreUserInfoButtonClicked -> {
+                updateState(currentState.copy(
+                    userInfo = event.info
+                ))
                 navigateToNext(currentState.selectedType!!)
             }
-            //의사부터 이걸로 통합시킴
+            //입장 상관없이 공통의 경로를 명시한
             is OnBoardingContract.Event.NavigateButtonClicked -> {
-                navigateToRoute(event.destinationRoute, event.currentRoute)
+                navigateToRoute(event.destinationRoute, event.currentRoute, event.inclusive)
             }
             else ->{}
         }
@@ -75,70 +99,35 @@ class OnBoardingViewModel @Inject constructor(
 
     fun navigateToNext(selectType: String) {
         if(selectType == "ROLE_DOCTOR") {
-            postEffect(
-                OnBoardingContract.Effect.NavigateTo(
-                    destination = Screens.Register.OnBoardingCheckDoctor.route,
-                    navOptions = navOptions {
-                        popUpTo(Screens.Register.SelectType.route) {
-                            inclusive = true
-                        }
-                    }
-                ))
+            navigateToRoute(Screens.Register.OnBoardingCheckDoctor.route, Screens.Register.OnBoardingUserInfo.route, false)
         }
         if(selectType == "ROLE_PATIENT") {
-            postEffect(
-                OnBoardingContract.Effect.NavigateTo(
-                    destination = Screens.Register.OnBoardingPatience.route,
-                    navOptions = navOptions {
-                        popUpTo(Screens.Register.SelectType.route) {
-                            inclusive = true
-                        }
-                    }
-                ))
+            navigateToRoute(Screens.Register.OnBoardingPatience.route, Screens.Register.OnBoardingUserInfo.route,false)
         }
         if(selectType == "ROLE_CENTER") {
-            postEffect(
-                OnBoardingContract.Effect.NavigateTo(
-                    destination = Screens.Register.OnBoardingCenter.route,
-                    navOptions = navOptions {
-                        popUpTo(Screens.Register.SelectType.route) {
-                            inclusive = true
-                        }
-                    }
-                ))
+            navigateToRoute(Screens.Register.OnBoardingCenter.route, Screens.Register.OnBoardingUserInfo.route,false)
         }
     }
-    fun navigateToFinal() {
-        postEffect(
-            OnBoardingContract.Effect.NavigateTo(
-                destination = Screens.Register.OnBoardingFinal.route,
-                navOptions = navOptions {
-                    popUpTo(Screens.Register.OnBoardingPatience.route) {
-                        inclusive = true
-                    }
-                }
-            ))
-    }
-//    fun navigateToPatience() {
-//        postEffect(
-//            OnBoardingContract.Effect.NavigateTo(
-//                destination = Screens.Patience.route,
-//                navOptions = navOptions {
-//                    popUpTo(Screens.Register.OnBoardingFinal.route) {
-//                        inclusive = true
-//                    }
-//                }
-//            ))
-//    }
 
-
-    //나중에 이걸로 통합 수정하기
-    fun navigateToRoute(destinationRoute: String, currentRoute: String) {
+    fun navigateToRoute(destinationRoute: String, currentRoute: String, inclusiveData: Boolean) {
         postEffect(
             OnBoardingContract.Effect.NavigateTo(
                 destination = destinationRoute,
                 navOptions = navOptions {
                     popUpTo(currentRoute) {
+                        inclusive = inclusiveData
+                    }
+                }
+            )
+        )
+    }
+    //로딩창 이후 final 화면으로 이동 위함
+    fun navigateToFinal() {
+        postEffect(
+            OnBoardingContract.Effect.NavigateTo(
+                destination = Screens.Register.OnBoardingFinal.route,
+                navOptions = navOptions {
+                    popUpTo(Screens.Register.OnBoardingLoadingDoctor.route) {
                         inclusive = true
                     }
                 }
@@ -146,14 +135,16 @@ class OnBoardingViewModel @Inject constructor(
         )
     }
 
+
     private fun getFcmToken() {
         viewModelScope.launch {
             val fcmToken = tokenUseCase.invoke()
             updateState(currentState.copy(fcmToken = fcmToken))
+            Log.d("alwkejflakwe", "${fcmToken}")
         }
     }
 
-    private fun postOnBoarding(data: OnBoardingRequest) {
+    private suspend fun postOnBoarding(data: OnBoardingRequest) {
         viewModelScope.launch {
             val result = onBoardingUserCase.invoke(data)
             when(result) {

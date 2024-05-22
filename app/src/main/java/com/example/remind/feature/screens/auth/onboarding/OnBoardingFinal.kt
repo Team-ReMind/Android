@@ -1,6 +1,5 @@
 package com.example.remind.feature.screens.auth.onboarding
 
-import android.graphics.Paint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -8,9 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
@@ -35,9 +31,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun OnBoardingFinalScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: OnBoardingViewModel
 ) {
-    val viewModel: OnBoardingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
@@ -63,7 +59,8 @@ fun OnBoardingFinalScreen(
                 onClick = {
                     viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
                         Screens.Patience.route,
-                        Screens.Register.OnBoardingFinal.route
+                        Screens.Register.OnBoardingFinal.route,
+                        true
                     ))
                 }
             )
@@ -74,7 +71,8 @@ fun OnBoardingFinalScreen(
                     onClick = {
                         viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
                             Screens.Doctor.DoctorMain.route,
-                            Screens.Register.OnBoardingFinal.route
+                            Screens.Register.OnBoardingFinal.route,
+                            true
                         ))
                     }
                 )
@@ -85,7 +83,8 @@ fun OnBoardingFinalScreen(
                     onClick = {
                         viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
                             Screens.Center.CenterMain.route,
-                            Screens.Register.OnBoardingFinal.route
+                            Screens.Register.OnBoardingFinal.route,
+                            true
                         ))
                     },
                 )
@@ -100,7 +99,7 @@ fun PatienceFinal(
     name: String,
     onClick: () -> Unit
 ) {
-    var title = stringResource(id = R.string.반가워요_환자님, name)
+    var title = "반가워요!"
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -124,8 +123,8 @@ fun PatienceFinal(
             Text(
                 modifier = modifier
                     .padding(start = 20.dp, end = 20.dp),
-                text = stringResource(id = R.string.오늘_하루의_통합적_기분을_선택해주세요),
-                style = RemindTheme.typography.b1Medium.copy(color = RemindTheme.colors.white)
+                text = "건강한 회복의 여정을 함께할게요.\n그럼 시작해볼까요?",
+                style = RemindTheme.typography.b1Medium.copy(color = RemindTheme.colors.white, lineHeight = 24.sp)
             )
         }
         Image(

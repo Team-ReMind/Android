@@ -1,16 +1,12 @@
 package com.example.remind.feature.screens.patience.writing
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,32 +17,28 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.app.Screens
 import com.example.remind.core.common.component.BasicButton
+import com.example.remind.core.common.component.IconContainer
 import com.example.remind.core.common.component.StepComponent
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.FeelingScoreModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun WritingMoodStep1Screen(navController: NavHostController) {
-    val viewModel: WritingViewModel = hiltViewModel()
+fun WritingMoodStep1Screen(navController: NavHostController, viewModel: WritingViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val feelingList = listOf(
@@ -79,7 +71,10 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(24.dp))
             IconButton(
                 onClick = {
-                    viewModel.navigateToHome()
+                    viewModel.setEvent(WritingContract.Event.PreviousButtonClicked(
+                        Screens.Patience.Home.route,
+                        Screens.Patience.Home.WritingMoodStep1.route
+                    ))
                 }
             ) {
                 Icon(
@@ -103,7 +98,6 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
                 style = RemindTheme.typography.b3Regular.copy(color = RemindTheme.colors.slate_400)
             )
             Spacer(modifier = Modifier.weight(1f))
-            //이모티콘 박스
             Box(
                 modifier = Modifier
                     .background(color = RemindTheme.colors.white)
@@ -124,7 +118,7 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
                         IconContainer(
                             feelingScoreModel = feelingList.get(i),
                             backgroundColor =
-                            if(uiState.selectFeelingType == feelingList.get(i).text) RemindTheme.colors.main_4 else RemindTheme.colors.white,
+                            if(uiState.writingMoodRequest.feelingType == feelingList.get(i).text) RemindTheme.colors.main_4 else RemindTheme.colors.white,
                             onClick = {
                                 viewModel.setEvent(WritingContract.Event.FeelingButtonClicked(feelingList.get(i).text))
                             }
@@ -143,16 +137,16 @@ fun WritingMoodStep1Screen(navController: NavHostController) {
                     ),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
-                backgroundColor = if(uiState.selectFeelingType != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
-                textColor = if(uiState.selectFeelingType != null) RemindTheme.colors.white else RemindTheme.colors.slate_300,
+                backgroundColor = if(uiState.writingMoodRequest.feelingType != "") RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                textColor = if(uiState.writingMoodRequest.feelingType != "") RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = {
-                          viewModel.navigateToRoute(
-                             destination = Screens.Patience.Home.WritingMoodStep2.route,
-                              current = Screens.Patience.Home.WritingMoodStep1.route
-                          )
+                    viewModel.setEvent(WritingContract.Event.NextButtonClicked(
+                        Screens.Patience.Home.WritingMoodStep2.route,
+                        Screens.Patience.Home.WritingMoodStep1.route
+                    ))
                 },
-                textStyle = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.white)
+                textStyle = RemindTheme.typography.b2Bold
             )
         }
     }
@@ -170,47 +164,6 @@ fun StepContainer(
         StepComponent(text = 2, backgroundColor = RemindTheme.colors.slate_500, textColor = RemindTheme.colors.slate_400)
         Spacer(modifier = modifier.width(6.dp))
         StepComponent(text = 3, backgroundColor = RemindTheme.colors.slate_500, textColor = RemindTheme.colors.slate_400)
-    }
-}
-
-
-//아이콘 컨테이너 만듬
-@Composable
-fun IconContainer(
-    modifier: Modifier = Modifier,
-    feelingScoreModel: FeelingScoreModel,
-    backgroundColor: Color,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .background(color = backgroundColor, shape = RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick)
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = modifier
-                    .padding(
-                        top = 18.dp,
-                        start = 15.dp,
-                        end = 15.dp,
-                        bottom = 16.dp
-                    )
-                    .size(
-                        width = 25.dp,
-                        height = 25.dp
-                    ),
-                painter = painterResource(id = feelingScoreModel.imgeRes),
-                contentDescription = null
-            )
-            Text(
-                modifier = modifier.padding(bottom = 15.dp),
-                text = feelingScoreModel.feeling,
-                style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.slate_700)
-            )
-        }
     }
 }
 

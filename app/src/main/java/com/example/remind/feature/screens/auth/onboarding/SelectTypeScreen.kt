@@ -1,5 +1,6 @@
 package com.example.remind.feature.screens.auth.onboarding
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
+import com.example.remind.app.Screens
 import com.example.remind.core.common.component.BasicOnBoardingAppBar
 import com.example.remind.core.designsystem.theme.Pretendard
 import com.example.remind.core.designsystem.theme.RemindTheme
@@ -40,9 +42,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SelectTypeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: OnBoardingViewModel
 ){
-    val viewModel: OnBoardingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
@@ -60,24 +62,26 @@ fun SelectTypeScreen(
     }
     RemindTheme {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = RemindTheme.colors.white)
         ) {
             BasicOnBoardingAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 weight = 0.3f,
-                title = stringResource(id = R.string.환자_관리)
+                title = ""
             )
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 31.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 35.dp),
                 textAlign = TextAlign.Start,
-                text = stringResource(id = R.string.사용_입장_선택),
+                text = stringResource(id = R.string.사용자_유형_선택),
                 style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.text)
             )
             Text(
                 modifier = Modifier.padding(start = 20.dp, top = 12.dp),
                 textAlign = TextAlign.Start,
-                text = stringResource(id = R.string.어떤_입장에서_사용하실지_선택해주세요),
-                style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3)
+                text = stringResource(id = R.string.서비스_이용을_위한_사용자_유형을_선택해주세요),
+                style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 22.sp)
             )
             Spacer(modifier = Modifier.weight(1f))
             Column(
@@ -93,6 +97,7 @@ fun SelectTypeScreen(
                     backgroundColor = if(uiState.selectedType == "ROLE_PATIENT") RemindTheme.colors.main_4 else RemindTheme.colors.slate_100,
                     text = stringResource(id = R.string.환자용),
                     onClick = {
+                        Log.d("taaag", "환자용클릭됨")
                         viewModel.setEvent(OnBoardingContract.Event.PatienceButtonClicked(context))
                     },
                     textColor = RemindTheme.colors.slate_700,
@@ -131,7 +136,7 @@ fun SelectTypeScreen(
                 backgroundColor = if(uiState.selectedType == null) RemindTheme.colors.slate_100 else  RemindTheme.colors.main_6,
                 text = stringResource(id = R.string.다음),
                 onClick = {
-                    viewModel.setEvent(OnBoardingContract.Event.NextButtonClicked(context))
+                    viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(Screens.Register.OnBoardingUserInfo.route, Screens.Register.SelectType.route, false))
                 },
                 textColor = if(uiState.selectedType == null) RemindTheme.colors.slate_300 else  RemindTheme.colors.white,
                 enable = uiState.selectedType != null
@@ -183,12 +188,13 @@ fun typeButton(
     }
 }
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun SelectTypePreview() {
-    BasicOnBoardingAppBar(
-        //modifier = Modifier.fillMaxWidth(),
-        weight = 0.3f,
-        title = stringResource(id = R.string.환자_관리)
+    Text(
+        modifier = Modifier.padding(start = 20.dp, top = 12.dp),
+        textAlign = TextAlign.Start,
+        text = stringResource(id = R.string.서비스_이용을_위한_사용자_유형을_선택해주세요),
+        style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 22.sp)
     )
 }

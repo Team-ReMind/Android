@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,21 +32,28 @@ fun MedicineItem(
     score: Float,
     doseClick: () -> Unit,
     unadministeredClick: () -> Unit,
+    isTaking: Boolean,
+    isTakingTime: String,
+    notTakingReason: String
 ) {
     Box(
         modifier = modifier
+            .fillMaxWidth()
             .background(color = RemindTheme.colors.slate_50, shape = RoundedCornerShape(12.dp))
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                modifier = modifier.padding(start = 12.dp, top = 7.dp),
+                modifier = Modifier.padding(start = 12.dp, top = 7.dp),
                 text = time,
                 style = RemindTheme.typography.b3Bold.copy(color = RemindTheme.colors.slate_600)
             )
             Row(
-                modifier = modifier.padding(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
                     start = 12.dp,
                     end = 12.dp,
                     top = 2.dp,
@@ -56,40 +64,74 @@ fun MedicineItem(
                     text = stringResource(id = R.string.중요도),
                     style = RemindTheme.typography.c3Medium.copy(color = RemindTheme.colors.slate_400)
                 )
-                Spacer(modifier = modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 StarRatingBar(
                     rating = score,
                     onRatingChanged = {}
                 )
             }
-            Spacer(modifier = modifier.height(4.dp))
-            Row() {
-                //시간이 정해져있을 경우 바꿔지도록 하기
-                Text(
-                    modifier = modifier
-                        .weight(0.5f)
-                        .background(
-                            color = RemindTheme.colors.main_6,
-                            shape = RoundedCornerShape(bottomStart = 12.dp)
+            Spacer(modifier = Modifier.height(4.dp))
+            if(isTaking == false && notTakingReason == "") {
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .background(
+                                color = RemindTheme.colors.main_6,
+                                shape = RoundedCornerShape(bottomStart = 12.dp)
+                            )
+                            .clickable { doseClick() },
+                        text = stringResource(id = R.string.복용),
+                        textAlign= TextAlign.Center,
+                        style = RemindTheme.typography.c1Bold.copy(
+                            color = RemindTheme.colors.white,
+                            lineHeight = 20.sp
                         )
-                        .clickable { doseClick },
-                    text = stringResource(id = R.string.복용),
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Text(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .background(
+                                color = RemindTheme.colors.main_5,
+                                shape = RoundedCornerShape(bottomEnd = 12.dp)
+                            )
+                            .clickable { unadministeredClick() },
+                        text = stringResource(id = R.string.미복용),
+                        textAlign= TextAlign.Center,
+                        style = RemindTheme.typography.c1Bold.copy(
+                            color = RemindTheme.colors.white,
+                            lineHeight = 20.sp
+                        )
+                    )
+                }
+            } else if(isTaking == false && notTakingReason != "") {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = RemindTheme.colors.slate_500,
+                            shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+                        ),
+                    text = "미복용",
                     textAlign= TextAlign.Center,
                     style = RemindTheme.typography.c1Bold.copy(
                         color = RemindTheme.colors.white,
                         lineHeight = 20.sp
                     )
                 )
-                Spacer(modifier = modifier.width(2.dp))
+            }
+            else {
                 Text(
-                    modifier = modifier
-                        .weight(0.5f)
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .background(
-                            color = RemindTheme.colors.main_5,
-                            shape = RoundedCornerShape(bottomEnd = 12.dp)
-                        )
-                        .clickable { unadministeredClick },
-                    text = stringResource(id = R.string.미복용),
+                            color = RemindTheme.colors.slate_500,
+                            shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+                        ),
+                    text = isTakingTime,
                     textAlign= TextAlign.Center,
                     style = RemindTheme.typography.c1Bold.copy(
                         color = RemindTheme.colors.white,
@@ -104,5 +146,5 @@ fun MedicineItem(
 @Preview
 @Composable
 fun ItemPreview() {
-    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {})
+    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {}, isTaking = true, isTakingTime = "", notTakingReason = "")
 }

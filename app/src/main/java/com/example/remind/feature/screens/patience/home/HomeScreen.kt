@@ -16,6 +16,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -48,10 +50,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
@@ -66,8 +66,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(navController: NavHostController) {
-    val viewModel: HomeViewModel = hiltViewModel()
+fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val context = LocalContext.current
@@ -129,9 +128,10 @@ fun HomeScreen(navController: NavHostController) {
         HomeMedicineDialog(
             onDismissClick = { viewModel.reduceState(HomeContract.Event.dismissMediDialog) },
             onConfirmClick = {
-               viewModel.setEvent(HomeContract.Event.SendNotTakingReason(medicineTime, sendDate, uiState.notTakingReason!!))
+               viewModel.setEvent(HomeContract.Event.SendNotTakingReason(context))
             },
-            showDialog = uiState.medicineDialogState
+            showDialog = uiState.medicineDialogState,
+            viewModel = viewModel
         )
     }
 
@@ -204,7 +204,7 @@ fun HomeScreen(navController: NavHostController) {
                         EmptyMedicineList()
                     } else {
                         LazyRow(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             itemsIndexed(uiState.medicineDailyData) {index, item ->
                                 var timeText: String= when(item.medicinesType) {
@@ -214,14 +214,16 @@ fun HomeScreen(navController: NavHostController) {
                                 }
                                 MedicineItem(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(end = 7.dp),
+                                        .padding(end = 7.dp)
+                                        .widthIn(min = 100.dp, max = 102.dp),
                                     time = timeText,
                                     score = item.importance.toFloat(),
                                     doseClick = {
-                                       viewModel.setEvent(HomeContract.Event.showMediDialog)
+                                       viewModel.setEvent(HomeContract.Event.medicineSuccess(item.medicinesType))
                                     },
-                                    unadministeredClick = {},
+                                    unadministeredClick = {
+                                        viewModel.setEvent(HomeContract.Event.showMediDialog(item.medicinesType))
+                                    },
                                     isTaking = item.isTaking ?: false,
                                     isTakingTime = item.takingTime ?: "",
                                     notTakingReason = item.notTakingReason ?: ""
@@ -266,7 +268,7 @@ fun HomeTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.ic_main_logo),
             contentDescription = null,
             modifier = modifier
                 .size(

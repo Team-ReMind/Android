@@ -41,7 +41,7 @@ fun PatienceGraph(
         startDestination = Screens.Patience.Home.route
     ) {
         composable(route = Screens.Patience.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navController,HomeviewModel)
         }
         composable(route = Screens.Patience.Home.WritingMoodStep1.route) {
             WritingMoodStep1Screen(navController, WritingviewModel)
@@ -59,7 +59,7 @@ fun PatienceGraph(
             WritingMoodStep3Screen(navController, WritingviewModel)
         }
         composable(route = Screens.Patience.Home.SplashCheering.route) {
-            HomeCheeringScreen(navController)
+            HomeCheeringScreen(navController,HomeviewModel)
         }
         composable(route = Screens.Patience.MoodChart.route) {
             MoodChartScreen(navController, MoodChartViewModel)

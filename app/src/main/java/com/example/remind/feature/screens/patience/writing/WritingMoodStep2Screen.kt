@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -122,12 +123,9 @@ fun WritingMoodStep2Screen(navController: NavHostController, viewModel: WritingV
                 ) {
                     itemsIndexed(uiState.ActivityList) {index, item ->
                         ImageContainerContent(
-                            background = if(uiState.activityId != null) RemindTheme.colors.main_4 else  RemindTheme.colors.white,
+                            background = if(uiState.moodActivity.activityId != 0) RemindTheme.colors.main_4 else  RemindTheme.colors.white,
                             onClick = {
-                                viewModel.setEvent(WritingContract.Event.ActivityButtonClicked(
-                                    item.activityId,
-                                    item.name
-                                ))
+                                viewModel.setEvent(WritingContract.Event.ActivityButtonClicked(item.activityId))
                             },
                             imageUrl = item.iconImage,
                             name = item.name
@@ -142,8 +140,8 @@ fun WritingMoodStep2Screen(navController: NavHostController, viewModel: WritingV
                     .padding(bottom = 32.dp),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
-                backgroundColor = if(uiState.activityId != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
-                textColor = if(uiState.activityId != null) RemindTheme.colors.white else RemindTheme.colors.slate_300,
+                backgroundColor = if(uiState.moodActivity.activityId != 0) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                textColor = if(uiState.moodActivity.activityId != 0) RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = {
                     viewModel.setEvent(WritingContract.Event.NextButtonClicked(
@@ -180,7 +178,9 @@ fun ImageContainerContent(
             verticalArrangement = Arrangement.Center
         ) {
             GlideImage(
-                modifier = modifier.padding(bottom = 6.dp),
+                modifier = modifier
+                    .padding(bottom = 6.dp)
+                    .size(width = 29.dp, height = 45.dp),
                 model = imageUrl,
                 contentDescription = null
             )

@@ -35,12 +35,14 @@ fun HomeMedicineDialog (
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit,
     showDialog:Boolean,
+    viewModel: HomeViewModel,
 ) {
     BasicDialog(
         popupContent = {
             ContentMedicineDialog(
                 onDismissClick = onDismissClick,
-                onConfirmClick = onConfirmClick)
+                onConfirmClick = onConfirmClick,
+                viewModel = viewModel)
         },
         showDialog = showDialog
     )
@@ -52,8 +54,9 @@ fun ContentMedicineDialog(
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit,
+    viewModel: HomeViewModel
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
+    //val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reasonList = listOf(
         stringResource(id = R.string.까먹었어요),
@@ -92,17 +95,26 @@ fun ContentMedicineDialog(
                 .align(Alignment.Center)
                 .padding(top = 65.dp, start = 15.dp, end = 15.dp)
         ) {
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 for(i in 0..1) {
                     Box(
                         modifier = modifier
+                            .weight(1f)
+                            .padding(end = 3.dp)
                             .background(
-                                color = if (uiState.notTakingReason != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                                color = if (uiState.notTakingReason == reasonList.get(i)) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
                                 shape = RoundedCornerShape(20.dp)
                             )
                             .padding(end = 3.dp)
                             .clickable(
-                                onClick = { uiState.copy(notTakingReason = reasonList.get(i)) }
+                                enabled = true,
+                                onClick = {
+                                    viewModel.setEvent(
+                                        HomeContract.Event.setNotTakingReason(reasonList.get(i))
+                                    )
+                                }
                             )
                     ) {
                         Text(
@@ -120,13 +132,20 @@ fun ContentMedicineDialog(
                 for(i in 2..3) {
                     Box(
                         modifier = modifier
+                            .weight(1f)
+                            .padding(end = 3.dp)
                             .background(
-                                color = if (uiState.notTakingReason != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                                color = if (uiState.notTakingReason == reasonList.get(i)) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
                                 shape = RoundedCornerShape(20.dp)
                             )
                             .padding(end = 3.dp)
                             .clickable(
-                                onClick = { uiState.copy(notTakingReason = reasonList.get(i)) }
+                                enabled = true,
+                                onClick = {
+                                    viewModel.setEvent(
+                                        HomeContract.Event.setNotTakingReason(reasonList.get(i))
+                                    )
+                                }
                             )
                     ) {
                         Text(
@@ -154,18 +173,4 @@ fun ContentMedicineDialog(
         }
 
     }
-}
-
-
-fun saveText(text: String): String {
-    var selectText = text
-    return selectText
-}
-
-@Preview(showBackground = false)
-@Composable
-fun DialogPreview() {
-    ContentMedicineDialog(
-        onDismissClick = {  },
-        onConfirmClick = {})
 }

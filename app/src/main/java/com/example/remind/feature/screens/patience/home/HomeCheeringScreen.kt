@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,11 +16,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun HomeCheeringScreen(navController: NavHostController) {
-    val viewModel: HomeViewModel = hiltViewModel()
+fun HomeCheeringScreen(navController: NavHostController, viewModel: HomeViewModel ) {
     val effectFlow = viewModel.effect
     LaunchedEffect(true) {
         delay(3000)
+        viewModel.navigateToHome()
         effectFlow.collectLatest { effect->
             when(effect) {
                 is HomeContract.Effect.NavigateTo -> {
@@ -33,6 +34,7 @@ fun HomeCheeringScreen(navController: NavHostController) {
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.img_example_cheer),
+            contentScale = ContentScale.FillWidth,
             contentDescription = null
         )
 

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
@@ -65,12 +66,8 @@ fun WritingMoodStep3Screen(navController: NavHostController, viewModel: WritingV
     RemindTheme {
         Column (
             modifier = Modifier
-                .fillMaxSize()
                 .background(color = RemindTheme.colors.white)
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp
-                )
+                .padding(horizontal = 20.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             IconButton(
@@ -91,7 +88,7 @@ fun WritingMoodStep3Screen(navController: NavHostController, viewModel: WritingV
             Text(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(id = R.string.오늘_하루_감사한점_3가지),
-                style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.text)
+                style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.text, lineHeight = 31.sp)
             )
             Text(
                 modifier = Modifier.padding(top = 12.dp),
@@ -106,14 +103,15 @@ fun WritingMoodStep3Screen(navController: NavHostController, viewModel: WritingV
                 onTextChanged = handleTextChange,
                 text = textState.value,
                 roundedShape = 18.dp,
-                hintText = stringResource(id = R.string.일기_예시),
+                hintText = "Ex) 1. 아름다운 벚꽃을 볼 수 있음에 감사해요.",
                 topPadding = 21.dp,
                 bottomPadding = 86.dp
             )
             Spacer(modifier = Modifier.weight(1f))
             BasicButton(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(bottom = 32.dp),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
                 backgroundColor = if(textState.value != null) RemindTheme.colors.slate_100 else RemindTheme.colors.main_6,
@@ -123,8 +121,6 @@ fun WritingMoodStep3Screen(navController: NavHostController, viewModel: WritingV
                    viewModel.setEvent(WritingContract.Event.SendInfoButton(
                        destinationRoute = Screens.Patience.Home.SplashCheering.route,
                        currentRoute = Screens.Patience.Home.WritingMoodStep3.route,
-                       localDate = dateValue,
-                       detail = textState.value
                    ))
                 },
                 textStyle = RemindTheme.typography.b2Bold

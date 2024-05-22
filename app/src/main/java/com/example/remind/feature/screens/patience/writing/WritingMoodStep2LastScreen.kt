@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -122,11 +123,11 @@ fun WritingMoodStep2LastScreen(navController: NavHostController, viewModel: Writ
                 text = stringResource(id = R.string.오늘의_활동은_최대_3개까지),
                 style = RemindTheme.typography.b3Regular.copy(color = RemindTheme.colors.slate_400)
             )
-            if(uiState.MoodActivityList.size >0) {
+            if(uiState.writingMoodRequest.moodActivities.isNotEmpty()) {
                 LazyColumn(
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 70.dp),
+                    modifier = Modifier.padding(top = 30.dp),
                 ) {
-                    itemsIndexed(uiState.MoodActivityList) {index, item ->
+                    itemsIndexed(uiState.writingMoodRequest.moodActivities) {index, item ->
                         ActivityListContainer(
                             modifier = Modifier.padding(bottom = 10.dp),
                             activityImage = findActivityImage(item.activityId)!!,
@@ -264,7 +265,9 @@ fun PlusContainer(
             )
     ) {
         Column(
-            modifier = modifier.padding(vertical = 13.dp),
+            modifier = modifier
+                .padding(vertical = 13.dp)
+                .align(Alignment.Center),
             verticalArrangement = Arrangement.Center,
         ) {
             Image(

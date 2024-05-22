@@ -13,17 +13,22 @@ class HomeContract {
         val sosDialogState: Boolean = false,
         val medicineDialogState:Boolean = false,
         val medicineDailyData: List<DailyTakingMedicineList> = emptyList(),
-        val notTakingReason: String? = null
+        val notTakingReason: String? = null,
+        val clickTime: String = ""
     ): UiState
 
     sealed class Event: UiEvent {
         data class WritingButtonClicked(val context: Context): Event()
         object showSosDialog: Event()
+        //data class showSosDialog(val medicineTime: String): Event()
         object DismissDialog: Event()
-        object showMediDialog: Event()
+        //object showMediDialog: Event()
+        data class showMediDialog(val medicineTime: String): Event()
         object dismissMediDialog: Event()
         data class CallButtonClicked(val context: Context, val number: String):Event()
-        data class SendNotTakingReason(val medicineTime: String,val date: String, val notTakingReason: String):Event()
+        data class SendNotTakingReason(val context: Context):Event()
+        data class medicineSuccess(val medicineTime: String):Event()
+        data class setNotTakingReason(val notTakingReason: String):Event()
     }
     sealed class Effect: UiEffect {
         data class NavigateTo(

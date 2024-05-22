@@ -30,12 +30,14 @@ class HomeViewModel @Inject constructor(
                 )
             }
             is HomeContract.Event.showSosDialog -> {
+                //updateState(currentState.copy(clickTime = event.medicineTime))
                 updateState(currentState.copy(sosDialogState = true))
             }
             is HomeContract.Event.DismissDialog -> {
                 updateState(currentState.copy(sosDialogState = false))
             }
             is HomeContract.Event.showMediDialog -> {
+                updateState(currentState.copy(clickTime = event.medicineTime))
                 updateState(currentState.copy(medicineDialogState = true))
             }
             is HomeContract.Event.dismissMediDialog -> {
@@ -45,14 +47,34 @@ class HomeViewModel @Inject constructor(
                 setSosCall(event.context, event.number)
             }
             is HomeContract.Event.SendNotTakingReason -> {
+                sendNotTakingReason(currentState.clickTime, currentState.notTakingReason ?: "")
+                updateState(currentState.copy(medicineDialogState = false))
+            }
+            //미복용 사유 클릭
+            is HomeContract.Event.setNotTakingReason -> {
+                updateState(currentState.copy(notTakingReason = event.notTakingReason))
+            }
+            //복용눌렀을때
+            is HomeContract.Event.medicineSuccess -> {
+                sendTakingReason(event.medicineTime)
                 navigateToRoute(
                     destination = Screens.Patience.Home.SplashCheering.route,
                     current = Screens.Patience.Home.route,
-                    inclusiveData = false
+                    inclusiveData = true
                 )
-                sendNotTakingReason(event.medicineTime, event.date, event.notTakingReason)
             }
         }
+    }
+    fun navigateToHome() {
+        postEffect(
+            HomeContract.Effect.NavigateTo(
+            destinaton = Screens.Patience.Home.route,
+            navOptions = navOptions {
+                popUpTo(Screens.Patience.Home.SplashCheering.route) {
+                    inclusive = true
+                }
+            }
+        ))
     }
     fun navigateToRoute(destination: String, current: String, inclusiveData: Boolean) {
         postEffect(
@@ -94,13 +116,27 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun sendNotTakingReason(medicineTime: String, date: String, notTakingReason: String) {
+    fun sendNotTakingReason(medicineTime: String, notTakingReason: String) {
         viewModelScope.launch {
             val result = setMedicineInfoUseCase.invoke(SetMedicineInfoRequest(
-                date = date,
                 isTaking = false,
                 medicinesType = medicineTime,
                 notTakingReason = notTakingReason
+            ))
+            when(result) {
+                is ApiResult.Success -> {
+                    Log.d("HomeViewModel", "success")
+                }
+                else -> {}
+            }
+        }
+    }
+    fun sendTakingReason(medicineTime: String) {
+        viewModelScope.launch {
+            val result = setMedicineInfoUseCase.invoke(SetMedicineInfoRequest(
+                isTaking = true,
+                medicinesType = medicineTime,
+                notTakingReason = ""
             ))
             when(result) {
                 is ApiResult.Success -> {

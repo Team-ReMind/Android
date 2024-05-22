@@ -25,8 +25,13 @@ class WritingViewModel @Inject constructor(
     }
     override fun reduceState(event: WritingContract.Event) {
         when(event) {
+            //step1에서 이모티콘 눌렀을때
             is WritingContract.Event.FeelingButtonClicked -> {
-                updateState(currentState.copy(totalFeelingType = event.feelingType))
+                updateState(currentState.copy(
+                    writingMoodRequest = currentState.writingMoodRequest.copy(
+                        feelingType = event.feelingType
+                    )
+                ))
             }
             is WritingContract.Event.NextButtonClicked -> {
                 navigateToRoute(event.destinationRoute, event.currentRoute, false)
@@ -37,34 +42,47 @@ class WritingViewModel @Inject constructor(
             is WritingContract.Event.PreviousButtonClicked -> {
                 navigateToRoute(event.destinationRoute, event.currentRoute, true)
             }
+            //step 2 활동을 선택하는 화면에서 아이콘 누르는 기능
             is WritingContract.Event.ActivityButtonClicked -> {
-                updateState(currentState.copy(activityId = event.activityId))
-                updateState(currentState.copy(activityName = event.activityName))
+                updateState(currentState.copy(
+                    moodActivity = currentState.moodActivity.copy(
+                        activityId = event.activityId
+                    )
+                ))
             }
-//
+
+            //step2 활동별 무드 등록하는 step2feelingscreen
             is WritingContract.Event.FeelingActivityButtonClicked -> {
-                updateState(currentState.copy(feelingType = event.feelingType))
+                updateState(currentState.copy(
+                    moodActivity = currentState.moodActivity.copy(
+                        feelingType = event.feelingType
+                    )
+                ))
             }
+            //활동기록 마지막 조회 페이지 가기 전 feelingscreen
             is WritingContract.Event.StoreFeelingListItem -> {
-                val newList = currentState.MoodActivityList + MoodActivity(
-                    event.activityData.activityId,
-                    event.activityData.detail,
-                    event.activityData.feelingType
-                )
-                navigateToRoute(event.destinationRoute, event.currentRoute, false)
+                updateState(currentState.copy(
+                    moodActivity = currentState.moodActivity.copy(
+                        detail = event.detail
+                    )
+                ))
+                val newData = currentState.moodActivity
+                updateState(currentState.copy(
+                    writingMoodRequest = currentState.writingMoodRequest.copy(
+                        moodActivities = currentState.writingMoodRequest.moodActivities + newData
+                    )
+                ))
+                //다시 초기화
+                updateState(currentState.copy(
+                    moodActivity = MoodActivity()
+                ))
+                navigateToRoute(Screens.Patience.Home.WritingMoodStep2Last.route, Screens.Patience.Home.WritingMoodStep2Feeling.route, false)
             }
             is WritingContract.Event.NavigateToStep2 -> {
                 navigateToRoute(event.destinationRoute, event.currentRoute, true)
             }
             is WritingContract.Event.SendInfoButton -> {
-                setMoodData(
-                    WritingMoodRequest(
-                        detail = event.detail,
-                        feelingType = currentState.totalFeelingType,
-                        localDate = event.localDate,
-                        moodActivities = currentState.MoodActivityList
-                    )
-                )
+                setMoodData(currentState.writingMoodRequest)
                 navigateToRoute(event.destinationRoute, event.currentRoute,true)
             }
         }

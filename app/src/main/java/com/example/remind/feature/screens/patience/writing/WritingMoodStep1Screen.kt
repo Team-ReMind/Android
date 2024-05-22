@@ -118,7 +118,7 @@ fun WritingMoodStep1Screen(navController: NavHostController, viewModel: WritingV
                         IconContainer(
                             feelingScoreModel = feelingList.get(i),
                             backgroundColor =
-                            if(uiState.totalFeelingType == feelingList.get(i).text) RemindTheme.colors.main_4 else RemindTheme.colors.white,
+                            if(uiState.writingMoodRequest.feelingType == feelingList.get(i).text) RemindTheme.colors.main_4 else RemindTheme.colors.white,
                             onClick = {
                                 viewModel.setEvent(WritingContract.Event.FeelingButtonClicked(feelingList.get(i).text))
                             }
@@ -137,8 +137,8 @@ fun WritingMoodStep1Screen(navController: NavHostController, viewModel: WritingV
                     ),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
-                backgroundColor = if(uiState.totalFeelingType != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
-                textColor = if(uiState.totalFeelingType != null) RemindTheme.colors.white else RemindTheme.colors.slate_300,
+                backgroundColor = if(uiState.writingMoodRequest.feelingType != "") RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                textColor = if(uiState.writingMoodRequest.feelingType != "") RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = {
                     viewModel.setEvent(WritingContract.Event.NextButtonClicked(

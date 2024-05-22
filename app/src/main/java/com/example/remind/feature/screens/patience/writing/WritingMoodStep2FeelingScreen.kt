@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -37,7 +36,6 @@ import com.example.remind.core.common.component.IconContainer
 import com.example.remind.core.common.component.RemindTextField
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.FeelingScoreModel
-import com.example.remind.data.model.request.MoodActivity
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -73,7 +71,9 @@ fun WritingMoodStep2FeelingScreen(navController: NavHostController, viewModel: W
 
     RemindTheme {
         Column(
-            modifier = Modifier.padding(vertical = 20.dp)
+            modifier = Modifier
+                .background(color = RemindTheme.colors.white)
+                .padding(horizontal = 20.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             IconButton(
@@ -129,11 +129,9 @@ fun WritingMoodStep2FeelingScreen(navController: NavHostController, viewModel: W
                         IconContainer(
                             feelingScoreModel = feelingList.get(i),
                             backgroundColor =
-                            if(uiState.feelingType == feelingList.get(i).text) RemindTheme.colors.main_4 else RemindTheme.colors.white,
+                            if(uiState.moodActivity.feelingType == feelingList.get(i).text) RemindTheme.colors.main_4 else RemindTheme.colors.white,
                             onClick = {
-                                viewModel.setEvent(WritingContract.Event.FeelingActivityButtonClicked(
-                                    feelingList.get(i).text
-                                ))
+                                viewModel.setEvent(WritingContract.Event.FeelingActivityButtonClicked(feelingList.get(i).text))
                             }
                         )
                     }
@@ -163,19 +161,11 @@ fun WritingMoodStep2FeelingScreen(navController: NavHostController, viewModel: W
                     .padding(bottom = 32.dp),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
-                backgroundColor = if(uiState.feelingType != "") RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
-                textColor = if(uiState.feelingType != "") RemindTheme.colors.white else RemindTheme.colors.slate_300,
+                backgroundColor = if(uiState.moodActivity.feelingType != "") RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
+                textColor = if(uiState.moodActivity.feelingType != "") RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = {
-                     viewModel.setEvent(WritingContract.Event.StoreFeelingListItem(
-                         activityData = MoodActivity(
-                         uiState.activityId,
-                         uiState.feelingType,
-                         textState.value
-                         ),
-                         destinationRoute = Screens.Patience.Home.WritingMoodStep2Last.route,
-                         currentRoute =  Screens.Patience.Home.WritingMoodStep2Feeling.route
-                     ))
+                     viewModel.setEvent(WritingContract.Event.StoreFeelingListItem(textState.value))
                 },
                 textStyle = RemindTheme.typography.b2Bold
             )

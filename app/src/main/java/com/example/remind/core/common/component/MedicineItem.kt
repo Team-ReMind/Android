@@ -71,7 +71,7 @@ fun MedicineItem(
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            if(!isTaking) {
+            if(isTaking == false && notTakingReason == "") {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -107,16 +107,31 @@ fun MedicineItem(
                         )
                     )
                 }
-            } else {
+            } else if(isTaking == false && notTakingReason != "") {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
                             color = RemindTheme.colors.slate_500,
                             shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
-                        )
-                        .clickable { doseClick() },
-                    text = if(notTakingReason != "") "미복용" else isTakingTime,
+                        ),
+                    text = "미복용",
+                    textAlign= TextAlign.Center,
+                    style = RemindTheme.typography.c1Bold.copy(
+                        color = RemindTheme.colors.white,
+                        lineHeight = 20.sp
+                    )
+                )
+            }
+            else {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = RemindTheme.colors.slate_500,
+                            shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+                        ),
+                    text = isTakingTime,
                     textAlign= TextAlign.Center,
                     style = RemindTheme.typography.c1Bold.copy(
                         color = RemindTheme.colors.white,
@@ -131,5 +146,5 @@ fun MedicineItem(
 @Preview
 @Composable
 fun ItemPreview() {
-    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {}, isTaking = false, isTakingTime = "오전 7:00", notTakingReason = "미복용")
+    MedicineItem(time = "아침", score= 2.0f, doseClick = {}, unadministeredClick = {}, isTaking = true, isTakingTime = "", notTakingReason = "")
 }

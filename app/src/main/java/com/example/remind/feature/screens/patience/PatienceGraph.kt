@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import com.example.remind.feature.screens.patience.home.HomeCheeringScreen
 import com.example.remind.feature.screens.patience.home.HomeScreen
 import com.example.remind.feature.screens.patience.home.HomeViewModel
+import com.example.remind.feature.screens.patience.medicine.AlarmSettingScreen
 import com.example.remind.feature.screens.patience.medicine.MedicineScreen
 import com.example.remind.feature.screens.patience.medicine.MedicineViewModel
 import com.example.remind.feature.screens.patience.moodchart.MoodChartScreen
@@ -65,6 +66,9 @@ fun PatienceGraph(
         }
         composable(route = Screens.Patience.Medicine.route) {
             MedicineScreen(navController, MedicineViewModel)
+        }
+        composable(route = Screens.Patience.Medicine.AlarmSetting.route) {
+            AlarmSettingScreen(navController, MedicineViewModel)
         }
         composable(route = Screens.Patience.MyPage.route) {
             MyPageScreen()

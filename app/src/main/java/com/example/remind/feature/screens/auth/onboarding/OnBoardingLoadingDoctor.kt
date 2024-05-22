@@ -3,13 +3,12 @@ package com.example.remind.feature.screens.auth.onboarding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
 import com.example.remind.core.designsystem.theme.RemindTheme
@@ -26,12 +25,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun OnBoardingLoadingDoctorScreen(navController: NavHostController) {
-    val viewModel: OnBoardingViewModel = hiltViewModel()
+fun OnBoardingLoadingDoctorScreen(
+    navController: NavHostController,
+    viewModel: OnBoardingViewModel
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     LaunchedEffect(true) {
         delay(3000)
-        //viewModel.navigateToFinal()
+        viewModel.navigateToFinal()
         effectFlow.collectLatest { effect->
             when(effect) {
                 is OnBoardingContract.Effect.NavigateTo -> {
@@ -59,7 +61,7 @@ fun OnBoardingLoadingDoctorScreen(navController: NavHostController) {
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = 12.dp),
-                    text = stringResource(id = R.string.만나서_반갑습니다_),
+                    text = stringResource(id = R.string.만나서_반갑습니다_, uiState.userName ),
                     style = RemindTheme.typography.h1Bold.copy(
                         color = RemindTheme.colors.white,
                         lineHeight = 40.sp

@@ -20,7 +20,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -60,15 +63,17 @@ fun findFeelingMent(feelingType: String): String? {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoodChartBottomSheet(
+fun MoodChartBottomSheet (
     modifier: Modifier = Modifier,
     viewModel: MoodChartViewModel,
+    sheetState : SheetState = rememberModalBottomSheetState(),
+    onDismissRequest: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val effectFlow = viewModel.effect
     val scrollState = rememberScrollState()
     BasicBottomSheet(
-        onDismissRequest = {  }
+        onDismissRequest = onDismissRequest,
+        sheetState = sheetState
     ) {
         Column(
             modifier = modifier
@@ -84,7 +89,7 @@ fun MoodChartBottomSheet(
                     text = "날짜날짜"
                 )
                 Spacer(modifier = modifier.weight(1f))
-                IconButton(onClick = {}) {
+                IconButton(onClick = onDismissRequest) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_close),
                         contentDescription = null
@@ -104,11 +109,11 @@ fun MoodChartBottomSheet(
                     ) {
                         Image(
                             modifier = modifier.padding(end = 4.dp),
-                            painter = painterResource(id = findFeelingImage(uiState.dailyMood.feelingType)!!),
+                            painter = painterResource(id = findFeelingImage(uiState.dailyMood.feelingType) ?: R.drawable.ic_verygood),
                             contentDescription = null
                         )
                         Text(
-                            text = findFeelingText(uiState.dailyMood.feelingType)!!,
+                            text = findFeelingText(uiState.dailyMood.feelingType) ?: "",
                             style = RemindTheme.typography.h2Medium.copy(color = RemindTheme.colors.slate_800)
                         )
                     }
@@ -126,6 +131,8 @@ fun MoodChartBottomSheet(
                                 activityListItem(item = item)
                             }
                         }
+                    }else {
+                        CircularProgressIndicator()
                     }
                     Text(
                         modifier = modifier.padding(top = 16.dp),
@@ -145,6 +152,8 @@ fun MoodChartBottomSheet(
                                     MedicineInfo(content = item)
                                 }
                             }
+                        } else {
+                            CircularProgressIndicator()
                         }
                     }
                 }
@@ -194,11 +203,11 @@ fun activityListItem(
                     modifier = Modifier
                         .size(width = 15.dp, height = 21.dp)
                         .padding(end = 3.dp),
-                    painter = painterResource(id = findFeelingImage(item.feelingType)!!),
+                    painter = painterResource(id = findFeelingImage(item.feelingType) ?: R.drawable.ic_verygood),
                     contentDescription = null
                 )
                 Text (
-                    text = findFeelingMent(item.feelingType)!!,
+                    text = findFeelingMent(item.feelingType) ?: "",
                     style = RemindTheme.typography.b3Medium.copy(color = RemindTheme.colors.slate_600)
                 )
             }

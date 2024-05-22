@@ -14,11 +14,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.remind.R
 import com.example.remind.core.designsystem.theme.RemindTheme
 
 @Composable
@@ -29,16 +32,17 @@ fun RemindTextField(
     roundedShape: Dp,
     hintText: String,
     topPadding: Dp,
-    bottomPadding: Dp
+    bottomPadding: Dp,
+    maxLine: Int? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused = interactionSource.collectIsFocusedAsState()
     val hintTextVisible by remember {
-        derivedStateOf { text.isEmpty() && !isFocused.value }
+        derivedStateOf { text.isEmpty() }
     }
     BasicTextField(
         value = text,
-        maxLines = 1,
+        maxLines = maxLine ?: Int.MAX_VALUE,
         onValueChange = onTextChanged,
         interactionSource = interactionSource,
         textStyle = RemindTheme.typography.b3Regular.copy(color = RemindTheme.colors.text),
@@ -60,9 +64,9 @@ fun RemindTextField(
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(top = topPadding, bottom = bottomPadding, start= 12.dp)
+                    .padding(top = topPadding, bottom = bottomPadding, start = 12.dp)
             ) {
-                if(hintTextVisible) {
+                if(hintTextVisible && text.isEmpty()) {
                     Text(
                         text = hintText,
                         style = RemindTheme.typography.c1Regular.copy(color = RemindTheme.colors.slate_400)
@@ -77,5 +81,19 @@ fun RemindTextField(
 @Preview(showBackground = false)
 @Composable
 fun BasicTextFieldPreview() {
-
+    val textState = remember { mutableStateOf("") }
+    val handleTextChange = { newText: String ->
+        textState.value = newText
+    }
+    RemindTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp),
+        onTextChanged = handleTextChange,
+        text = textState.value,
+        roundedShape = 8.dp,
+        hintText = stringResource(id = R.string.번호를_입력해주세요),
+        topPadding = 12.dp,
+        bottomPadding = 50.dp
+    )
 }

@@ -29,7 +29,6 @@ class MoodChartViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getMoodChartData(year, month, date-3)
-            extractList()
             getFeelingPerCent()
         }
     }
@@ -40,6 +39,10 @@ class MoodChartViewModel @Inject constructor(
             }
             is MoodChartContract.Event.storeDate -> {
                 updateState(currentState.copy(date = event.date))
+            }
+            is MoodChartContract.Event.ClickToBottomSheet -> {
+                getDailyMood(event.moodDate)
+                getDailyMedicine(event.moodDate)
             }
             else ->{}
         }
@@ -52,7 +55,7 @@ class MoodChartViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     updateState(currentState.copy(
                         moodChartData = result.data.data,
-                        xAxisData = result.data.data.moodChartDtos.map { it.localDate },
+                        xAxisData = result.data.data.moodChartDtos.map { "${it.day}일" },
                         yAxisData = result.data.data.moodChartDtos.map { it.score }
                     ))
                 }
@@ -65,9 +68,11 @@ class MoodChartViewModel @Inject constructor(
             val result = getFeelingPercentUseCase.invoke()
             when(result) {
                 is ApiResult.Success -> {
-                    updateState(currentState.copy(
-                        feelingTotalPerCent = result.data.data
-                    ))
+                    if(result.data.data != null) {
+                        updateState(currentState.copy(
+                            feelingTotalPerCent = result.data.data
+                        ))
+                    }
                 }
                 else ->{}
             }
@@ -99,20 +104,7 @@ class MoodChartViewModel @Inject constructor(
             }
         }
     }
-    fun extractList() {
-        val size = uiState.value.moodChartData.moodChartDtos.size
-        val list: MutableList<String> = mutableListOf<String>()
-        for(i in 0..size-1) {
-            val data = formattingDate(uiState.value.moodChartData.moodChartDtos.get(i).localDate)
-            list.add("${data}일")
-        }
-        updateState(currentState.copy(xAxisData = list))
-    }
-    fun formattingDate(dateString: String):Int {
-        val extractString = dateString.takeLast(2)
-        val date: Int = extractString.toInt()
-        return date
-    }
+
 
 
     fun setToastMessage(text: String) {

@@ -20,11 +20,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -55,11 +60,15 @@ import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphStyle
 import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphVisibility
 import com.jaikeerthick.composable_graphs.style.LabelPosition
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
+    val sheetState = rememberModalBottomSheetState()
+    val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val graphYaxisList = listOf(
         graphScoreModel(100, R.drawable.ic_verygood),
@@ -67,6 +76,13 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
         graphScoreModel(50, R.drawable.ic_normal),
         graphScoreModel(25, R.drawable.ic_bad),
         graphScoreModel(0, R.drawable.ic_terrible),
+    )
+    MoodChartBottomSheet(
+        viewModel = viewModel,
+        sheetState = sheetState,
+        onDismissRequest = {
+            coroutineScope.launch { sheetState.hide() }
+        }
     )
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -115,7 +131,11 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                 backgroundColor = RemindTheme.colors.main_6,
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 18.dp,
-                onClick = {  },
+                onClick = {
+                   viewModel.setEvent(MoodChartContract.Event.ClickToBottomSheet(
+                       "2024-05-${uiState.date}"
+                   ))
+                },
                 textStyle = RemindTheme.typography.b3Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -169,7 +189,7 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                         }
                     }
                     Spacer(modifier = Modifier.width(25.dp))
-                    if(uiState.xAxisData.isNotEmpty()) {
+                    if(uiState.xAxisData.isNotEmpty() && uiState.yAxisData.isNotEmpty()) {
                         GraphComponent(
                             modifier = Modifier.weight(4f),
                             dateListX = uiState.xAxisData,

@@ -7,6 +7,7 @@ sealed class Screens(val route: String) {
     object Register: Screens("register") {
         object Login: Screens("login")
         object SelectType: Screens("selecttype")
+        object OnBoardingUserInfo: Screens("onboarding_userinfo")
         object OnBoardingPatience: Screens("patience_onboarding")
         object OnBoardingCheckDoctor: Screens("doctor_1")
         object OnBoardingLoadingDoctor: Screens("doctor_2")
@@ -32,7 +33,9 @@ sealed class Screens(val route: String) {
             object SplashCheering: Screens("cheering")
         }
         object MoodChart: Screens("MoodChart")
-        object Medicine: Screens("Medicine")
+        object Medicine: Screens("Medicine") {
+            object AlarmSetting: Screens("alarm_setting")
+        }
         object MyPage: Screens("MyPage")
     }
 }

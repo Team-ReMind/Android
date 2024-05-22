@@ -77,7 +77,7 @@ fun OnBoardingPatienceScreen(
         ) {
             BasicOnBoardingAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                weight = 0.5f,
+                weight = 0.7f,
                 title = stringResource(id = R.string.사용자_정보)
             )
             Text(
@@ -114,7 +114,8 @@ fun OnBoardingPatienceScreen(
                 roundedShape = 8.dp,
                 hintText = stringResource(id = R.string.번호를_입력해주세요),
                 topPadding = 12.dp,
-                bottomPadding = 12.dp
+                bottomPadding = 12.dp,
+                maxLine = 1
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -131,17 +132,7 @@ fun OnBoardingPatienceScreen(
                 backgroundColor = RemindTheme.colors.main_6,
                 text = stringResource(id = R.string.다음),
                 onClick = {
-                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinal(
-                       OnBoardingRequest(
-                           centerName = "",
-                           city = "",
-                           district = "",
-                           protectorPhoneNumber = textState.value,
-                           rolesType = "ROLE_PATIENT",
-                           fcmToken = "",
-                           doctorLicenseNumber = ""
-                       )
-                   ))
+                   viewModel.setEvent(OnBoardingContract.Event.NextButtonFinalPatience(number = textState.value))
                 },
                 textColor = RemindTheme.colors.white,
                 enable = true

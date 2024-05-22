@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
+import com.example.remind.app.Screens
 import com.example.remind.core.common.component.BasicOnBoardingAppBar
 import com.example.remind.core.designsystem.theme.Pretendard
 import com.example.remind.core.designsystem.theme.RemindTheme
@@ -61,7 +62,9 @@ fun SelectTypeScreen(
     }
     RemindTheme {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = RemindTheme.colors.white)
         ) {
             BasicOnBoardingAppBar(
                 modifier = Modifier.fillMaxWidth(),
@@ -133,7 +136,7 @@ fun SelectTypeScreen(
                 backgroundColor = if(uiState.selectedType == null) RemindTheme.colors.slate_100 else  RemindTheme.colors.main_6,
                 text = stringResource(id = R.string.다음),
                 onClick = {
-                    viewModel.setEvent(OnBoardingContract.Event.NextButtonClicked(context))
+                    viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(Screens.Register.OnBoardingUserInfo.route, Screens.Register.SelectType.route, false))
                 },
                 textColor = if(uiState.selectedType == null) RemindTheme.colors.slate_300 else  RemindTheme.colors.white,
                 enable = uiState.selectedType != null

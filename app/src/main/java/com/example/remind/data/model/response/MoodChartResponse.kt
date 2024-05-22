@@ -12,6 +12,6 @@ data class Mood(
 
 data class MoodChartDto(
     val feeling: String,
-    val localDate: String,
+    val day: Int,
     val score: Int
 )

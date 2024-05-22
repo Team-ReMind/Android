@@ -51,22 +51,41 @@ class OnBoardingViewModel @Inject constructor(
                 updateState(currentState.copy(selectedType = "ROLE_PATIENT"))
                 saveUserType("ROLE_PATIENT")
             }
-            is OnBoardingContract.Event.NextButtonFinal -> {
+            //환자가 마지막 끝나는 화면으로 가는 기능
+            is OnBoardingContract.Event.NextButtonFinalPatience -> {
                 viewModelScope.launch {
-                    postOnBoarding(event.onBoardingData.copy(fcmToken = currentState.fcmToken))
+                    updateState(currentState.copy(
+                        userInfo = currentState.userInfo.copy(
+                            fcmToken = currentState.fcmToken,
+                            protectorPhoneNumber = event.number
+                        )
+                    ))
+                    postOnBoarding(currentState.userInfo)
                     navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingPatience.route, true)
-                    Log.d("dklfawek", "${currentState.selectedType}")
                 }
             }
-            is OnBoardingContract.Event.NextButtonToPatience -> {
-                //navigateToRoute(event.destinationRoute, event.currentRoute)
+            //의사가 마지막 끝나는 화면으로 가는 기능
+            is OnBoardingContract.Event.NextButtonFinalDoctor -> {
+                viewModelScope.launch {
+                    updateState(currentState.copy(
+                        userInfo = currentState.userInfo.copy(
+                            fcmToken = event.certifinumber
+                        )
+                    ))
+                    postOnBoarding(currentState.userInfo)
+                    navigateToRoute(Screens.Register.OnBoardingLoadingDoctor.route, Screens.Register.OnBoardingCheckDoctor.route, true)
+                }
             }
-            is OnBoardingContract.Event.NextButtonClicked -> {
+            //사용자 정보 작성하고 각자 입장의 온보딩으로 이동
+            is OnBoardingContract.Event.StoreUserInfoButtonClicked -> {
+                updateState(currentState.copy(
+                    userInfo = event.info
+                ))
                 navigateToNext(currentState.selectedType!!)
             }
-            //의사부터 이걸로 통합시킴
+            //입장 상관없이 공통의 경로를 명시한
             is OnBoardingContract.Event.NavigateButtonClicked -> {
-                navigateToRoute(event.destinationRoute, event.currentRoute, false)
+                navigateToRoute(event.destinationRoute, event.currentRoute, event.inclusive)
             }
             else ->{}
         }
@@ -80,13 +99,13 @@ class OnBoardingViewModel @Inject constructor(
 
     fun navigateToNext(selectType: String) {
         if(selectType == "ROLE_DOCTOR") {
-            navigateToRoute(Screens.Register.OnBoardingCheckDoctor.route, Screens.Register.SelectType.route, false)
+            navigateToRoute(Screens.Register.OnBoardingCheckDoctor.route, Screens.Register.OnBoardingUserInfo.route, false)
         }
         if(selectType == "ROLE_PATIENT") {
-            navigateToRoute(Screens.Register.OnBoardingPatience.route, Screens.Register.SelectType.route,false)
+            navigateToRoute(Screens.Register.OnBoardingPatience.route, Screens.Register.OnBoardingUserInfo.route,false)
         }
         if(selectType == "ROLE_CENTER") {
-            navigateToRoute(Screens.Register.OnBoardingCenter.route, Screens.Register.SelectType.route,false)
+            navigateToRoute(Screens.Register.OnBoardingCenter.route, Screens.Register.OnBoardingUserInfo.route,false)
         }
     }
 
@@ -102,6 +121,20 @@ class OnBoardingViewModel @Inject constructor(
             )
         )
     }
+    //로딩창 이후 final 화면으로 이동 위함
+    fun navigateToFinal() {
+        postEffect(
+            OnBoardingContract.Effect.NavigateTo(
+                destination = Screens.Register.OnBoardingFinal.route,
+                navOptions = navOptions {
+                    popUpTo(Screens.Register.OnBoardingLoadingDoctor.route) {
+                        inclusive = true
+                    }
+                }
+            )
+        )
+    }
+
 
     private fun getFcmToken() {
         viewModelScope.launch {

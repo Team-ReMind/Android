@@ -23,6 +23,8 @@ class MedicineContract {
 
     sealed class Event: UiEvent {
         data class moveToButtonClicked(val context: Context):Event()
+        object popDialog:Event()
+        object dismissDialog: Event()
     }
     sealed class Effect: UiEffect {
         data class NavigateTo(

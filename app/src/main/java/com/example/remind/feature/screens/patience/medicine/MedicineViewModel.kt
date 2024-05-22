@@ -43,6 +43,12 @@ class MedicineViewModel @Inject constructor(
                     inclusiveData = false
                 )
             }
+            is MedicineContract.Event.popDialog -> {
+                updateState(currentState.copy(alarmDialogState = true))
+            }
+            is MedicineContract.Event.dismissDialog -> {
+                updateState(currentState.copy(alarmDialogState = false))
+            }
         }
     }
 

@@ -30,7 +30,7 @@ class MoodChartViewModel @Inject constructor(
     val date = LocalDate.now().dayOfMonth
     init {
         viewModelScope.launch {
-            getMoodChartData(year, month, date-3)
+            getMoodChartData(year, month, date-6)
             getFeelingPerCent()
             getSeriesRecord()
 

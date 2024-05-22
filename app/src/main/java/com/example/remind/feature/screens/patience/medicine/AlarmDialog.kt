@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.remind.R
+import com.example.remind.core.common.component.BasicButton
+import com.example.remind.core.common.component.BasicDialog
 import com.example.remind.core.designsystem.theme.RemindTheme
 import java.text.DecimalFormat
 import java.time.LocalTime
@@ -41,17 +43,22 @@ import java.time.LocalTime
 fun AlarmDialog (
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
-    onConfirmClick: () -> Unit,
     showDialog:Boolean,
 ) {
-
+    BasicDialog(
+        popupContent = {
+            AlarmContent(
+                onDismissClick = onDismissClick,
+            )
+        },
+        showDialog = showDialog
+    )
 }
 
 @Composable
 fun AlarmContent(
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
-    onConfirmClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -61,31 +68,38 @@ fun AlarmContent(
                 shape = RoundedCornerShape(10.dp)
             )
     ) {
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 9.13.dp),
-            textAlign = TextAlign.Center,
-            text = stringResource(id = R.string.알림_추가),
-            style = RemindTheme.typography.b1Bold.copy(color = RemindTheme.colors.text)
-        )
+        Column {
+            Row{
+                Text(
+                    modifier = Modifier
+                        .padding(top = 9.13.dp),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = R.string.알림_추가),
+                    style = RemindTheme.typography.b1Bold.copy(color = RemindTheme.colors.text)
+                )
 
-        Icon(
-            modifier = modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 8.83.dp, end = 11.dp)
-                .clickable(onClick = onDismissClick),
-            painter = painterResource(id = R.drawable.ic_close),
-            tint = RemindTheme.colors.icon,
-            contentDescription = null
-        )
+                Icon(
+                    modifier = modifier
+                        .padding(top = 8.83.dp, end = 11.dp)
+                        .clickable(onClick = onDismissClick),
+                    painter = painterResource(id = R.drawable.ic_close),
+                    tint = RemindTheme.colors.icon,
+                    contentDescription = null
+                )
+            }
+            CustomTimePicker(
+                onTimeSelected = {},
+                onDismissClick = onDismissClick
+            )
+        }
     }
 }
 
 @Composable
 fun CustomTimePicker(
     initialTime: LocalTime = LocalTime.now(),
-    onTimeSelected: (LocalTime) -> Unit
+    onTimeSelected: (LocalTime) -> Unit,
+    onDismissClick: () -> Unit
 ) {
     var selectedHour by remember { mutableStateOf(if (initialTime.hour % 12 == 0) 12 else initialTime.hour % 12) }
     var selectedMinute by remember { mutableStateOf(initialTime.minute) }
@@ -121,16 +135,15 @@ fun CustomTimePicker(
 
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            val hour24 = if (isAM) {
-                if (selectedHour == 12) 0 else selectedHour
-            } else {
-                if (selectedHour == 12) 12 else selectedHour + 12
-            }
-            onTimeSelected(LocalTime.of(hour24, selectedMinute))
-        }) {
-            androidx.compose.material3.Text("Select Time")
-        }
+        BasicButton(
+            text = stringResource(id = R.string.완료),
+            RoundedCorner = 12.dp,
+            backgroundColor = RemindTheme.colors.main_6,
+            textColor = RemindTheme.colors.white,
+            verticalPadding = 13.dp,
+            onClick = onDismissClick,
+            textStyle = RemindTheme.typography.c3Bold
+        )
     }
 }
 

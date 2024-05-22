@@ -12,6 +12,8 @@ import com.example.remind.domain.usecase.patience_usecase.PatientMedicineDailyUs
 import com.example.remind.domain.usecase.patience_usecase.SetMedicineInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -20,6 +22,14 @@ class HomeViewModel @Inject constructor(
 ): BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>(
     initialState = HomeContract.State()
 ) {
+    var year = LocalDate.now().year
+    var month = String.format("%02d", LocalDate.now().monthValue)
+    var date = LocalDate.now().dayOfMonth
+    init {
+        viewModelScope.launch {
+            getMedicineDaily(0,"${year}-${month}-${date}")
+        }
+    }
     override fun reduceState(event: HomeContract.Event) {
         when(event) {
             is HomeContract.Event.WritingButtonClicked -> {

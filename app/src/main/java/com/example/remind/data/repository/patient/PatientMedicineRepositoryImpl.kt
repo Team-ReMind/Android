@@ -4,10 +4,10 @@ import com.example.remind.data.model.request.SetMedicineInfoRequest
 import com.example.remind.data.model.request.WritingMoodRequest
 import com.example.remind.data.model.response.ActivityListResponse
 import com.example.remind.data.model.response.GetMedicineRateResponse
+import com.example.remind.data.model.response.GetMonthlyMedicineResponse
 import com.example.remind.data.model.response.GetPrescriptionResponse
 import com.example.remind.data.model.response.MedicingDailyInfoResponse
 import com.example.remind.data.model.response.MoodChartResponse
-import com.example.remind.data.model.response.OnBoardingResponse
 import com.example.remind.data.model.response.SetMedicineInfoResponse
 import com.example.remind.data.model.response.WritingMoodResponse
 import com.example.remind.data.network.adapter.ApiResult
@@ -57,7 +57,7 @@ class PatientMedicineRepositoryImpl @Inject constructor(
         memberId: Int,
         year: Int,
         month: Int
-    ): ApiResult<GetMedicineRateResponse> {
+    ): ApiResult<GetMonthlyMedicineResponse> {
        return service.getMonthlyMedicine(memberId, year, month)
     }
 }

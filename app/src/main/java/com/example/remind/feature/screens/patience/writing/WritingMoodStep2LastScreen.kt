@@ -50,7 +50,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun WritingMoodStep2LastScreen(navController: NavHostController, viewModel: WritingViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
-    val scrollState = rememberScrollState()
 
     val feelingList = listOf(
         FeelingScoreModel(R.drawable.ic_verygood, "정말 좋음", "VERY_GOOD", "기분이 정말 좋았어요!"),
@@ -90,7 +89,6 @@ fun WritingMoodStep2LastScreen(navController: NavHostController, viewModel: Writ
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .background(color = RemindTheme.colors.white)
                 .padding(horizontal = 20.dp)
         ) {
@@ -143,8 +141,8 @@ fun WritingMoodStep2LastScreen(navController: NavHostController, viewModel: Writ
                 modifier = Modifier.padding(top = 10.dp),
                 onClick = {
                     viewModel.setEvent(WritingContract.Event.NavigateToStep2(
-                        Screens.Patience.Home.WritingMoodStep2Last.route,
-                        Screens.Patience.Home.WritingMoodStep2.route
+                        Screens.Patience.Home.WritingMoodStep2.route,
+                        Screens.Patience.Home.WritingMoodStep2Last.route
                     ))
                 }
             )
@@ -192,43 +190,45 @@ fun ActivityListContainer(
             .background(color = RemindTheme.colors.white, shape = RoundedCornerShape(8.dp))
     ) {
         Row(
-            modifier = modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 20.dp),
         ) {
             Column(
-                modifier = modifier.padding(top = 6.dp, bottom = 13.dp),
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier.padding(top = 6.dp, bottom = 13.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 GlideImage(
-                    modifier = modifier.padding(bottom = 6.dp),
+                    modifier = Modifier.padding(bottom = 6.dp),
                     model = activityImage,
                     contentDescription = null
                 )
                 Text(
-                    modifier = modifier
-                        .padding(horizontal = 20.dp, vertical = 2.5.dp)
+                    modifier = Modifier
                         .background(
                             color = RemindTheme.colors.main_2,
                             shape = RoundedCornerShape(18.dp)
-                        ),
+                        )
+                        .padding(horizontal = 20.dp, vertical = 2.5.dp),
                     text = activityText,
                     style = RemindTheme.typography.c2Medium.copy(color = RemindTheme.colors.text)
                 )
             }
             Column(
-                modifier = modifier.padding(start= 43.dp),
+                modifier = Modifier.padding(start= 43.dp, top = 6.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
-                        modifier = modifier.size(width = 15.dp, height = 21.dp),
+                        modifier = Modifier.size(width = 15.dp, height = 21.dp),
                         painter = painterResource(id = moodImage),
                         contentDescription = null
                     )
                     Text(
-                        modifier = modifier
+                        modifier = Modifier
                             .padding(start = 3.dp, bottom = 6.dp),
                         text = moodDescription,
                         style = RemindTheme.typography.b3Regular.copy(color = RemindTheme.colors.slate_600)
@@ -243,7 +243,6 @@ fun ActivityListContainer(
 
     }
 }
-
 @Composable
 fun PlusContainer(
     modifier: Modifier = Modifier,
@@ -262,13 +261,15 @@ fun PlusContainer(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
-            )
+            ),
+        contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = modifier
-                .padding(vertical = 13.dp)
-                .align(Alignment.Center),
+                .fillMaxWidth()
+                .padding(vertical = 13.dp),
             verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_plus),
@@ -277,7 +278,7 @@ fun PlusContainer(
             Text(
                 modifier = modifier.padding(top = 6.dp),
                 text = stringResource(id = R.string.활동_추가하기),
-                style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.white)
+                style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.main_6)
             )
         }
     }

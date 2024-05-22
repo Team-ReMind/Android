@@ -8,19 +8,19 @@ import com.example.remind.core.base.UiState
 import com.example.remind.data.model.response.DailyTakingMedicineList
 import com.example.remind.data.model.response.Data
 import com.example.remind.data.model.response.Mood
-import com.example.remind.data.model.response.MoodChartResponse
 import com.example.remind.data.model.response.PercentList
-import com.example.remind.feature.screens.patience.home.HomeContract
+import java.time.LocalDate
 
 class MoodChartContract {
     data class State(
         val moodChartData: Mood = Mood(true, emptyList()),
         val xAxisData: List<String> = emptyList(),
         val yAxisData: List<Int> = emptyList(),
-        val date: String = "",
+        val date: String = LocalDate.now().dayOfMonth.toString(),
         val dailyMood: Data = Data(),
         val feelingTotalPerCent: List<PercentList> = emptyList(),
-        val dailyMedicine: List<DailyTakingMedicineList> = emptyList()
+        val dailyMedicine: List<DailyTakingMedicineList> = emptyList(),
+        val currentSeriesDay: Int = 0
     ): UiState
 
     sealed class Event: UiEvent {

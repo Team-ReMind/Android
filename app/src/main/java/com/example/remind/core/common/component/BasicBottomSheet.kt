@@ -2,6 +2,9 @@ package com.example.remind.core.common.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -11,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.example.remind.core.designsystem.theme.RemindTheme
 
@@ -22,6 +26,9 @@ fun BasicBottomSheet(
     onDismissRequest: () -> Unit,
     sheetContent: @Composable ColumnScope.() -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val modalHeight = screenHeight * 0.9f
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
@@ -32,6 +39,8 @@ fun BasicBottomSheet(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
+                .height(modalHeight)
                 .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
         ) {
             sheetContent()

@@ -3,10 +3,12 @@ package com.example.remind.data.network.service
 import com.example.remind.data.model.request.SetMedicineInfoRequest
 import com.example.remind.data.model.request.WritingMoodRequest
 import com.example.remind.data.model.response.ActivityListResponse
+import com.example.remind.data.model.response.CurrentSeriesDayResponse
 import com.example.remind.data.model.response.GetDailyMoodResponse
 import com.example.remind.data.model.response.GetFeelingActivityResponse
 import com.example.remind.data.model.response.GetFeelingPercentResponse
 import com.example.remind.data.model.response.GetMedicineRateResponse
+import com.example.remind.data.model.response.GetMonthlyMedicineResponse
 import com.example.remind.data.model.response.GetPrescriptionResponse
 import com.example.remind.data.model.response.MedicineInfoResponse
 import com.example.remind.data.model.response.MedicingDailyInfoResponse
@@ -77,12 +79,13 @@ interface PatientService {
         @Query("memberId") memberId: Int,
         @Query("year") year: Int,
         @Query("month") month: Int,
-    ): ApiResult<GetMedicineRateResponse>
+    ): ApiResult<GetMonthlyMedicineResponse>
 
-    @GET("/mood")
+    @GET("/mood/{moodDate}")
     suspend fun getDailyMood(
         @Path("moodDate") moodDate:String
     ): ApiResult<GetDailyMoodResponse>
-
+    @GET("/mood/chart/series")
+    suspend fun getSeries(): ApiResult<CurrentSeriesDayResponse>
 
 }

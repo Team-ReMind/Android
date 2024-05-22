@@ -82,8 +82,17 @@ class WritingViewModel @Inject constructor(
                 navigateToRoute(event.destinationRoute, event.currentRoute, true)
             }
             is WritingContract.Event.SendInfoButton -> {
+                updateState(currentState.copy(
+                    writingMoodRequest = currentState.writingMoodRequest.copy(
+                        localDate = event.localDate,
+                        detail = event.detail
+                    )
+                ))
                 setMoodData(currentState.writingMoodRequest)
                 navigateToRoute(event.destinationRoute, event.currentRoute,true)
+                updateState(currentState.copy(
+                    writingMoodRequest = WritingMoodRequest()
+                ))
             }
         }
     }

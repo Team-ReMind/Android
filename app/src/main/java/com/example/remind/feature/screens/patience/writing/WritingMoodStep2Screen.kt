@@ -2,6 +2,7 @@ package com.example.remind.feature.screens.patience.writing
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,6 +26,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -68,10 +71,7 @@ fun WritingMoodStep2Screen(navController: NavHostController, viewModel: WritingV
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = RemindTheme.colors.white)
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp
-                )
+                .padding(horizontal = 20.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             IconButton(
@@ -116,14 +116,20 @@ fun WritingMoodStep2Screen(navController: NavHostController, viewModel: WritingV
                 )
             }
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 170.dp, max = 180.dp)
+                    .border(width = 1.dp, color = RemindTheme.colors.grayscale_1, shape = RoundedCornerShape(18.dp))
             ) {
                 LazyHorizontalGrid(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
+                        .align(Alignment.Center),
                    rows = GridCells.Fixed(2)
                 ) {
                     itemsIndexed(uiState.ActivityList) {index, item ->
                         ImageContainerContent(
-                            background = if(uiState.moodActivity.activityId != 0) RemindTheme.colors.main_4 else  RemindTheme.colors.white,
+                            background = if(uiState.moodActivity.activityId == item.activityId) RemindTheme.colors.main_4 else  RemindTheme.colors.white,
                             onClick = {
                                 viewModel.setEvent(WritingContract.Event.ActivityButtonClicked(item.activityId))
                             },
@@ -165,20 +171,19 @@ fun ImageContainerContent(
     name: String
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = Modifier
             .background(color = background, shape = RoundedCornerShape(12.dp))
-            .clickable(
-                onClick = onClick
-            )
+            .clickable(onClick = onClick)
+            .height(80.dp)
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(vertical = 8.dp, horizontal = 10.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GlideImage(
-                modifier = modifier
+                modifier = Modifier
                     .padding(bottom = 6.dp)
                     .size(width = 29.dp, height = 45.dp),
                 model = imageUrl,

@@ -28,7 +28,7 @@ class WritingContract {
         data class StoreFeelingListItem(val detail: String): Event()
         data class NavigateToHome(val context: Context): Event()
         data class NavigateToStep2(val destinationRoute: String, val currentRoute: String): Event()
-        data class SendInfoButton(val destinationRoute: String, val currentRoute: String): Event()
+        data class SendInfoButton(val destinationRoute: String, val currentRoute: String, val detail: String, val localDate: String): Event()
     }
 
     sealed class Effect: UiEffect {

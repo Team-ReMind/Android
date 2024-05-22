@@ -6,8 +6,8 @@ data class GetMedicineRateResponse(
     val message: String
 )
 data class Rate(
-    val breakfastRate: Int=0,
-    val dinnerRate: Int=0,
-    val lunchRate: Int=0,
-    val totalRate: Int=0
+    val breakfastRate: Double=0.0,
+    val dinnerRate: Double=0.0,
+    val lunchRate: Double=0.0,
+    val totalRate: Double=0.0
 )

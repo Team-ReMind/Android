@@ -8,6 +8,7 @@ import com.example.remind.domain.usecase.patience_usecase.GetFeelingPercentUseCa
 import com.example.remind.domain.usecase.patience_usecase.GetMoodChartUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetMoodDailyUseCase
 import com.example.remind.domain.usecase.patience_usecase.PatientMedicineDailyUseCase
+import com.example.remind.domain.usecase.patience_usecase.SeriesRecordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -19,7 +20,8 @@ class MoodChartViewModel @Inject constructor(
     private val getFeelingPercentUseCase: GetFeelingPercentUseCase,
     private val getFeelingActivityUseCase: GetFeelingActivityUseCase,
     private val getMoodDailyUseCase: GetMoodDailyUseCase,
-    private val patientMedicineDailyUseCase: PatientMedicineDailyUseCase
+    private val patientMedicineDailyUseCase: PatientMedicineDailyUseCase,
+    private val seriesRecordUseCase: SeriesRecordUseCase
 ): BaseViewModel<MoodChartContract.Event, MoodChartContract.State, MoodChartContract.Effect>(
     initialState = MoodChartContract.State()
 ) {
@@ -30,6 +32,8 @@ class MoodChartViewModel @Inject constructor(
         viewModelScope.launch {
             getMoodChartData(year, month, date-3)
             getFeelingPerCent()
+            getSeriesRecord()
+
         }
     }
     override fun reduceState(event: MoodChartContract.Event) {
@@ -99,6 +103,18 @@ class MoodChartViewModel @Inject constructor(
                     updateState(currentState.copy(
                         dailyMedicine = result.data.data.dailyTakingMedicineDtos
                     ))
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun getSeriesRecord() {
+        viewModelScope.launch {
+            val result = seriesRecordUseCase.invoke()
+            when(result) {
+                is ApiResult.Success -> {
+                    updateState(currentState.copy(currentSeriesDay = result.data.data.currentSeriesDays))
                 }
                 else -> {}
             }

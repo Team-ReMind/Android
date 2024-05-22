@@ -34,7 +34,7 @@ fun IconContainer(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                modifier = modifier
+                modifier = Modifier
                     .padding(
                         top = 18.dp,
                         start = 15.dp,

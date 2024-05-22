@@ -21,7 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -29,7 +28,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -37,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -50,7 +51,6 @@ import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.graphScoreModel
 import com.example.remind.data.model.response.FeelingActivity
 import com.example.remind.data.repository.CalendarDataSource
-import com.example.remind.feature.screens.patience.home.HomeContract
 import com.example.remind.feature.screens.patience.moodchart.component.FeelingPercentGraph
 import com.jaikeerthick.composable_graphs.composables.line.LineGraph
 import com.jaikeerthick.composable_graphs.composables.line.model.LineData
@@ -67,7 +67,11 @@ import java.time.LocalDate
 fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
+
     val sheetState = rememberModalBottomSheetState()
+    var isSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val graphYaxisList = listOf(
@@ -77,13 +81,15 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
         graphScoreModel(25, R.drawable.ic_bad),
         graphScoreModel(0, R.drawable.ic_terrible),
     )
-    MoodChartBottomSheet(
-        viewModel = viewModel,
-        sheetState = sheetState,
-        onDismissRequest = {
-            coroutineScope.launch { sheetState.hide() }
-        }
-    )
+    if(isSheetOpen == true) {
+        MoodChartBottomSheet(
+            viewModel = viewModel,
+            sheetState = sheetState,
+            onDismissRequest = {
+                isSheetOpen = false
+            }
+        )
+    }
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when(effect) {
@@ -112,7 +118,7 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
             BasicTextButton(
                 modifier = Modifier.fillMaxWidth(),
                 backgroundColor = RemindTheme.colors.slate_600,
-                text = "17일째 연속으로 기록 중이에요! 파이팅:)",
+                text = "${uiState.currentSeriesDay}일째 연속으로 기록 중이에요! 파이팅:)",
                 textColor = RemindTheme.colors.slate_100,
                 onClick = {  },
                 verticalPadding = 7.dp,
@@ -132,9 +138,11 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 18.dp,
                 onClick = {
+                    isSheetOpen = true
                    viewModel.setEvent(MoodChartContract.Event.ClickToBottomSheet(
                        "2024-05-${uiState.date}"
                    ))
+
                 },
                 textStyle = RemindTheme.typography.b3Bold
             )

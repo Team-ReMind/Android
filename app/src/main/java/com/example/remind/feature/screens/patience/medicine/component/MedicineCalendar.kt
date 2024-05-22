@@ -14,16 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.remind.core.designsystem.theme.RemindTheme
+import com.example.remind.data.model.response.MonthlyTakingMedicineDto
 import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
 fun MedicineCalendar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    monthData: List<MonthlyTakingMedicineDto>
 ) {
     val year = LocalDate.now().year
     val month = LocalDate.now().monthValue
@@ -67,12 +67,19 @@ fun MedicineCalendar(
                                     .height(40.dp)
                             )
                         } else {
+                            val date = monthData.find {it.date == dayCounter}
+                            val background = when {
+                                date?.takingLevel == 0 -> RemindTheme.colors.sub_2
+                                date?.takingLevel == 1 -> RemindTheme.colors.main_3
+                                date?.takingLevel == 2 -> RemindTheme.colors.main_6
+                                else -> RemindTheme.colors.white
+                            }
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(13.dp)
                                     .height(30.dp)
-                                    .background(shape = CircleShape, color = RemindTheme.colors.main_6),
+                                    .background(shape = CircleShape, color = background),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
@@ -88,9 +95,3 @@ fun MedicineCalendar(
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun CalendarPreview() {
-    MedicineCalendar()
-}

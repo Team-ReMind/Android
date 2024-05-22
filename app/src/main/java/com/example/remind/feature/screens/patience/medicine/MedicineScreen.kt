@@ -1,6 +1,7 @@
 package com.example.remind.feature.screens.patience.medicine
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -57,7 +59,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
-
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -75,6 +77,7 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(color = RemindTheme.colors.white)
                 .padding(start = 20.dp, end = 20.dp)
                 .verticalScroll(scrollState),
         ) {
@@ -88,22 +91,22 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "00님의 약 처방",
+                    text = "${uiState.userName}님의 약 처방",
                     style = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.text)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "처방날짜 들어갈자리",
+                    text = uiState.prescription.prescriptionDate,
                     style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.text)
                 )
                 Text(
                     modifier = Modifier.padding(start = 6.dp),
-                    text = "(몇일분 처방)",
+                    text = "(${uiState.prescription.period}일분 처방)",
                     style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.grayscale_3)
                 )
             }
             CurrentMedicineContainer(
-                modifier = Modifier.padding(top = 7.dp),
+                modifier = Modifier.padding(top = 7.dp, bottom = 8.dp),
                 prescription = uiState.prescription
             )
             BasicButton(
@@ -113,7 +116,9 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
                 backgroundColor = RemindTheme.colors.main_6,
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 12.dp,
-                onClick = {  },
+                onClick = {
+                   viewModel.setEvent(MedicineContract.Event.moveToButtonClicked(context))
+                },
                 textStyle = RemindTheme.typography.b2Bold
             )
             Text(
@@ -122,7 +127,7 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
                 style = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.text)
             )
             MedicineRateContainer(
-                modifier = Modifier.padding(top = 6.dp),
+                modifier = Modifier.padding(top = 6.dp, bottom = 10.dp),
                 rate = uiState.rate
             )
             Box(
@@ -140,13 +145,16 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CalendarHeader(modifier = Modifier.padding(top = 9.dp))
-                    MedicineCalendar()
-                    Image(
-                        modifier = Modifier.padding(end = 15.dp, bottom = 24.dp),
-                        painter = painterResource(id = R.drawable.ex_info),
-                        contentDescription = null
-                    )
+                    CalendarHeader(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp))
+                    MedicineCalendar(monthData = uiState.getMonthlyMedicineResponse.data.monthlyTakingMedicineDtos)
+                    Row {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(
+                            modifier = Modifier.padding(end = 15.dp, bottom = 24.dp),
+                            painter = painterResource(id = R.drawable.ex_info),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }
@@ -196,10 +204,12 @@ fun CurrentMedicineContainer(
             )
     ) {
         Column(
-            modifier = modifier.padding(vertical = 20.dp)
+            modifier = modifier.padding(horizontal = 19.dp)
         ) {
             Row(
-                modifier = modifier.padding(top = 14.dp),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = 14.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TimeMedicineList(
@@ -214,21 +224,22 @@ fun CurrentMedicineContainer(
                     time = stringResource(id = R.string.저녁),
                     importance = prescription.dinnerImportance.toFloat()
                 )
-                //바꿔야함
                 TimeMedicineList(
                     time = stringResource(id = R.string.비상용),
-                    importance = prescription.breakfastImportance.toFloat()
+                    importance = prescription.etcImportance.toFloat()
                 )
             }
-            Box(
-                modifier = modifier.padding(top = 20.dp, bottom = 11.dp),
-            ) {
-                Text(
-                    modifier = modifier.padding(start = 14.dp, top = 3.dp, bottom = 3.dp),
-                    text = prescription.memo,
-                    style = RemindTheme.typography.c2Regular.copy(color = RemindTheme.colors.slate_700)
-                )
-            }
+            Text(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = RemindTheme.colors.main_2,
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .padding(start = 14.dp, top = 3.dp, bottom = 3.dp),
+                text = prescription.memo,
+                style = RemindTheme.typography.c2Regular.copy(color = RemindTheme.colors.slate_700)
+            )
         }
     }
 }
@@ -240,11 +251,12 @@ fun TimeMedicineList(
     importance: Float,
 ) {
     Column(
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             modifier = modifier.padding(bottom = 7.dp),
-           text = time,
+            text = time,
             style = RemindTheme.typography.c1Bold.copy(color = RemindTheme.colors.main_6)
         )
         StarRatingBar(
@@ -274,7 +286,7 @@ fun MedicineRateContainer(
         ) {
            Row {
                Text(
-                   text = "${rate.totalRate}%",
+                   text = String.format("%.1f", rate.totalRate),
                    style = RemindTheme.typography.h1Bold.copy(color= RemindTheme.colors.main_6)
                )
                Text(
@@ -284,7 +296,9 @@ fun MedicineRateContainer(
                )
            }
             Row(
-                modifier = modifier.padding(top = 9.dp, bottom = 18.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+
             ) {
                 Text(
                     text = "아침: ",
@@ -292,7 +306,7 @@ fun MedicineRateContainer(
                 )
                 Text(
                     modifier = modifier.padding(start = 4.dp),
-                    text = "${rate.breakfastRate}%",
+                    text = String.format("%.1f", rate.breakfastRate),
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -301,7 +315,7 @@ fun MedicineRateContainer(
                 )
                 Text(
                     modifier = modifier.padding(start = 4.dp),
-                    text = "${rate.lunchRate}%",
+                    text = String.format("%.1f", rate.lunchRate),
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -310,7 +324,7 @@ fun MedicineRateContainer(
                 )
                 Text(
                     modifier = modifier.padding(start = 4.dp),
-                    text = "${rate.dinnerRate}%",
+                    text = String.format("%.1f", rate.dinnerRate),
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
             }

@@ -1,16 +1,16 @@
 package com.example.remind.data.model.response
 
 data class GetMonthlyMedicineResponse(
-    val code: Int,
-    val `data`: Monthly,
-    val message: String
+    val code: Int=0,
+    val `data`: Monthly = Monthly(),
+    val message: String=""
 )
 data class Monthly(
-    val monthlyTakingMedicineDtos: List<MonthlyTakingMedicineDto>
+    val monthlyTakingMedicineDtos: List<MonthlyTakingMedicineDto> = emptyList()
 )
 data class MonthlyTakingMedicineDto(
-    val date: String,
-    val needMedicine: Boolean,
-    val takingCount: Int,
-    val takingLevel: Int
+    val date: Int= 0,
+    val needMedicine: Boolean = false,
+    val takingCount: Int = 0,
+    val takingLevel: Int = 0
 )

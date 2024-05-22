@@ -56,7 +56,7 @@ fun WritingMoodStep3Screen(navController: NavHostController, viewModel: WritingV
         }
     }
     val year = LocalDate.now().year
-    val month = LocalDate.now().monthValue
+    val month = String.format("%02d", LocalDate.now().monthValue)
     val date = LocalDate.now().dayOfMonth
     val dateValue = "${year}-${month}-${date}"
     val textState = remember { mutableStateOf("") }
@@ -114,11 +114,13 @@ fun WritingMoodStep3Screen(navController: NavHostController, viewModel: WritingV
                     .padding(bottom = 32.dp),
                 text = stringResource(id = R.string.다음),
                 RoundedCorner = 12.dp,
-                backgroundColor = if(textState.value != null) RemindTheme.colors.slate_100 else RemindTheme.colors.main_6,
+                backgroundColor = if(textState.value != null) RemindTheme.colors.main_6 else RemindTheme.colors.slate_100,
                 textColor = if(textState.value != null) RemindTheme.colors.white else RemindTheme.colors.slate_300,
                 verticalPadding = 13.dp,
                 onClick = {
                    viewModel.setEvent(WritingContract.Event.SendInfoButton(
+                       detail = textState.value,
+                       localDate = dateValue,
                        destinationRoute = Screens.Patience.Home.SplashCheering.route,
                        currentRoute = Screens.Patience.Home.WritingMoodStep3.route,
                    ))

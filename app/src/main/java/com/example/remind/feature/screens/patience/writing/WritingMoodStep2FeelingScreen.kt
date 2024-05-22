@@ -111,7 +111,7 @@ fun WritingMoodStep2FeelingScreen(navController: NavHostController, viewModel: W
             Spacer(modifier = Modifier.height(7.dp))
             Box(
                 modifier = Modifier
-                    .background(color = RemindTheme.colors.white)
+                    .fillMaxWidth()
                     .border(
                         width = 1.dp,
                         shape = RoundedCornerShape(18.dp),

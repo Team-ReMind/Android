@@ -67,6 +67,9 @@ fun PatientManageScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val scrollState = rememberScrollState()
+    LaunchedEffect(Unit) {
+        viewModel.getPatients()
+    }
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when(effect) {

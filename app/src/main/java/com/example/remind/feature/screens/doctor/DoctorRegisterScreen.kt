@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,6 +83,7 @@ fun DoctorRegisterScreen(
                     modifier = Modifier.padding(top = 15.dp)
                 ) {
                     itemsIndexed(uiState.acceptList.patientDtos) { index, item ->
+                        val status = acceptStatusMap[item.memberId] ?: false
                         RequestListItem(
                             data = uiState.acceptList.patientDtos.get(index),
                             onClick = {
@@ -91,7 +93,7 @@ fun DoctorRegisterScreen(
                                     )
                                 )
                             },
-                            status = acceptStatusMap[item.memberId] ?: false
+                            status = status
                         )
                     }
                 }

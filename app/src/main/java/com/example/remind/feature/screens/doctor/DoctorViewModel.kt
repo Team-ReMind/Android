@@ -64,7 +64,7 @@ class DoctorViewModel @Inject constructor(
                     memberId = event.memberId
                 ))
                 getPatientInfo(event.memberId)
-                getMoodChartData(year, month, date, event.memberId)
+                getMoodChartData(year, month, date-6, event.memberId)
                 navigateToRoute(
                     destination = Screens.Doctor.PatienceManage.route,
                     current = Screens.Doctor.DoctorMain.route,

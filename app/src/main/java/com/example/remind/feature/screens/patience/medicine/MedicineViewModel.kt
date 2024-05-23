@@ -53,7 +53,7 @@ class MedicineViewModel @Inject constructor(
     }
 
 
-    private fun getPrescription() {
+     fun getPrescription() {
         viewModelScope.launch {
             val result = prescriptionUseCase.invoke(0)
             when(result) {
@@ -66,7 +66,7 @@ class MedicineViewModel @Inject constructor(
             }
         }
     }
-    private fun getMedicineRate() {
+     fun getMedicineRate() {
         viewModelScope.launch {
             val result = getMedicineRateUseCase.invoke(0)
             when(result){
@@ -80,7 +80,7 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
-    private fun getMonthMedicine() {
+     fun getMonthMedicine() {
         viewModelScope.launch {
             val result = getMonthlyMedicineUseCase.invoke(0, 2024, 5)
             when(result) {

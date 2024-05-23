@@ -107,12 +107,14 @@ fun AlarmSettingScreen(
 
             }
             Text(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 8.dp, start = 20.dp),
                 text = "알림을 통해 복용 시간을 놓치지 말아요!",
                 style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.grayscale_3)
             )
             Image(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 14.dp),
                 painter = painterResource(id = R.drawable.ex_alarm),
                 contentDescription = null
             )

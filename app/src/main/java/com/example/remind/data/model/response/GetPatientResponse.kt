@@ -14,6 +14,7 @@ data class PatientDto(
     val age: Int=0,
     val gender: String="",
     val memberId: Int=0,
-    val name: String=""
+    val name: String="",
+    val birthYear: Int = 0
 )
 

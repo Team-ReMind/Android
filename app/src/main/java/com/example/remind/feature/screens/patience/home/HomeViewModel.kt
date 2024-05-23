@@ -62,6 +62,11 @@ class HomeViewModel @Inject constructor(
             is HomeContract.Event.SendNotTakingReason -> {
                 sendNotTakingReason(currentState.clickTime, currentState.notTakingReason ?: "")
                 updateState(currentState.copy(medicineDialogState = false))
+                navigateToRoute(
+                    destination = Screens.Patience.Home.SplashCheering.route,
+                    current = Screens.Patience.Home.route,
+                    inclusiveData = true
+                )
             }
             //미복용 사유 클릭
             is HomeContract.Event.setNotTakingReason -> {

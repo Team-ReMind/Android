@@ -70,6 +70,7 @@ fun AlarmContent(
     ) {
         Column {
             Row{
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     modifier = Modifier
                         .padding(top = 9.13.dp),
@@ -77,7 +78,7 @@ fun AlarmContent(
                     text = stringResource(id = R.string.알림_추가),
                     style = RemindTheme.typography.b1Bold.copy(color = RemindTheme.colors.text)
                 )
-
+                Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     modifier = modifier
                         .padding(top = 8.83.dp, end = 11.dp)
@@ -87,10 +88,16 @@ fun AlarmContent(
                     contentDescription = null
                 )
             }
-            CustomTimePicker(
-                onTimeSelected = {},
-                onDismissClick = onDismissClick
-            )
+           Row(
+               modifier = Modifier.fillMaxWidth()
+           ) {
+               Spacer(modifier = Modifier.weight(1f))
+               CustomTimePicker(
+                   onTimeSelected = {},
+                   onDismissClick = onDismissClick
+               )
+               Spacer(modifier = Modifier.weight(1f))
+           }
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.remind.feature.screens.patience.moodchart
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -60,7 +58,6 @@ import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphStyle
 import com.jaikeerthick.composable_graphs.composables.line.style.LineGraphVisibility
 import com.jaikeerthick.composable_graphs.style.LabelPosition
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -72,6 +69,9 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
     var isSheetOpen by rememberSaveable {
         mutableStateOf(false)
     }
+    val year = LocalDate.now().year
+    val month = LocalDate.now().monthValue
+    val date = LocalDate.now().dayOfMonth
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val graphYaxisList = listOf(
@@ -90,6 +90,11 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
             }
         )
     }
+    LaunchedEffect(Unit) {
+        viewModel.getMoodChartData(year, month, date-6)
+        viewModel.getSeriesRecord()
+    }
+
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when(effect) {
@@ -217,27 +222,41 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                 text = stringResource(id = R.string.무엇을_할_때_기분이_좋은지_확인),
                 style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3)
             )
-            Box(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .border(
-                        width = 1.dp,
-                        color = RemindTheme.colors.grayscale_2,
-                        shape = RoundedCornerShape(12.dp)
-                    )
-            ) {
-                if(uiState.feelingTotalPerCent.isNotEmpty()) {
-                    FeelingPercentGraph(
-                        modifier = Modifier.padding(top = 12.dp, bottom = 21.dp, start = 8.dp, end = 8.dp),
-                        percentList = uiState.feelingTotalPerCent,
-                        onClick = {}
-                    )
-                } else {
-                    CircularProgressIndicator()
-                }
+//            Box(
+//                modifier = Modifier
+//                    .padding(top = 8.dp)
+//                    .border(
+//                        width = 1.dp,
+//                        color = RemindTheme.colors.grayscale_2,
+//                        shape = RoundedCornerShape(12.dp)
+//                    )
+//            ) {
+//                if(uiState.feelingTotalPerCent.isNotEmpty()) {
+//                    FeelingPercentGraph(
+//                        modifier = Modifier.padding(top = 12.dp, bottom = 21.dp, start = 8.dp, end = 8.dp),
+//                        percentList = uiState.feelingTotalPerCent,
+//                        onClick = {}
+//                    )
+//                } else {
+//                    CircularProgressIndicator()
+//                }
+//
+//            }
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+                painter = painterResource(id = R.drawable.ex_percentage),
+                contentDescription = null
+            )
 
-            }
-            //활동 리스트들 들어가야함
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 7.dp),
+                contentScale = ContentScale.FillWidth,
+                painter = painterResource(id = R.drawable.ex_activity),
+                contentDescription = null
+            )
             Text(
                 modifier = Modifier.padding(top = 20.dp),
                 text = stringResource(id = R.string.무드_차트_월별_비교)

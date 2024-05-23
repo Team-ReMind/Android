@@ -60,7 +60,7 @@ class MoodChartViewModel @Inject constructor(
         }
     }
 
-    private fun getMoodChartData(year: Int, month: Int, day: Int) {
+     fun getMoodChartData(year: Int, month: Int, day: Int) {
         viewModelScope.launch {
             val result = getMoodChartUseCase.invoke(year, month, day, 7)
             when(result) {
@@ -117,7 +117,7 @@ class MoodChartViewModel @Inject constructor(
         }
     }
 
-    private fun getSeriesRecord() {
+     fun getSeriesRecord() {
         viewModelScope.launch {
             val result = seriesRecordUseCase.invoke()
             when(result) {

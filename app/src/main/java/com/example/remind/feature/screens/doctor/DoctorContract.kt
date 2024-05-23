@@ -8,6 +8,7 @@ import com.example.remind.core.base.UiEvent
 import com.example.remind.core.base.UiState
 import com.example.remind.data.model.response.DoctorData
 import com.example.remind.data.model.response.GetMonthlyMedicineResponse
+import com.example.remind.data.model.response.Info
 import com.example.remind.data.model.response.Mood
 import com.example.remind.data.model.response.PercentList
 import com.example.remind.data.model.response.Prescription
@@ -26,6 +27,8 @@ class DoctorContract {
         val prescription: Prescription = Prescription(),
         val getMonthlyMedicineResponse: GetMonthlyMedicineResponse = GetMonthlyMedicineResponse(),
         val feelingTotalPerCent: List<PercentList> = emptyList(),
+        val memberInfo: Info = Info(),
+        val patientInfo: Info = Info()
     ): UiState
 
     sealed class Event: UiEvent {

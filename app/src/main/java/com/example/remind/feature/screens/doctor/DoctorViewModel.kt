@@ -8,8 +8,10 @@ import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.SetAcceptrequest
 import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.data.network.interceptor.TokenManager
+import com.example.remind.domain.usecase.doctor_usecase.GetDoctorMoodChartUseCase
 import com.example.remind.domain.usecase.doctor_usecase.GetPatientUseCase
 import com.example.remind.domain.usecase.doctor_usecase.GetRequestUseCase
+import com.example.remind.domain.usecase.onboarding_usecase.MemberInfoUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetFeelingPercentUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetMedicineRateUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetMonthlyMedicineUseCase
@@ -25,10 +27,12 @@ class DoctorViewModel @Inject constructor(
     private val getPatientUseCase: GetPatientUseCase,
     private val getRequestUseCase: GetRequestUseCase,
     private val getMedicineRateUseCase: GetMedicineRateUseCase,
-    private val getMoodChartUseCase: GetMoodChartUseCase,
+    //private val getMoodChartUseCase: GetMoodChartUseCase,
     private val prescriptionUseCase: PrescriptionUseCase,
     private val getMonthlyMedicineUseCase: GetMonthlyMedicineUseCase,
-    private val getFeelingPercentUseCase: GetFeelingPercentUseCase
+    private val getFeelingPercentUseCase: GetFeelingPercentUseCase,
+    private val memberInfoUseCase: MemberInfoUseCase,
+    private val getDoctorMoodChartUseCase: GetDoctorMoodChartUseCase
 ): BaseViewModel<DoctorContract.Event, DoctorContract.State, DoctorContract.Effect>(
     initialState = DoctorContract.State()
 ) {
@@ -39,16 +43,18 @@ class DoctorViewModel @Inject constructor(
         viewModelScope.launch {
             getPatients()
             getRequestPatients()
-            getMedicineRate()
-            getMoodChartData(year, month, date-6)
-            getPrescription()
-            getMonthMedicine()
+            //getMedicineRate()
+            //getMoodChartData(year, month, date-6)
+            //getPrescription()
+            //getMonthMedicine()
             getFeelingPerCent()
+            getMemberInfo()
         }
     }
     override fun reduceState(event: DoctorContract.Event) {
         when(event) {
             is DoctorContract.Event.RegisterButtonClicked -> {
+                getRequestPatients()
                 navigateToRoute(
                     destination = Screens.Doctor.DoctorPatienceRegister.route,
                     current = Screens.Doctor.DoctorMain.route,
@@ -65,6 +71,8 @@ class DoctorViewModel @Inject constructor(
                 updateState(currentState.copy(
                     memberId = event.memberId
                 ))
+                getPatientInfo(event.memberId)
+                getMoodChartData(year, month, date, event.memberId)
                 navigateToRoute(
                     destination = Screens.Doctor.PatienceManage.route,
                     current = Screens.Doctor.DoctorMain.route,
@@ -79,6 +87,9 @@ class DoctorViewModel @Inject constructor(
                 )
             }
             is DoctorContract.Event.ClickToMedicine -> {
+                getPrescription()
+                getMedicineRate()
+                getMonthMedicine()
                 navigateToRoute(
                     destination = Screens.Doctor.ManageMedicine.route,
                     current = Screens.Doctor.PatienceManage.route,
@@ -167,9 +178,9 @@ class DoctorViewModel @Inject constructor(
             }
         }
     }
-    private fun getMoodChartData(year: Int, month: Int, day: Int) {
+    private fun getMoodChartData(year: Int, month: Int, day: Int, memberId: Int) {
         viewModelScope.launch {
-            val result = getMoodChartUseCase.invoke(year, month, day, 7)
+            val result = getDoctorMoodChartUseCase.invoke(year, month, day, 7, memberId)
             when(result) {
                 is ApiResult.Success -> {
                     updateState(currentState.copy(
@@ -218,6 +229,32 @@ class DoctorViewModel @Inject constructor(
                             feelingTotalPerCent = result.data.data
                         ))
                     }
+                }
+                else ->{}
+            }
+        }
+    }
+     fun getMemberInfo() {
+        viewModelScope.launch {
+            val result = memberInfoUseCase.invoke(0)
+            when(result) {
+                is ApiResult.Success -> {
+                    updateState(currentState.copy(
+                        memberInfo = result.data.data
+                    ))
+                }
+                else ->{}
+            }
+        }
+    }
+    fun getPatientInfo(memberId: Int) {
+        viewModelScope.launch {
+            val result = memberInfoUseCase.invoke(memberId)
+            when(result) {
+                is ApiResult.Success -> {
+                    updateState(currentState.copy(
+                        patientInfo = result.data.data
+                    ))
                 }
                 else ->{}
             }

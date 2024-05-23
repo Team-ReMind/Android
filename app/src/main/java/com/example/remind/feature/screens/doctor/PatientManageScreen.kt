@@ -27,18 +27,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicBackAppBar
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.designsystem.theme.RemindTheme
 import com.example.remind.data.model.graphScoreModel
 import com.example.remind.data.model.response.DoctorData
+import com.example.remind.data.model.response.Info
 import com.example.remind.data.model.response.Rate
 import com.example.remind.feature.screens.patience.moodchart.GraphComponent
 import com.example.remind.feature.screens.patience.moodchart.MoodChartContract
@@ -86,21 +92,22 @@ fun PatientManageScreen(
                 .verticalScroll(scrollState)
         ) {
             BasicBackAppBar (
-                modifier = Modifier,
+                modifier = Modifier.padding(top = 20.dp),
                 onClick = {navController.navigateUp()},
                 title = "환자 관리"
             )
             PatientProfile(
-                modifier = Modifier.fillMaxWidth(),
-                memberData = uiState.doctorData,
-                memberId = uiState.memberId ?: 0
+                modifier = Modifier
+                    .padding(top = 25.dp)
+                    .fillMaxWidth(),
+                memberData = uiState.patientInfo
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    modifier = Modifier.padding(top = 30.dp),
+                    modifier = Modifier.padding(top = 30.dp, bottom= 7.dp),
                     text = stringResource(id = R.string.약_복용률),
                     style = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.text)
                 )
@@ -228,41 +235,37 @@ fun PatientManageScreen(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PatientProfile(
     modifier: Modifier = Modifier,
-    memberData: DoctorData,
-    memberId: Int
+    memberData: Info,
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 24.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val patient = memberData.patientDtos.find { it.memberId == memberId }
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = null,
-            modifier = modifier
-                .size(width = 71.dp, height = 95.dp)
-                .padding(start = 20.dp),
-            tint = RemindTheme.colors.main_1
+        GlideImage(
+            modifier = Modifier
+                .size(width = 80.dp, height = 80.dp)
+                .clip(RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.Crop,
+            model = memberData.imageUrl,
+            contentDescription = null
         )
         Column(
             modifier = modifier
-                .fillMaxWidth()
+                .padding(start = 8.dp),
+           horizontalAlignment = Alignment.Start
         ) {
             Text(
-                modifier = modifier.padding(end = 24.dp, bottom = 4.dp),
-                text = patient?.name ?: "김말랑",
+                text = memberData.name,
                 style = RemindTheme.typography.b1Bold
             )
             Text(
-                modifier = modifier.padding(end = 24.dp),
-                text = "만${patient?.age} ${patient?.gender}",
-                style = RemindTheme.typography.h2Medium
+                text = "만${memberData.age} ${memberData.gender}",
+                style = RemindTheme.typography.h2Medium.copy(fontSize = 14.sp)
             )
         }
     }
@@ -273,6 +276,10 @@ fun DoctorMedicineRateContainer(
     modifier: Modifier = Modifier,
     rate: Rate
 ) {
+    val total = String.format("%.1f", rate.totalRate)
+    val breakfast = String.format("%.1f", rate.breakfastRate)
+    val lunch = String.format("%.1f", rate.lunchRate)
+    val dinner = String.format("%.1f", rate.dinnerRate)
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -288,7 +295,7 @@ fun DoctorMedicineRateContainer(
         ) {
             Row {
                 Text(
-                    text = String.format("%.1f", rate.totalRate),
+                    text = "${total}%",
                     style = RemindTheme.typography.h1Bold.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -306,8 +313,8 @@ fun DoctorMedicineRateContainer(
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.text)
                 )
                 Text(
-                    modifier = modifier.padding(start = 4.dp),
-                    text = String.format("%.1f", rate.breakfastRate),
+                    modifier = modifier.padding(start = 4.dp ,end = 12.dp),
+                    text = "$breakfast%",
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -315,8 +322,8 @@ fun DoctorMedicineRateContainer(
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.text)
                 )
                 Text(
-                    modifier = modifier.padding(start = 4.dp),
-                    text = String.format("%.1f", rate.lunchRate),
+                    modifier = modifier.padding(start = 4.dp,end = 12.dp),
+                    text = "$lunch%",
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -325,7 +332,7 @@ fun DoctorMedicineRateContainer(
                 )
                 Text(
                     modifier = modifier.padding(start = 4.dp),
-                    text = String.format("%.1f", rate.dinnerRate),
+                    text = "$dinner%",
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
             }

@@ -44,6 +44,7 @@ fun DoctorMedicineManage(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val scrollState = rememberScrollState()
+
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when(effect) {
@@ -53,7 +54,7 @@ fun DoctorMedicineManage(
             }
         }
     }
-    val patientInfo = uiState.acceptList.patientDtos.find { it.memberId == uiState.memberId }
+    //val patientInfo = uiState.acceptList.patientDtos.find { it.memberId == uiState.memberId }
     RemindTheme {
         Column(
             modifier = Modifier
@@ -63,7 +64,7 @@ fun DoctorMedicineManage(
                 .verticalScroll(scrollState)
         ) {
             BasicBackAppBar (
-                modifier = Modifier,
+                modifier = Modifier.padding(top = 20.dp),
                 onClick = {navController.navigateUp()},
                 title = "환자 관리"
             )
@@ -72,7 +73,7 @@ fun DoctorMedicineManage(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${patientInfo?.name}님의 약 처방",
+                    text = "${uiState.patientInfo.name}님의 약 처방",
                     style = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.text)
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -92,7 +93,8 @@ fun DoctorMedicineManage(
             )
             BasicButton(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(top = 7.dp),
                 text = "약 처방 업데이트",
                 RoundedCorner = 12.dp,
                 backgroundColor = RemindTheme.colors.main_6,
@@ -186,6 +188,7 @@ fun PatientMedicineContainer(
             Text(
                 modifier = modifier
                     .fillMaxWidth()
+                    .padding(bottom = 11.dp)
                     .background(
                         color = RemindTheme.colors.main_2,
                         shape = RoundedCornerShape(20.dp)

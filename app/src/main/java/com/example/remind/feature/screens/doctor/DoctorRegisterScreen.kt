@@ -57,7 +57,7 @@ fun DoctorRegisterScreen(
                 .background(color = RemindTheme.colors.white)
         ) {
             BasicBackAppBar (
-                modifier = Modifier,
+                modifier = Modifier.padding(top = 20.dp),
                 onClick = {navController.navigateUp()},
                 title = stringResource(id = R.string.환자_추가하기)
             )

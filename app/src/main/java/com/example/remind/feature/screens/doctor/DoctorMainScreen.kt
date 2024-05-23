@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,12 +30,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.remind.R
 import com.example.remind.core.common.component.BasicButton
 import com.example.remind.core.common.component.BasicListItem
 import com.example.remind.core.common.component.MainAppBar
 import com.example.remind.core.common.component.RemindSearchTextField
 import com.example.remind.core.designsystem.theme.RemindTheme
+import com.example.remind.data.model.response.Info
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -49,6 +54,7 @@ fun DoctorMain(
     LaunchedEffect(Unit) {
         viewModel.getPatients()
         viewModel.getRequestPatients()
+        viewModel.getMemberInfo()
     }
 
     LaunchedEffect(true) {
@@ -75,7 +81,10 @@ fun DoctorMain(
                 modifier = Modifier.padding(start = 26.dp, end = 28.dp),
             ) {
                 item {
-                    Profile(modifier = Modifier)
+                    Profile(
+                        modifier = Modifier,
+                        myInfo = uiState.memberInfo
+                    )
                 }
                 stickyHeader {
                     StickyHeaderComponent(
@@ -115,22 +124,26 @@ fun DoctorMain(
 }
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Profile(modifier: Modifier) {
+fun Profile(
+    modifier: Modifier,
+    myInfo: Info
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        //예비
-        Icon(
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = null,
-            modifier = modifier
-                .size(width = 71.dp, height = 95.dp)
-                .padding(start = 20.dp),
-            tint = RemindTheme.colors.main_1
+        GlideImage(
+            modifier = Modifier
+                .size(width = 80.dp, height = 80.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .padding(end = 8.dp),
+            contentScale = ContentScale.Crop,
+            model = myInfo.imageUrl,
+            contentDescription = null
         )
         Column(
             modifier = modifier
@@ -138,7 +151,7 @@ fun Profile(modifier: Modifier) {
         ) {
             Text(
                 modifier = modifier.padding(end = 24.dp, bottom = 4.dp),
-                text = "김말랑 님",
+                text = "${myInfo.name}님",
                 style = RemindTheme.typography.b1Bold
             )
             Text(
@@ -165,10 +178,10 @@ fun StickyHeaderComponent(
             modifier = modifier
                 .background(color = RemindTheme.colors.white)
                 .padding(
-                start = 44.dp,
-                top = 14.dp,
-                bottom = 9.dp
-            ),
+                    start = 44.dp,
+                    top = 14.dp,
+                    bottom = 9.dp
+                ),
             text = stringResource(R.string.관리_중인_환자),
             style = RemindTheme.typography.b3Bold.copy(color = RemindTheme.colors.main_6)
         )
@@ -210,6 +223,7 @@ fun StickyHeaderComponent(
             RemindSearchTextField(
                 modifier = Modifier
                     .weight(1f)
+                    .fillMaxHeight()
                     .padding(start = 14.dp),
                 hintText = stringResource(R.string.검색),
                 onValueChange = {},

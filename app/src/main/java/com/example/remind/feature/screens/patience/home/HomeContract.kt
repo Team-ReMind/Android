@@ -6,8 +6,8 @@ import androidx.navigation.NavOptionsBuilder
 import com.example.remind.core.base.UiEffect
 import com.example.remind.core.base.UiEvent
 import com.example.remind.core.base.UiState
+import com.example.remind.data.model.response.DailyActivity
 import com.example.remind.data.model.response.DailyTakingMedicineList
-import com.example.remind.data.model.response.Data
 
 class HomeContract {
     data class State(
@@ -16,7 +16,7 @@ class HomeContract {
         val medicineDailyData: List<DailyTakingMedicineList> = emptyList(),
         val notTakingReason: String? = null,
         val clickTime: String = "",
-        val dailyMood: Data = Data(),
+        val dailyMood: DailyActivity = DailyActivity(),
     ): UiState
 
     sealed class Event: UiEvent {

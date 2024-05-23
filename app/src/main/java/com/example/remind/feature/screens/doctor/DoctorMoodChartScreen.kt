@@ -177,7 +177,21 @@ fun DoctorMoodChaartScreen(
                 text = stringResource(id = R.string.무엇을_할_때_기분이_좋은지_확인),
                 style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.grayscale_3)
             )
-            //사진넣기 사진넣기
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+                painter = painterResource(id = R.drawable.ex_percentage),
+                contentDescription = null
+            )
+
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 7.dp),
+                contentScale = ContentScale.FillWidth,
+                painter = painterResource(id = R.drawable.ex_activity),
+                contentDescription = null
+            )
             Image(
                 modifier = Modifier
                     .fillMaxWidth()

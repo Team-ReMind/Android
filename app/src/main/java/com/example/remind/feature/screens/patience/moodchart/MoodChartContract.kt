@@ -25,8 +25,10 @@ class MoodChartContract {
 
     sealed class Event: UiEvent {
         data class LoadingNextData(val year: Int, val month: Int, val day: Int, val size: Int):Event()
-        data class ClickToBottomSheet(val moodDate: String):Event()
+        //data class ClickToBottomSheet(val moodDate: String):Event()
+        //object ClickToBottomSheet:Event()
         data class storeDate(val date: String):Event()
+        object clickToBottomsheet :Event()
     }
 
     sealed class Effect: UiEffect {

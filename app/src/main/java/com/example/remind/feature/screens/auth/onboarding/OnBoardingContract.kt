@@ -14,7 +14,8 @@ class OnBoardingContract {
         val userName: String = "",
         val moveAble: Boolean = false,
         val fcmToken: String = "",
-        val userInfo: OnBoardingRequest = OnBoardingRequest()
+        val userInfo: OnBoardingRequest = OnBoardingRequest(),
+        val errorMsg: Boolean = false
     ): UiState
 
     sealed class Event: UiEvent {
@@ -25,6 +26,7 @@ class OnBoardingContract {
         data class NextButtonFinalDoctor(val certifinumber: String): Event()
         data class NavigateButtonClicked(val destinationRoute: String, val currentRoute: String, val inclusive: Boolean): Event()
         data class StoreUserInfoButtonClicked(val info: OnBoardingRequest): Event()
+        object ErrorMsg: Event()
     }
 
     sealed class Effect: UiEffect {

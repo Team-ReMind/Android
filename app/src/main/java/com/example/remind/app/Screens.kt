@@ -18,6 +18,11 @@ sealed class Screens(val route: String) {
     object Doctor: Screens("doctor") {
         object DoctorMain: Screens("DoctorMain")
         object DoctorPatienceRegister: Screens("PatienceRegister_doctor")
+        object PatienceManage: Screens("PatienceManage_doctor")
+        object PrescriptionUpdate: Screens("PatienceUpdate_doctor")
+        object ManageMedicine: Screens("PatienceMedicine_doctor")
+        object ManageMood: Screens("PatienceMood_doctor")
+        object ExDoctorBottomSheet: Screens("doctor_example")
     }
     object Center: Screens("center") {
         object CenterMain: Screens("CenterMain")
@@ -32,7 +37,9 @@ sealed class Screens(val route: String) {
             object WritingMoodStep3: Screens("writing_step3")
             object SplashCheering: Screens("cheering")
         }
-        object MoodChart: Screens("MoodChart")
+        object MoodChart: Screens("MoodChart") {
+            object ExMoodChartBottomSheet:Screens("bottomsheet")
+        }
         object Medicine: Screens("Medicine") {
             object AlarmSetting: Screens("alarm_setting")
         }

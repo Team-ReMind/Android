@@ -2,6 +2,7 @@ package com.example.remind.feature.screens.center
 
 import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
@@ -37,53 +40,64 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.remind.R
 import com.example.remind.core.common.component.MainAppBar
 import com.example.remind.core.designsystem.theme.RemindTheme
-import com.example.remind.feature.screens.doctor.StickyHeaderComponent
-import com.example.remind.feature.viewmodel.CustomViewModel
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CenterMainScreen(
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    //곧 삭제될 코드
-    val viewModel = CustomViewModel()
-    val getAllData = viewModel.getAllData()
-    val selectedIndex = remember {mutableStateOf(1)}
+//    val context = LocalContext.current
+//    //곧 삭제될 코드
+//    val viewModel = CustomViewModel()
+//    val getAllData = viewModel.getAllData()
+//    val selectedIndex = remember {mutableStateOf(1)}
+//    RemindTheme {
+//        Column(
+//            modifier = modifier
+//                .fillMaxSize()
+//                .background(color = RemindTheme.colors.white)
+//        ) {
+//            MainAppBar(modifier = Modifier, onClick = {})
+//            Spacer(modifier = Modifier.height(20.dp))
+//            LazyColumn() {
+//                item {
+//                    Profile(
+//                        modifier = modifier
+//                            .padding(
+//                                start = 20.dp,
+//                                end = 20.dp
+//                            ),
+//                        context = context,
+//                        imageUrl = "",
+//                        name = "김말랑"
+//                    )
+//                }
+//                stickyHeader {
+//                    Column() {
+//                        TabLayout(selectedIndex = selectedIndex)
+//                        if(selectedIndex.value == 0) {
+//                            StickyHeaderComponent(modifier = Modifier, onRegisterClicked = {}, 0)
+//                        }
+//                    }
+//
+//                }
+//                itemsIndexed(getAllData) { index, item->
+//                    val backgroundColor = if(index < 5) RemindTheme.colors.sub_1 else RemindTheme.colors.white
+//                }
+//            }
+//        }
+//    }
     RemindTheme {
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(color = RemindTheme.colors.white)
+            modifier = Modifier.fillMaxSize()
         ) {
-            MainAppBar(modifier = Modifier, onClick = {})
-            Spacer(modifier = Modifier.height(20.dp))
-            LazyColumn() {
-                item {
-                    Profile(
-                        modifier = modifier
-                            .padding(
-                                start = 20.dp,
-                                end = 20.dp
-                            ),
-                        context = context,
-                        imageUrl = "",
-                        name = "김말랑"
-                    )
-                }
-                stickyHeader {
-                    Column() {
-                        TabLayout(selectedIndex = selectedIndex)
-                        if(selectedIndex.value == 0) {
-                            StickyHeaderComponent(modifier = Modifier, onRegisterClicked = {})
-                        }
-                    }
-
-                }
-                itemsIndexed(getAllData) { index, item->
-                    val backgroundColor = if(index < 5) RemindTheme.colors.sub_1 else RemindTheme.colors.white
-                }
-            }
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                painter = painterResource(id = R.drawable.ex_centermain),
+                contentScale = ContentScale.FillWidth,
+                contentDescription = null
+            )
         }
     }
 }

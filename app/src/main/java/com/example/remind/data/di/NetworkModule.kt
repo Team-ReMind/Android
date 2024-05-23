@@ -5,11 +5,14 @@ import com.example.remind.BuildConfig
 import com.example.remind.data.network.adapter.ApiResultCallAdapterFactory
 import com.example.remind.data.network.interceptor.AuthInterceptor
 import com.example.remind.data.network.service.AuthService
+import com.example.remind.data.network.service.DoctorService
 import com.example.remind.data.network.service.PatientService
 import com.example.remind.data.repository.auth.AuthRepository
 import com.example.remind.data.repository.auth.AuthRepositoryImpl
 import com.example.remind.data.repository.auth.TokenRepository
 import com.example.remind.data.repository.auth.TokenRepositoryImpl
+import com.example.remind.data.repository.doctor.DoctorRepository
+import com.example.remind.data.repository.doctor.DoctorRepositoryImpl
 import com.example.remind.data.repository.patient.PatientMedicineRepository
 import com.example.remind.data.repository.patient.PatientMedicineRepositoryImpl
 import com.example.remind.data.repository.patient.PatientMoodChartRepository
@@ -70,6 +73,12 @@ object NetworkModule {
         return retrofit.create(PatientService::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideDoctorService(retrofit: Retrofit): DoctorService {
+        return retrofit.create(DoctorService::class.java)
+    }
+
     @Module
     @InstallIn(SingletonComponent::class)
     abstract class RepositoryModule {
@@ -86,6 +95,10 @@ object NetworkModule {
         @Singleton
         @Binds
         abstract fun providesPatientMoodChartRepository(patientMoodChartRepositoryImpl: PatientMoodChartRepositoryImpl): PatientMoodChartRepository
+
+        @Singleton
+        @Binds
+        abstract fun providesDoctorRepository(doctorRepositoryImpl: DoctorRepositoryImpl): DoctorRepository
     }
 
 }

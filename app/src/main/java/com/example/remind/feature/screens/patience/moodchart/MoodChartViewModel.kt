@@ -1,6 +1,8 @@
 package com.example.remind.feature.screens.patience.moodchart
 
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.navOptions
+import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.network.adapter.ApiResult
 import com.example.remind.domain.usecase.patience_usecase.GetFeelingActivityUseCase
@@ -44,9 +46,15 @@ class MoodChartViewModel @Inject constructor(
             is MoodChartContract.Event.storeDate -> {
                 updateState(currentState.copy(date = event.date))
             }
-            is MoodChartContract.Event.ClickToBottomSheet -> {
-                getDailyMood(event.moodDate)
-                getDailyMedicine(event.moodDate)
+//            is MoodChartContract.Event.ClickToBottomSheet -> {
+//
+//            }
+            is MoodChartContract.Event.clickToBottomsheet -> {
+                navigateToHome(
+                    destination = Screens.Patience.MoodChart.ExMoodChartBottomSheet.route,
+                    current = Screens.Patience.MoodChart.route,
+                    inclusiveData = false
+                )
             }
             else ->{}
         }
@@ -120,7 +128,18 @@ class MoodChartViewModel @Inject constructor(
             }
         }
     }
-
+    fun navigateToHome(destination: String, current: String, inclusiveData: Boolean) {
+        postEffect(
+            MoodChartContract.Effect.NavigateTo(
+                destinaton = destination,
+                navOptions = navOptions {
+                    popUpTo(current) {
+                        inclusive = inclusiveData
+                    }
+                }
+            )
+        )
+    }
 
 
     fun setToastMessage(text: String) {

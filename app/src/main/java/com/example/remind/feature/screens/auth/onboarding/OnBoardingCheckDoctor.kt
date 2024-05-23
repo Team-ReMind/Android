@@ -63,14 +63,15 @@ fun OnBoardingCheckDoctorScreen(
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
+                modifier = Modifier.padding(horizontal = 20.dp),
                 text = stringResource(id = R.string.정신질환_환자_사례관리),
                 style = RemindTheme.typography.b3Medium.copy(
                     color = RemindTheme.colors.grayscale_3,
-                    lineHeight = 49.sp
+                    lineHeight = 30.sp
                 )
             )
             Text(
-                modifier = Modifier.padding(top = 66.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 66.dp),
                 text= "면허번호",
                 style = RemindTheme.typography.b2Medium.copy(color = RemindTheme.colors.text)
             )
@@ -86,10 +87,11 @@ fun OnBoardingCheckDoctorScreen(
                 bottomPadding = 13.dp,
                 maxLine = 1
             )
+            Spacer(modifier = Modifier.weight(1f))
             BasicButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp),
+                    .padding(bottom = 32.dp, start = 20.dp, end = 20.dp),
                 text = stringResource(id = R.string.인증_신청),
                 RoundedCorner = 12.dp,
                 backgroundColor = RemindTheme.colors.main_4,
@@ -114,7 +116,7 @@ fun DoctorPreview() {
         text = stringResource(id = R.string.정신질환_환자_사례관리),
         style = RemindTheme.typography.b3Medium.copy(
             color = RemindTheme.colors.grayscale_3,
-            lineHeight = 49.sp
+            lineHeight = 30.sp
         )
     )
 }

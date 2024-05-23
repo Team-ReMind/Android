@@ -42,7 +42,7 @@ class LoginViewModel @Inject constructor(
     private fun KakaoLogin(context : Context) {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if(error != null) {
-                Log.e("kakao", "카카오 로그인 실패")
+                Log.e("kakao", "카카오 로그인 실패${error.message}")
             } else if(token != null) {
                 UserApiClient.instance.me { user, error ->
                     viewModelScope.launch {
@@ -76,7 +76,8 @@ private fun socialLogin(token: String) {
         val result = authUseCase.invoke(KakaoLoginRequest(token))
         when(result) {
             is ApiResult.Success -> {
-                runBlocking { tokenManager.saveAccessToken(
+                runBlocking {
+                    tokenManager.saveAccessToken(
                     result.data.data.accessToken,
                     result.data.data.refreshToken
                     )

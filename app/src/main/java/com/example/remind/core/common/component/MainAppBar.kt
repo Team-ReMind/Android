@@ -31,23 +31,19 @@ fun MainAppBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.ic_main_logo),
             contentDescription = null,
             modifier = modifier
                 .size(width = 36.dp, height = 21.dp)
         )
         Spacer(Modifier.weight(1f))
-        IconButton(
-            onClick = onClick,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_setting),
-                contentDescription = null,
-                modifier = modifier
-                    .size(width = 24.dp, height = 28.dp),
-                tint = RemindTheme.colors.icon
-            )
-        }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_setting),
+            contentDescription = null,
+            modifier = modifier
+                .size(width = 24.dp, height = 28.dp),
+            tint = RemindTheme.colors.icon
+        )
     }
 }
 

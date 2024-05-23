@@ -61,7 +61,7 @@ fun OnBoardingLoadingDoctorScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = 12.dp),
-                    text = stringResource(id = R.string.만나서_반갑습니다_, uiState.userName ),
+                    text = "만나서 반갑습니다 선생님!",
                     style = RemindTheme.typography.h1Bold.copy(
                         color = RemindTheme.colors.white,
                         lineHeight = 40.sp

@@ -138,11 +138,7 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
                 textColor = RemindTheme.colors.white,
                 verticalPadding = 18.dp,
                 onClick = {
-                    isSheetOpen = true
-                   viewModel.setEvent(MoodChartContract.Event.ClickToBottomSheet(
-                       "2024-05-${uiState.date}"
-                   ))
-
+                   viewModel.setEvent(MoodChartContract.Event.clickToBottomsheet)
                 },
                 textStyle = RemindTheme.typography.b3Bold
             )
@@ -300,7 +296,6 @@ fun GraphComponent(
             }
         )
     }
-
 }
 
 @Composable

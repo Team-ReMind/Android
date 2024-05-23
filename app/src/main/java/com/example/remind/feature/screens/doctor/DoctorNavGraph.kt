@@ -7,18 +7,34 @@ import androidx.navigation.navigation
 import com.example.remind.app.Screens
 
 fun NavGraphBuilder.DoctorGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    doctorViewModel: DoctorViewModel
 ) {
     navigation(
         route = Screens.Doctor.route,
         startDestination = Screens.Doctor.DoctorMain.route
     ) {
         composable(route = Screens.Doctor.DoctorMain.route) {
-            DoctorMain(navHostController)
+            DoctorMain(navHostController, doctorViewModel)
         }
         composable(route = Screens.Doctor.DoctorPatienceRegister.route) {
-            //나중에 바뀌어야함
-            DoctorMain(navHostController)
+
+            DoctorRegisterScreen(navHostController, doctorViewModel)
+        }
+        composable(route = Screens.Doctor.PatienceManage.route) {
+            PatientManageScreen(navHostController, doctorViewModel)
+        }
+        composable(route = Screens.Doctor.PrescriptionUpdate.route) {
+            DoctorPrescriptionUpdateScreen(navHostController)
+        }
+        composable(route = Screens.Doctor.ManageMedicine.route) {
+            DoctorMedicineManage(navHostController, doctorViewModel)
+        }
+        composable(route = Screens.Doctor.ManageMood.route) {
+            DoctorMoodChaartScreen(navHostController, doctorViewModel)
+    }
+        composable(route = Screens.Doctor.ExDoctorBottomSheet.route) {
+            DoctorBottomSheet(navHostController)
         }
     }
 }

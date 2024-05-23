@@ -79,7 +79,6 @@ fun OnBoardingFinalScreen(
             }
             "ROLE_CENTER" -> {
                 CenterFinal(
-                    name = uiState.userName,
                     onClick = {
                         viewModel.setEvent(OnBoardingContract.Event.NavigateButtonClicked(
                             Screens.Center.CenterMain.route,
@@ -199,7 +198,7 @@ fun DoctorFinal(
 fun CenterFinal(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    name: String
+    //name: String
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -217,7 +216,7 @@ fun CenterFinal(
                 .padding(top = 90.dp, start = 20.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.만나서_반갑습니다_담당자님_, name),
+                text = "만나서 반갑습니다.",
                 style = RemindTheme.typography.h1Bold.copy(color = RemindTheme.colors.white, lineHeight = 40.sp)
             )
             Text(
@@ -250,6 +249,5 @@ fun FinalPreview() {
         onClick = {
 
         },
-        name = "배예진"
     )
 }

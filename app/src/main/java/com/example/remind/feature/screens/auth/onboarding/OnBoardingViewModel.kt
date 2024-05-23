@@ -61,7 +61,11 @@ class OnBoardingViewModel @Inject constructor(
                     updateState(currentState.copy(
                         userInfo = currentState.userInfo.copy(
                             fcmToken = currentState.fcmToken,
-                            protectorPhoneNumber = event.number
+                            protectorPhoneNumber = event.number,
+                            doctorLicenseNumber = "",
+                            district = "",
+                            city = "",
+                            centerName = ""
                         )
                     ))
                     postOnBoarding(currentState.userInfo)
@@ -73,7 +77,12 @@ class OnBoardingViewModel @Inject constructor(
                 viewModelScope.launch {
                     updateState(currentState.copy(
                         userInfo = currentState.userInfo.copy(
-                            fcmToken = event.certifinumber
+                            fcmToken = currentState.fcmToken,
+                            doctorLicenseNumber = event.certifinumber,
+                            protectorPhoneNumber = "",
+                            district = "",
+                            city = "",
+                            centerName = ""
                         )
                     ))
                     postOnBoarding(currentState.userInfo)
@@ -83,7 +92,14 @@ class OnBoardingViewModel @Inject constructor(
             //사용자 정보 작성하고 각자 입장의 온보딩으로 이동
             is OnBoardingContract.Event.StoreUserInfoButtonClicked -> {
                 updateState(currentState.copy(
-                    userInfo = event.info
+                    userInfo = currentState.userInfo.copy(
+                        rolesType = currentState.selectedType!!,
+                        name = event.name,
+                        gender = event.gender,
+                        phoneNumber = event.phoneNumber,
+                        birthday = event.birthday,
+                        hospitalName = event.hospitalName
+                    )
                 ))
                 navigateToNext(currentState.selectedType!!)
             }

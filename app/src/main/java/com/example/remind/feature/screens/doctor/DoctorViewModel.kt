@@ -1,13 +1,11 @@
 package com.example.remind.feature.screens.doctor
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
 import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.SetAcceptrequest
 import com.example.remind.data.network.adapter.ApiResult
-import com.example.remind.data.network.interceptor.TokenManager
 import com.example.remind.domain.usecase.doctor_usecase.GetDoctorMoodChartUseCase
 import com.example.remind.domain.usecase.doctor_usecase.GetPatientUseCase
 import com.example.remind.domain.usecase.doctor_usecase.GetRequestUseCase
@@ -15,7 +13,6 @@ import com.example.remind.domain.usecase.onboarding_usecase.MemberInfoUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetFeelingPercentUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetMedicineRateUseCase
 import com.example.remind.domain.usecase.patience_usecase.GetMonthlyMedicineUseCase
-import com.example.remind.domain.usecase.patience_usecase.GetMoodChartUseCase
 import com.example.remind.domain.usecase.patience_usecase.PrescriptionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +24,6 @@ class DoctorViewModel @Inject constructor(
     private val getPatientUseCase: GetPatientUseCase,
     private val getRequestUseCase: GetRequestUseCase,
     private val getMedicineRateUseCase: GetMedicineRateUseCase,
-    //private val getMoodChartUseCase: GetMoodChartUseCase,
     private val prescriptionUseCase: PrescriptionUseCase,
     private val getMonthlyMedicineUseCase: GetMonthlyMedicineUseCase,
     private val getFeelingPercentUseCase: GetFeelingPercentUseCase,
@@ -43,10 +39,6 @@ class DoctorViewModel @Inject constructor(
         viewModelScope.launch {
             getPatients()
             getRequestPatients()
-            //getMedicineRate()
-            //getMoodChartData(year, month, date-6)
-            //getPrescription()
-            //getMonthMedicine()
             getFeelingPerCent()
             getMemberInfo()
         }

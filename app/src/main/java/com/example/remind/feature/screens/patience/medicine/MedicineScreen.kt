@@ -53,6 +53,12 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
     val effectFlow = viewModel.effect
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+    LaunchedEffect(Unit) {
+        viewModel.getPrescription()
+        viewModel.getMedicineRate()
+        viewModel.getMonthMedicine()
+    }
+
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when(effect) {
@@ -83,7 +89,7 @@ fun MedicineScreen(navController: NavHostController, viewModel: MedicineViewMode
                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${uiState.userName}님의 약 처방",
+                    text = "${uiState.prescription.name}님의 약 처방",
                     style = RemindTheme.typography.b2Bold.copy(color = RemindTheme.colors.text)
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -263,6 +269,10 @@ fun MedicineRateContainer(
     modifier: Modifier = Modifier,
     rate: Rate
 ) {
+    val total = "${String.format("%.1f", rate.totalRate)}%"
+    val breakfast = "${String.format("%.1f", rate.breakfastRate)}%"
+    val lunch = "${String.format("%.1f", rate.lunchRate)}%"
+    val dinner = "${String.format("%.1f", rate.dinnerRate)}%"
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -278,7 +288,7 @@ fun MedicineRateContainer(
         ) {
            Row {
                Text(
-                   text = String.format("%.1f", rate.totalRate),
+                   text = total,
                    style = RemindTheme.typography.h1Bold.copy(color= RemindTheme.colors.main_6)
                )
                Text(
@@ -297,8 +307,8 @@ fun MedicineRateContainer(
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.text)
                 )
                 Text(
-                    modifier = modifier.padding(start = 4.dp),
-                    text = String.format("%.1f", rate.breakfastRate),
+                    modifier = modifier.padding(start = 4.dp, end = 12.dp),
+                    text = breakfast,
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -306,8 +316,8 @@ fun MedicineRateContainer(
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.text)
                 )
                 Text(
-                    modifier = modifier.padding(start = 4.dp),
-                    text = String.format("%.1f", rate.lunchRate),
+                    modifier = modifier.padding(start = 4.dp, end = 12.dp),
+                    text = lunch,
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
                 Text(
@@ -315,8 +325,8 @@ fun MedicineRateContainer(
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.text)
                 )
                 Text(
-                    modifier = modifier.padding(start = 4.dp),
-                    text = String.format("%.1f", rate.dinnerRate),
+                    modifier = modifier.padding(start = 4.dp, end = 12.dp),
+                    text = dinner,
                     style = RemindTheme.typography.c2Medium.copy(color= RemindTheme.colors.main_6)
                 )
             }

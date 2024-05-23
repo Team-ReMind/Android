@@ -24,7 +24,7 @@ interface AuthService {
         @Body body: KakaoLoginRequest
     ): ApiResult<SocialLoginResponse>
 
-    @POST("/prescription/relation/accept")
+    @POST("/member/onboarding")
     suspend fun OnBoarding(
         @Body body: OnBoardingRequest
     ): ApiResult<OnBoardingResponse>

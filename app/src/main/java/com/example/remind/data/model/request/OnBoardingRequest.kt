@@ -13,6 +13,7 @@ data class OnBoardingRequest(
     val doctorLicenseNumber: String = "",
     val birthday: String = "",
     val phoneNumber: String = "",
+    val hospitalName: String = "",
     val gender: String = "",
     val name: String = "",
 )

@@ -88,16 +88,34 @@ fun CenterMainScreen(
 //            }
 //        }
 //    }
+    val imageIndex = remember { mutableStateOf(0) }
     RemindTheme {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = RemindTheme.colors.white)
         ) {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(id = R.drawable.ex_centermain),
-                contentScale = ContentScale.FillWidth,
-                contentDescription = null
+            MainAppBar(
+                modifier = Modifier.padding(top = 23.6.dp),
+                onClick = {
+                    imageIndex.value = (imageIndex.value + 1) % 2
+                }
             )
+            if (imageIndex.value == 0) {
+                Image(
+                    modifier = Modifier.fillMaxWidth(),
+                    painter = painterResource(id = R.drawable.ex_center_main),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = null
+                )
+            } else {
+                Image(
+                    modifier = Modifier.fillMaxWidth(),
+                    painter = painterResource(id = R.drawable.ex_center_sub),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = null
+                )
+            }
         }
     }
 }

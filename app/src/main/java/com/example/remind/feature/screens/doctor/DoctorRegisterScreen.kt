@@ -18,6 +18,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +52,7 @@ fun DoctorRegisterScreen(
             }
         }
     }
+    val acceptStatusMap = remember { mutableStateMapOf<Int, Boolean>() }
     RemindTheme {
         Column(
             modifier = Modifier
@@ -88,7 +91,7 @@ fun DoctorRegisterScreen(
                                     )
                                 )
                             },
-                            status = uiState.connectionStatus
+                            status = acceptStatusMap[item.memberId] ?: false
                         )
                     }
                 }
@@ -155,7 +158,7 @@ fun RequestListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "${data.name} 환자(${data.gender})가 추가를 요청했습니다.",
+                text = "${data.name} 환자(${data.gender}, ${data.birthYear}년생)가 추가를 요청했습니다.",
                 style = RemindTheme.typography.c1Medium.copy(color = RemindTheme.colors.text)
             )
             Spacer(modifier = Modifier.weight(1f))

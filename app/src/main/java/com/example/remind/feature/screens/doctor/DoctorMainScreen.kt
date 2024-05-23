@@ -78,7 +78,7 @@ fun DoctorMain(
                 onClick = {}
             )
             LazyColumn(
-                modifier = Modifier.padding(start = 26.dp, end = 28.dp),
+                modifier = Modifier.padding(start = 26.dp, end = 28.dp, top = 20.dp),
             ) {
                 item {
                     Profile(

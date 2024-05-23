@@ -1,6 +1,7 @@
 package com.example.remind.core.common.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,7 +42,8 @@ fun MainAppBar(
             painter = painterResource(id = R.drawable.ic_setting),
             contentDescription = null,
             modifier = modifier
-                .size(width = 24.dp, height = 28.dp),
+                .size(width = 24.dp, height = 28.dp)
+                .clickable(onClick = onClick),
             tint = RemindTheme.colors.icon
         )
     }

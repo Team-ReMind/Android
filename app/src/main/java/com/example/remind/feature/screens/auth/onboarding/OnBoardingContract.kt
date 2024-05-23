@@ -25,7 +25,7 @@ class OnBoardingContract {
         data class NextButtonFinalPatience(val number: String): Event()
         data class NextButtonFinalDoctor(val certifinumber: String): Event()
         data class NavigateButtonClicked(val destinationRoute: String, val currentRoute: String, val inclusive: Boolean): Event()
-        data class StoreUserInfoButtonClicked(val info: OnBoardingRequest): Event()
+        data class StoreUserInfoButtonClicked(val name: String, val gender: String, val phoneNumber: String, val birthday: String, val hospitalName: String ): Event()
         object ErrorMsg: Event()
     }
 

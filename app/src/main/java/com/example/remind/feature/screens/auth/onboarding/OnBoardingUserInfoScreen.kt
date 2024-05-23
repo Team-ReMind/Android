@@ -2,6 +2,7 @@ package com.example.remind.feature.screens.auth.onboarding
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
@@ -50,6 +53,7 @@ fun OnBoardingUserInfoScreen(
     var isCheckedMale by remember{ mutableStateOf(false) }
     var isCheckedFeMale by remember{ mutableStateOf(false) }
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -69,6 +73,7 @@ fun OnBoardingUserInfoScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = RemindTheme.colors.white)
+                .verticalScroll(scrollState)
         ) {
             BasicOnBoardingAppBar(
                 modifier = Modifier.fillMaxWidth(),
@@ -79,6 +84,7 @@ fun OnBoardingUserInfoScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 20.dp)
+                    .weight(1f)
             ) {
                 Text(
                     modifier = Modifier.padding(top = 35.dp),
@@ -246,19 +252,11 @@ fun OnBoardingUserInfoScreen(
                             //유효성 통과
                             viewModel.setEvent(
                                 OnBoardingContract.Event.StoreUserInfoButtonClicked(
-                                    info = OnBoardingRequest(
-                                        centerName = "",
-                                        city = "",
-                                        district = "",
-                                        protectorPhoneNumber = "",
-                                        rolesType = uiState.selectedType!!,
-                                        fcmToken = "",
-                                        doctorLicenseNumber = textStates[fieldKeys[3]] ?: "",
-                                        birthday = textStates[fieldKeys[2]] ?: "",
-                                        phoneNumber = textStates[fieldKeys[1]] ?: "",
-                                        gender = if(isCheckedMale == true) "남" else "여",
-                                        name = textStates[fieldKeys[0]] ?: ""
-                                    )
+                                    name = textStates[fieldKeys[0]] ?: "",
+                                    gender = if(isCheckedMale == true) "남" else "여",
+                                    phoneNumber = textStates[fieldKeys[1]] ?: "",
+                                    birthday = textStates[fieldKeys[2]] ?: "",
+                                    hospitalName = textStates[fieldKeys[3]] ?: ""
                                 )
                             )
                         } else {

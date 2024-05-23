@@ -173,7 +173,7 @@ fun CheckReading(
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = stringResource(id = R.string.긴급_상황_발생시_담당자가_보호자에게),
-                style = RemindTheme.typography.c1Regular.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 6.sp)
+                style = RemindTheme.typography.c1Regular.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 22.sp)
             )
         }
     }
@@ -182,19 +182,8 @@ fun CheckReading(
 @Preview(showBackground = true)
 @Composable
 fun OnBoardingPreview() {
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column() {
-            Text(
-                text = stringResource(id = R.string.긴급_상황_발생_시_보호자에게_연락),
-                style = RemindTheme.typography.b3Medium.copy(color = RemindTheme.colors.black)
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(id = R.string.긴급_상황_발생시_담당자가_보호자에게),
-                style = RemindTheme.typography.c1Regular.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 6.sp)
-            )
-        }
-    }
+    Text(
+        text = stringResource(id = R.string.긴급_상황_발생시_담당자가_보호자에게),
+        style = RemindTheme.typography.c1Regular.copy(color = RemindTheme.colors.grayscale_3, lineHeight = 22.sp)
+    )
 }

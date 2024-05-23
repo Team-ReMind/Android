@@ -69,6 +69,9 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
     var isSheetOpen by rememberSaveable {
         mutableStateOf(false)
     }
+    val year = LocalDate.now().year
+    val month = LocalDate.now().monthValue
+    val date = LocalDate.now().dayOfMonth
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val graphYaxisList = listOf(
@@ -87,6 +90,11 @@ fun MoodChartScreen(navController: NavHostController, viewModel:MoodChartViewMod
             }
         )
     }
+    LaunchedEffect(Unit) {
+        viewModel.getMoodChartData(year, month, date-6)
+        viewModel.getSeriesRecord()
+    }
+
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when(effect) {

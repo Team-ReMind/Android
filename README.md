@@ -1,6 +1,9 @@
 ### 설치 apk 경로(app-release.apk 입니다.)
 https://github.com/Team-ReMind/Android/tree/dev/app/release
 
+###Firebase console apk 배포 링크
+https://appdistribution.firebase.google.com/testerapps/1:165854968361:android:7b1bd6b07f7037b2ad7a38/releases/7cp8gkr2j8jcg?utm_source=firebase-console
+
 # ❤️‍🩹 Re:Mind
 ![1](https://github.com/j2noo/29th_Semi_README/assets/77064618/a0ca325d-1feb-4592-9889-998424dfa8f2)
 

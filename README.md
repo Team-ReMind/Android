@@ -1,3 +1,6 @@
+### 설치 apk 경로(app-release.apk 입니다.)
+https://github.com/Team-ReMind/Android/tree/dev/app/release
+
 # ❤️‍🩹 Re:Mind
 ![1](https://github.com/j2noo/29th_Semi_README/assets/77064618/a0ca325d-1feb-4592-9889-998424dfa8f2)
 

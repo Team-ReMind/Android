@@ -16,8 +16,10 @@ import com.example.remind.feature.screens.patience.home.HomeViewModel
 import com.example.remind.feature.screens.patience.medicine.AlarmSettingScreen
 import com.example.remind.feature.screens.patience.medicine.MedicineScreen
 import com.example.remind.feature.screens.patience.medicine.MedicineViewModel
+import com.example.remind.feature.screens.patience.moodchart.ExMoodChartBottomSheet
 import com.example.remind.feature.screens.patience.moodchart.MoodChartScreen
 import com.example.remind.feature.screens.patience.moodchart.MoodChartViewModel
+import com.example.remind.feature.screens.patience.mypage.MyPageScreen
 import com.example.remind.feature.screens.patience.writing.WritingMoodStep1Screen
 import com.example.remind.feature.screens.patience.writing.WritingMoodStep2FeelingScreen
 import com.example.remind.feature.screens.patience.writing.WritingMoodStep2LastScreen
@@ -72,6 +74,9 @@ fun PatienceGraph(
         }
         composable(route = Screens.Patience.MyPage.route) {
             MyPageScreen()
+        }
+        composable(route = Screens.Patience.MoodChart.ExMoodChartBottomSheet.route) {
+            ExMoodChartBottomSheet(navController)
         }
     }
 }

@@ -47,9 +47,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -81,11 +83,18 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel) {
             }
         }
     )
+    var year = LocalDate.now().year
+    var month = String.format("%02d", LocalDate.now().monthValue)
+    var date = LocalDate.now().dayOfMonth
     var sendDate: String = ""
     var medicineTime: String = ""
     val dataSource = CalendarDataSource()
     var calendarUiModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getDailyMood("${year}-${month}-${date}")
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -232,25 +241,87 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel) {
                         }
                     }
                     Spacer(modifier = Modifier.height(23.dp))
-                    Text(
-                        text = stringResource(id = R.string.오늘_하루_기분이_어떠셨나요),
-                        style = RemindTheme.typography.b2Bold.copy(color = Color(0xFF1F2937))
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = stringResource(id = R.string.당신의_하루가_궁금해요),
-                        style = RemindTheme.typography.b3Medium.copy(color = Color(0xFF9B9B9B))
-                    )
+                    if(uiState.dailyMood.activities.isEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.오늘_하루_기분이_어떠셨나요),
+                            style = RemindTheme.typography.b2Bold.copy(color = Color(0xFF1F2937))
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = stringResource(id = R.string.당신의_하루가_궁금해요),
+                            style = RemindTheme.typography.b3Medium.copy(color = Color(0xFF9B9B9B))
+                        )
+                    } else {
+                        Text(
+                            text = "오늘의 감정 리포트",
+                            style = RemindTheme.typography.b2Bold.copy(color = Color(0xFF1F2937))
+                        )
+                    }
                     Spacer(modifier = Modifier.height(10.dp))
-                    EmptyTodayMoodContainer(
-                        clickToWrite = {
-                            viewModel.setEvent(HomeContract.Event.WritingButtonClicked(context))
-                        }
-                    )
+                    if(uiState.dailyMood.activities.isEmpty()) {
+                        EmptyTodayMoodContainer(
+                            clickToWrite = {
+                                viewModel.setEvent(HomeContract.Event.WritingButtonClicked(context))
+                            }
+                        )
+                    } else {
+                        ExampleData()
+                    }
                     Spacer(modifier = Modifier.height(80.dp))
                 }
             }
         }
+    }
+}
+@Preview
+@Composable
+fun ExampleData(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            painter = painterResource(id = R.drawable.ex_home1),
+            contentScale = ContentScale.FillWidth,
+            contentDescription = null
+        )
+        Text(
+            text = "활동",
+            style = RemindTheme.typography.b3Medium.copy(color = RemindTheme.colors.slate_600)
+        )
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = R.drawable.ex_home2),
+            contentDescription = null
+        )
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = R.drawable.ex_home3),
+            contentDescription = null
+        )
+        Text(
+            modifier = Modifier.padding(top = 20.dp),
+            text = "남긴 기록",
+            style = RemindTheme.typography.b3Medium.copy(color = RemindTheme.colors.slate_600)
+        )
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 106.dp),
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = R.drawable.ex_home4),
+            contentDescription = null
+        )
     }
 }
 

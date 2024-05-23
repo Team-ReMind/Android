@@ -8,6 +8,7 @@ import com.example.remind.app.Screens
 import com.example.remind.core.base.BaseViewModel
 import com.example.remind.data.model.request.SetMedicineInfoRequest
 import com.example.remind.data.network.adapter.ApiResult
+import com.example.remind.domain.usecase.patience_usecase.GetMoodDailyUseCase
 import com.example.remind.domain.usecase.patience_usecase.PatientMedicineDailyUseCase
 import com.example.remind.domain.usecase.patience_usecase.SetMedicineInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val patientMedicineDailyUseCase: PatientMedicineDailyUseCase,
-    private val setMedicineInfoUseCase: SetMedicineInfoUseCase
+    private val setMedicineInfoUseCase: SetMedicineInfoUseCase,
+    private val getMoodDailyUseCase: GetMoodDailyUseCase
 ): BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>(
     initialState = HomeContract.State()
 ) {
@@ -28,6 +30,7 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getMedicineDaily(0,"${year}-${month}-${date}")
+            getDailyMood("${year}-${month}-${date}")
         }
     }
     override fun reduceState(event: HomeContract.Event) {
@@ -151,6 +154,20 @@ class HomeViewModel @Inject constructor(
             when(result) {
                 is ApiResult.Success -> {
                     Log.d("HomeViewModel", "success")
+                }
+                else -> {}
+            }
+        }
+    }
+
+     fun getDailyMood(moodDate: String) {
+        viewModelScope.launch {
+            val result = getMoodDailyUseCase.invoke(moodDate)
+            when(result) {
+                is ApiResult.Success -> {
+                    updateState(currentState.copy(
+                        dailyMood = result.data.data
+                    ))
                 }
                 else -> {}
             }

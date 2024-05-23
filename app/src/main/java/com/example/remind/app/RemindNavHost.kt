@@ -11,11 +11,13 @@ import com.example.remind.feature.screens.patience.PatienceScreen
 import com.example.remind.feature.screens.auth.RegisterGraph
 import com.example.remind.feature.screens.auth.onboarding.OnBoardingViewModel
 import com.example.remind.feature.screens.auth.splash.SplashGraph
+import com.example.remind.feature.screens.doctor.DoctorViewModel
 
 @Composable
 fun RemindNavHost() {
     val navHostController = rememberNavController()
     val onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
+    val doctorViewModel: DoctorViewModel = hiltViewModel()
     NavHost(
         navController = navHostController,
         startDestination = Screens.Splash.route
@@ -25,7 +27,7 @@ fun RemindNavHost() {
         composable(route = Screens.Patience.route) {
             PatienceScreen()
         }
-        DoctorGraph(navHostController)
+        DoctorGraph(navHostController,doctorViewModel)
         CenterGraph(navHostController)
     }
 }

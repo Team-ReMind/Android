@@ -69,9 +69,9 @@ fun MedicineCalendar(
                         } else {
                             val date = monthData.find {it.date == dayCounter}
                             val background = when {
-                                date?.takingLevel == 0 -> RemindTheme.colors.sub_2
-                                date?.takingLevel == 1 -> RemindTheme.colors.main_3
-                                date?.takingLevel == 2 -> RemindTheme.colors.main_6
+                                date?.takingLevel == 0 && date?.needMedicine == true -> RemindTheme.colors.sub_2
+                                date?.takingLevel == 1 && date?.needMedicine == true -> RemindTheme.colors.main_3
+                                date?.takingLevel == 2 && date?.needMedicine == true -> RemindTheme.colors.main_6
                                 else -> RemindTheme.colors.white
                             }
                             Box(

@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.remind.R
@@ -97,7 +96,6 @@ fun SelectTypeScreen(
                     backgroundColor = if(uiState.selectedType == "ROLE_PATIENT") RemindTheme.colors.main_4 else RemindTheme.colors.slate_100,
                     text = stringResource(id = R.string.환자용),
                     onClick = {
-                        Log.d("taaag", "환자용클릭됨")
                         viewModel.setEvent(OnBoardingContract.Event.PatienceButtonClicked(context))
                     },
                     textColor = RemindTheme.colors.slate_700,

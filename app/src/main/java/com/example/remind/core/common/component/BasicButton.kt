@@ -24,7 +24,7 @@ fun BasicButton(
     textColor: Color,
     verticalPadding: Dp,
     onClick: () -> Unit,
-    textStyle: TextStyle
+    textStyle: TextStyle,
 ) {
     Button(
         modifier = modifier,

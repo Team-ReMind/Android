@@ -2,10 +2,10 @@ package com.example.remind.data.model.response
 
 data class GetDailyMoodResponse(
     val code: Int,
-    val `data`: Data,
+    val `data`: DailyActivity,
     val message: String
 )
-data class Data(
+data class DailyActivity(
     val activities: List<Activities> = emptyList(),
     val feelingType: String = "",
     val moodDetail: String = ""

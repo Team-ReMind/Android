@@ -1,6 +1,7 @@
 package com.example.remind.feature.screens.auth.onboarding
 
 import android.util.Log
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
 import com.example.remind.app.Screens
@@ -14,6 +15,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -83,11 +87,33 @@ class OnBoardingViewModel @Inject constructor(
                 ))
                 navigateToNext(currentState.selectedType!!)
             }
+            is OnBoardingContract.Event.ErrorMsg -> {
+                postEffect(OnBoardingContract.Effect.Toastmessage("생년월일을 형식에 맞게 입력해주세요."))
+            }
             //입장 상관없이 공통의 경로를 명시한
             is OnBoardingContract.Event.NavigateButtonClicked -> {
                 navigateToRoute(event.destinationRoute, event.currentRoute, event.inclusive)
             }
             else ->{}
+        }
+    }
+
+    fun isValidDate(date: String): Boolean {
+        if (date.length != 8 || !date.isDigitsOnly()) return false
+
+        val year = date.substring(0, 4).toIntOrNull() ?: return false
+        val month = date.substring(4, 6).toIntOrNull() ?: return false
+        val day = date.substring(6, 8).toIntOrNull() ?: return false
+
+        if (year !in 1000..9999 || month !in 1..12) return false
+
+        return try {
+            val dateString = "$year-${"%02d".format(month)}-${"%02d".format(day)}"
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            LocalDate.parse(dateString, formatter)
+            true
+        } catch (e: DateTimeParseException) {
+            false
         }
     }
 
@@ -105,7 +131,7 @@ class OnBoardingViewModel @Inject constructor(
             navigateToRoute(Screens.Register.OnBoardingPatience.route, Screens.Register.OnBoardingUserInfo.route,false)
         }
         if(selectType == "ROLE_CENTER") {
-            navigateToRoute(Screens.Register.OnBoardingCenter.route, Screens.Register.OnBoardingUserInfo.route,false)
+            navigateToRoute(Screens.Register.OnBoardingFinal.route, Screens.Register.OnBoardingUserInfo.route,false)
         }
     }
 

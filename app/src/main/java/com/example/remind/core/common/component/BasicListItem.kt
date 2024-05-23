@@ -2,6 +2,7 @@ package com.example.remind.core.common.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,8 @@ fun BasicListItem(
     modifier: Modifier = Modifier,
     name: String,
     index: String,
-    backgroundColor: Color
+    backgroundColor: Color,
+    catiousClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -45,7 +47,11 @@ fun BasicListItem(
         )
         Spacer(Modifier.weight(1f))
         Text(
-            modifier = modifier.padding(end = 5.dp),
+            modifier = modifier
+                .padding(end = 5.dp)
+                .clickable (
+                    onClick = catiousClicked
+                ),
             text = "관리",
             color = RemindTheme.colors.main_6,
             style = RemindTheme.typography.b3Medium
@@ -60,5 +66,5 @@ fun BasicListItem(
 @Preview
 @Composable
 fun ListItemPreview() {
-    BasicListItem(modifier = Modifier,"송승희", "01", backgroundColor = Color.White)
+    //BasicListItem(modifier = Modifier,"송승희", "01", backgroundColor = Color.White)
 }
